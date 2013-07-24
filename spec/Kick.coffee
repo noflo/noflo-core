@@ -1,52 +1,61 @@
-kick = require "../src/components/Kick"
-socket = require "../src/lib/InternalSocket"
+noflo = require 'noflo'
 
-setupComponent = ->
-  c = kick.getComponent()
-  ins = socket.createSocket()
-  data = socket.createSocket()
-  out = socket.createSocket()
-  c.inPorts.in.attach ins
-  c.inPorts.data.attach data
-  c.outPorts.out.attach out
-  return [c, ins, data, out]
+if typeof process is 'object' and process.title is 'node'
+  chai = require 'chai' unless chai
+  Kick = require '../components/Kick.coffee'
+else
+  Kick = require 'core/components/Kick.js'
 
-exports["test that no packets are sent before disconnect"] = (test) ->
-  [c, ins, data, out] = setupComponent()
+describe 'Kick component', ->
+  c = null
+  ins = null
+  data = null
+  out = null
 
-  sent = false
-  out.once "data", (data) ->
-    sent = true
+  beforeEach ->
+    c = Kick.getComponent()
+    c.inPorts.in.attach noflo.internalSocket.createSocket()
+    c.inPorts.data.attach noflo.internalSocket.createSocket()
+    c.outPorts.out.attach noflo.internalSocket.createSocket()
+    ins = c.inPorts.in
+    data = c.inPorts.data
+    out = c.outPorts.out
 
-  ins.send 'foo'
-  setTimeout ->
-    test.equal sent, false
-    test.done()
-  , 5
+  describe 'when instantiated', ->
+    it 'should have input ports', ->
+      chai.expect(c.inPorts.in).to.be.an 'object'
+      chai.expect(c.inPorts.data).to.be.an 'object'
 
-exports["test kick without specified data"] = (test) ->
-  [c, ins, data, out] = setupComponent()
+    it 'should have an output port', ->
+      chai.expect(c.outPorts.out).to.be.an 'object'
 
-  test.expect 1
+  describe 'test kick', ->
+    it 'test that no packets are sent before disconnect', (done) ->
+      sent = false
+      out.once "data", (data) ->
+        sent = true
 
-  out.once "data", (data) ->
-    test.equal data, null
-    test.done()
+      ins.send 'foo'
+      setTimeout ->
+        chai.expect(sent).to.be.false
+        done()
+      , 5
 
-  ins.send 'foo'
-  ins.disconnect()
+    it 'test kick without specified data', (done) ->
+      out.once "data", (data) ->
+        chai.expect(data).to.be.null
+        done()
 
-exports["test kick with data"] = (test) ->
-  [c, ins, data, out] = setupComponent()
+      ins.send 'foo'
+      ins.disconnect()
 
-  test.expect 2
+    it 'test kick with data', (done) ->
+      out.once "data", (data) ->
+        chai.expect(data.foo).to.be.ok
+        chai.expect(data.foo).to.be.equal 'bar'
+        done()
 
-  out.once "data", (data) ->
-    test.ok data.foo
-    test.equal data.foo, 'bar'
-    test.done()
-
-  data.send
-    foo: 'bar'
-  ins.send 'foo'
-  ins.disconnect()
+      data.send
+        foo: 'bar'
+      ins.send 'foo'
+      ins.disconnect()

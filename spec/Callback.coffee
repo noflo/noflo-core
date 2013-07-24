@@ -1,40 +1,53 @@
-callback = require "../src/components/Callback"
-socket = require "../src/lib/InternalSocket"
+noflo = require 'noflo'
 
-setupComponent = ->
-  c = callback.getComponent()
-  ins = socket.createSocket()
-  cb = socket.createSocket()
-  err = socket.createSocket()
-  c.inPorts.in.attach ins
-  c.inPorts.callback.attach cb
-  c.outPorts.error.attach err
-  return [c, ins, cb, err]
+if typeof process is 'object' and process.title is 'node'
+  chai = require 'chai' unless chai
+  Callback = require '../components/Callback.coffee'
+else
+  Callback = require 'core/components/Callback.js'
 
-exports['test without callback'] = (test) ->
-  [c, ins, cb, err] = setupComponent()
+describe 'Callback component', ->
+  c = null
+  ins = null
+  cb = null
+  err = null
 
-  err.on 'data', (data) ->
-    test.ok data
-    test.done()
+  beforeEach ->
+    c = Callback.getComponent()
+    c.inPorts.in.attach noflo.internalSocket.createSocket()
+    c.inPorts.callback.attach noflo.internalSocket.createSocket()
+    c.outPorts.error.attach noflo.internalSocket.createSocket()
+    ins = c.inPorts.in
+    cb = c.inPorts.callback
+    err = c.outPorts.error
 
-  ins.send 'Foo bar'
+  describe 'when instantiated', ->
+    it 'should have input ports', ->
+      chai.expect(c.inPorts.in).to.be.an 'object'
+      chai.expect(c.inPorts.callback).to.be.an 'object'
 
-exports['test wrong callback'] = (test) ->
-  [c, ins, cb, err] = setupComponent()
+    it 'should have an output port', ->
+      chai.expect(c.outPorts.error).to.be.an 'object'
 
-  err.on 'data', (data) ->
-    test.ok data
-    test.done()
+  describe 'test callback', ->
+    it 'without callback', (done) ->
+      err.on 'data', (data) ->
+        chai.expect(data).to.be.ok
+        done()
 
-  cb.send 'Foo bar'
+      ins.send 'Foo bar'
 
-exports["test callback"] = (test) ->
-  [c, ins, cb] = setupComponent()
+    it 'wrong callback', (done) ->
+      err.on 'data', (data) ->
+        chai.expect(data).to.be.ok
+        done()
 
-  callback = (data) ->
-    test.equal data, 'hello, world'
-    test.done()
-  cb.send callback
+      cb.send 'Foo bar'
 
-  ins.send 'hello, world'
+    it 'right callback', (done) ->
+      callback = (data) ->
+        chai.expect(data).to.equal 'hello, world'
+        done()
+      cb.send callback
+
+      ins.send 'hello, world'

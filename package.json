@@ -6,7 +6,7 @@
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
   },
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Kenneth Kan",
       "email": "kenhkan@gmail.com"
@@ -27,7 +27,8 @@
     }
   ],
   "dependencies": {
-    "noflo": "~0.3.3"
+    "noflo": "~0.3.3",
+    "underscore": "~1.5.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
