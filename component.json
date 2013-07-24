@@ -1,0 +1,24 @@
+{
+  "name": "core",
+  "description": "noflo Essentials",
+  "author": "Kenneth Kan <kenhkan@gmail.com>",
+  "repo": "kenhkan/core",
+  "version": "0.1.0",
+  "keywords": [
+  ],
+  "dependencies": {
+    "bergie/noflo": "*"
+  },
+  "scripts": [
+    "components/Split.coffee",
+    "index.js"
+  ],
+  "json": [
+    "component.json"
+  ],
+  "noflo": {
+    "components": {
+      "Split": "components/Split.coffee"
+    }
+  }
+}
