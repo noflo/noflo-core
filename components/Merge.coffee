@@ -3,15 +3,15 @@ if typeof process is 'object' and process.title is 'node'
 else
   noflo = require '../lib/NoFlo'
 
-class Split extends noflo.Component
-  description: "This component receives data on a single input port and sends
-the same data out to all connected output ports"
+class Merge extends noflo.Component
+  description: "This component receives data on multiple input ports
+  and sends the same data out to the connected output port"
 
   constructor: ->
     @inPorts =
-      in: new noflo.Port 'all'
+      in: new noflo.ArrayPort()
     @outPorts =
-      out: new noflo.ArrayPort 'all'
+      out: new noflo.Port()
 
     @inPorts.in.on "connect", =>
       @outPorts.out.connect()
@@ -22,7 +22,10 @@ the same data out to all connected output ports"
     @inPorts.in.on "endgroup", =>
       @outPorts.out.endGroup()
     @inPorts.in.on "disconnect", =>
+      # Check that all ports have disconnected before emitting
+      for socket in @inPorts.in.sockets
+        return if socket.connected
       @outPorts.out.disconnect()
 
 exports.getComponent = ->
-  new Split
+  new Merge
