@@ -18,6 +18,14 @@
   ],
   "noflo": {
     "components": {
+      "Callback": "components/Callback.coffee",
+      "Drop": "components/Drop.coffee",
+      "Group": "components/Group.coffee",
+      "Kick": "components/Kick.coffee",
+      "Merge": "components/Merge.coffee",
+      "Output": "components/Output.coffee",
+      "Repeat": "components/Repeat.coffee",
+      "RepeatAsync": "components/RepeatAsync.coffee",
       "Split": "components/Split.coffee"
     }
   }
