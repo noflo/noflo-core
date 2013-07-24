@@ -6,6 +6,12 @@
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
   },
+  "maintainers": [
+    {
+      "name": "Kenneth Kan",
+      "email": "kenhkan@gmail.com"
+    }
+  ],
   "contributors": [
     {
       "name": "Kenneth Kan",
