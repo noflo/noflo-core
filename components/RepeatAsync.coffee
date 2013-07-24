@@ -1,5 +1,10 @@
-noflo = require "../../lib/NoFlo"
-util = require "util"
+noflo = require 'noflo'
+
+if typeof process is 'object' and process.title is 'node'
+  util = require 'util'
+else
+  util =
+    inspect: (data) -> data
 
 class RepeatAsync extends noflo.Component
 
@@ -15,10 +20,10 @@ class RepeatAsync extends noflo.Component
       out: new noflo.Port()
 
     # Forward on next tick
-    @inPorts.in.on "begingroup", (group) =>
+    @inPorts.in.on 'begingroup', (group) =>
       @groups.push(group)
 
-    @inPorts.in.on "data", (data) =>
+    @inPorts.in.on 'data', (data) =>
       groups = @groups
 
       later = () =>
@@ -34,9 +39,7 @@ class RepeatAsync extends noflo.Component
 
       setTimeout(later, 0)
 
-    @inPorts.in.on "disconnect", () =>
+    @inPorts.in.on 'disconnect', () =>
       @groups = []
-
-
 
 exports.getComponent = () -> new RepeatAsync

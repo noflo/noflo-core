@@ -1,12 +1,9 @@
-if typeof process is 'object' and process.title is 'node'
-  noflo = require "../../lib/NoFlo"
-else
-  noflo = require '../lib/NoFlo'
+noflo = require 'noflo'
 
 class Kick extends noflo.Component
-  description: "This component generates a single packet and sends
-  it to the output port. Mostly usable for debugging, but can also
-  be useful for starting up networks."
+  description: 'This component generates a single packet and sends it to
+  the output port. Mostly usable for debugging, but can also be useful
+  for starting up networks.'
 
   constructor: ->
     @data =

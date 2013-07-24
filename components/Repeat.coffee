@@ -1,7 +1,4 @@
-if typeof process is 'object' and process.title is 'node'
-  noflo = require "../../lib/NoFlo"
-else
-  noflo = require '../lib/NoFlo'
+noflo = require 'noflo'
 
 class Repeat extends noflo.Component
 
@@ -11,15 +8,15 @@ class Repeat extends noflo.Component
     @outPorts =
       out: new noflo.Port()
 
-    @inPorts.in.on "connect", =>
+    @inPorts.in.on 'connect', =>
       @outPorts.out.connect()
-    @inPorts.in.on "begingroup", (group) =>
+    @inPorts.in.on 'begingroup', (group) =>
       @outPorts.out.beginGroup group
-    @inPorts.in.on "data", (data) =>
+    @inPorts.in.on 'data', (data) =>
       @outPorts.out.send data
-    @inPorts.in.on "endgroup", =>
+    @inPorts.in.on 'endgroup', =>
       @outPorts.out.endGroup()
-    @inPorts.in.on "disconnect", =>
+    @inPorts.in.on 'disconnect', =>
       @outPorts.out.disconnect()
 
 exports.getComponent = -> new Repeat()

@@ -1,15 +1,15 @@
+noflo = require 'noflo'
+
 if typeof process is 'object' and process.title is 'node'
-  noflo = require "../../lib/NoFlo"
-  util = require "util"
+  util = require 'util'
 else
-  noflo = require '../lib/NoFlo'
   util =
     inspect: (data) -> data
 
 class Output extends noflo.Component
 
-  description: "This component receives input on a single inport, and
-    sends the data items directly to console.log"
+  description: 'This component receives input on a single inport, and
+    sends the data items directly to console.log'
 
   constructor: ->
     @options =
@@ -24,18 +24,18 @@ class Output extends noflo.Component
     @outPorts =
       out: new noflo.Port
 
-    @inPorts.in.on "data", (data) =>
+    @inPorts.in.on 'data', (data) =>
       @log data
       @outPorts.out.send data if @outPorts.out.isAttached()
 
-    @inPorts.in.on "disconnect", =>
+    @inPorts.in.on 'disconnect', =>
       @outPorts.out.disconnect() if @outPorts.out.isAttached()
 
-    @inPorts.options.on "data", (data) =>
+    @inPorts.options.on 'data', (data) =>
       @setOptions data
 
   setOptions: (options) ->
-    throw new Error "Options is not an object" unless typeof options is "object"
+    throw new Error 'Options is not an object' unless typeof options is 'object'
     for own key, value of options
       @options[key] = value
 
@@ -43,5 +43,4 @@ class Output extends noflo.Component
     console.log util.inspect data,
       @options.showHidden, @options.depth, @options.colors
 
-exports.getComponent = ->
-  new Output()
+exports.getComponent = -> new Output()

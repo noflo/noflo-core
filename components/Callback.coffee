@@ -1,15 +1,11 @@
-# This component calls a given callback function for each IP it receives.
-# The Callback component is typically used to connect NoFlo with external
-# Node.js code.
-
-if typeof process is 'object' and process.title is 'node'
-  noflo = require "../../lib/NoFlo"
-else
-  noflo = require '../lib/NoFlo'
+noflo = require 'noflo'
 {_} = require 'underscore'
 
 class Callback extends noflo.Component
-  description: 'Call a given function with each IP received'
+  description: 'This component calls a given callback function for each
+  IP it receives.  The Callback component is typically used to connect
+  NoFlo with external Node.js code.'
+
   constructor: ->
     @callback = null
 
@@ -30,7 +26,7 @@ class Callback extends noflo.Component
       @callback = data
 
     # Call the callback when receiving data
-    @inPorts.in.on "data", (data) =>
+    @inPorts.in.on 'data', (data) =>
       unless @callback
         @error 'No callback provided'
         return
