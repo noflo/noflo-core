@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "noflo-core",
   "description": "noflo Essentials",
   "version": "0.1.0",
   "author": {
@@ -18,12 +18,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/kenhkan/core.git"
+    "url": "git://github.com/noflo/noflo-core.git"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "undefined/blob/master/LICENSE-MIT"
+      "url": "https://github.com/noflo/noflo-core/blob/master/LICENSE-MIT"
     }
   ],
   "dependencies": {

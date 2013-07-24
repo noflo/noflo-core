@@ -1,15 +1,36 @@
 {
-  "name": "core",
+  "name": "noflo-core",
   "description": "noflo Essentials",
-  "author": "Kenneth Kan <kenhkan@gmail.com>",
-  "repo": "kenhkan/core",
+  "repo": "noflo/noflo-core",
   "version": "0.1.0",
+  "author": {
+    "name": "Henri Bergius",
+    "email": "henri.bergius@iki.fi"
+  },
+  "contributors": [
+    {
+      "name": "Kenneth Kan",
+      "email": "kenhkan@gmail.com"
+    },
+    {
+      "name": "Ryan Shaw",
+      "email": "ryanshaw@unc.edu"
+    }
+  ],
   "keywords": [
   ],
   "dependencies": {
     "bergie/noflo": "*"
   },
   "scripts": [
+    "components/Callback.coffee",
+    "components/Drop.coffee",
+    "components/Group.coffee",
+    "components/Kick.coffee",
+    "components/Merge.coffee",
+    "components/Output.coffee",
+    "components/Repeat.coffee",
+    "components/RepeatAsync.coffee",
     "components/Split.coffee",
     "index.js"
   ],
