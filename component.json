@@ -23,7 +23,6 @@
     "bergie/noflo": "*"
   },
   "scripts": [
-    "components/Callback.coffee",
     "components/Drop.coffee",
     "components/Group.coffee",
     "components/Kick.coffee",
@@ -39,7 +38,6 @@
   ],
   "noflo": {
     "components": {
-      "Callback": "components/Callback.coffee",
       "Drop": "components/Drop.coffee",
       "Group": "components/Group.coffee",
       "Kick": "components/Kick.coffee",
