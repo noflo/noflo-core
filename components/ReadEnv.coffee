@@ -10,8 +10,11 @@ class ReadEnv extends noflo.Component
 
     @inPorts.key.on 'data', (data) =>
       if process.env[data] isnt undefined
-        return @outPorts.out.send process.env[data]
+        @outPorts.out.send process.env[data]
+        @outPorts.out.disconnect()
+        return
       if @outPorts.error.isAttached()
         @outPorts.error.send "No environment variable #{data} set"
+        @outPorts.error.disconnect()
 
 exports.getComponent = -> new ReadEnv
