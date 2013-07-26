@@ -66,5 +66,8 @@
       "RepeatAsync": "components/RepeatAsync.coffee",
       "Split": "components/Split.coffee"
     }
+  },
+  "scripts": {
+    "test": "grunt test"
   }
 }

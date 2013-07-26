@@ -13,11 +13,12 @@
   <body>
     <div id="mocha"></div>
     <div id="fixtures"></div>
-    <script src="../browser/core.js"></script>
+    <script src="../browser/noflo-core.js"></script>
     <script src="http://chaijs.com/chai.js"></script>
     <script src="../node_modules/mocha/mocha.js"></script>
     <script>mocha.setup('bdd');</script>
-    <script src="./Split.js"></script>
+    <script src="./Callback.js"></script>
+    <script src="./Kick.js"></script>
     <script>
       if (window.mochaPhantomJS) {
         mochaPhantomJS.run();

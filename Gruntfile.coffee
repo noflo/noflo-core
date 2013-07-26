@@ -20,7 +20,7 @@ module.exports = ->
         options:
           action: 'install'
     component_build:
-      'core':
+      'noflo-core':
         output: './browser/'
         config: './component.json'
         scripts: true
@@ -35,8 +35,8 @@ module.exports = ->
     # https://github.com/anthonyshort/component-coffee/issues/3
     combine:
       browser:
-        input: 'browser/core.js'
-        output: 'browser/core.js'
+        input: 'browser/noflo-core.js'
+        output: 'browser/noflo-core.js'
         tokens: [
           token: '.coffee'
           string: '.js'
@@ -48,7 +48,7 @@ module.exports = ->
         report: 'min'
       noflo:
         files:
-          './browser/core.min.js': ['./browser/core.js']
+          './browser/noflo-core.min.js': ['./browser/noflo-core.js']
 
     # Automated recompilation and testing when developing
     watch:
