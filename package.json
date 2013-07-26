@@ -1,6 +1,6 @@
 {
   "name": "noflo-core",
-  "description": "noflo Essentials",
+  "description": "NoFlo Essentials",
   "version": "0.1.0",
   "author": {
     "name": "Henri Bergius",
@@ -61,6 +61,7 @@
       "Kick": "components/Kick.coffee",
       "Merge": "components/Merge.coffee",
       "Output": "components/Output.coffee",
+      "ReadEnv": "components/ReadEnv.coffee",
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
       "Split": "components/Split.coffee"

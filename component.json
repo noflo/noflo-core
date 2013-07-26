@@ -1,6 +1,6 @@
 {
   "name": "noflo-core",
-  "description": "noflo Essentials",
+  "description": "NoFlo Essentials",
   "repo": "noflo/noflo-core",
   "version": "0.1.0",
   "author": {
@@ -20,7 +20,7 @@
   "keywords": [
   ],
   "dependencies": {
-    "bergie/noflo": "*"
+    "noflo/noflo": "*"
   },
   "scripts": [
     "components/Drop.coffee",
