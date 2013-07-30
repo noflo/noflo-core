@@ -1,7 +1,7 @@
 noflo = require 'noflo'
 owl = require 'owl-deepcopy'
 
-class DeepCopy extends noflo.Component
+class Copy extends noflo.Component
   description: 'deep (i.e. recursively) copy an object'
 
   constructor: ->
@@ -22,4 +22,4 @@ class DeepCopy extends noflo.Component
     @inPorts.in.on 'disconnect', =>
       @outPorts.out.disconnect()
 
-exports.getComponent = -> new DeepCopy
+exports.getComponent = -> new Copy

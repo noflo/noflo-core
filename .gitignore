@@ -1,5 +1,7 @@
-/node_modules/
-/browser/
-/components/*/
-/spec/*.js
-/spec/*.xml
+.DS_Store
+*.swp
+*.js
+node_modules/
+npm-debug.log
+components/*/
+spec/*.xml

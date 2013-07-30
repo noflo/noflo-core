@@ -1,6 +1,6 @@
 {
   "name": "noflo-core",
-  "description": "noflo Essentials",
+  "description": "NoFlo Essentials",
   "version": "0.1.0",
   "author": {
     "name": "Henri Bergius",
@@ -38,6 +38,8 @@
     "owl-deepcopy": "0.0.2"
   },
   "devDependencies": {
+    "coffeelint": "*",
+    "coffee-script": "1.6.x",
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.6.6",
     "grunt-coffeelint": "~0.0.6",
@@ -65,5 +67,9 @@
       "RepeatAsync": "components/RepeatAsync.coffee",
       "Split": "components/Split.coffee"
     }
+  },
+  "scripts": {
+    "pretest": "./node_modules/.bin/coffeelint -r components/*.coffee spec/*.coffee",
+    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script spec/*.coffee"
   }
 }
