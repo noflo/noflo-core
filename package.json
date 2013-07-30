@@ -38,8 +38,6 @@
     "owl-deepcopy": "0.0.2"
   },
   "devDependencies": {
-    "coffeelint": "*",
-    "coffee-script": "1.6.x",
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.6.6",
     "grunt-coffeelint": "~0.0.6",
@@ -63,13 +61,13 @@
       "Kick": "components/Kick.coffee",
       "Merge": "components/Merge.coffee",
       "Output": "components/Output.coffee",
+      "ReadEnv": "components/ReadEnv.coffee",
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
       "Split": "components/Split.coffee"
     }
   },
   "scripts": {
-    "pretest": "./node_modules/.bin/coffeelint -r components/*.coffee spec/*.coffee",
-    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script spec/*.coffee"
+    "test": "grunt test"
   }
 }

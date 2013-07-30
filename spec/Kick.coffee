@@ -4,7 +4,7 @@ if typeof process is 'object' and process.title is 'node'
   chai = require 'chai' unless chai
   Kick = require '../components/Kick.coffee'
 else
-  Kick = require 'core/components/Kick.js'
+  Kick = require 'noflo-core/components/Kick.js'
 
 describe 'Kick component', ->
   c = null

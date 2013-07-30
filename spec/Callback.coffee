@@ -4,7 +4,7 @@ if typeof process is 'object' and process.title is 'node'
   chai = require 'chai' unless chai
   Callback = require '../components/Callback.coffee'
 else
-  Callback = require 'core/components/Callback.js'
+  Callback = require 'noflo-core/components/Callback.js'
 
 describe 'Callback component', ->
   c = null
