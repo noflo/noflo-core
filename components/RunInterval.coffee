@@ -11,6 +11,7 @@ class RunInterval extends noflo.Component
       out: new noflo.Port 'bang'
 
     @inPorts.interval.on 'data', (interval) =>
+      clearInterval @interval if @interval
       @outPorts.out.connect()
       @interval = setInterval =>
         @outPorts.out.send true
