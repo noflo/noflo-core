@@ -33,7 +33,7 @@
     }
   ],
   "dependencies": {
-    "noflo": "~0.3.3",
+    "noflo": "~0.4.0",
     "underscore": "~1.5.1",
     "owl-deepcopy": "0.0.2"
   },
