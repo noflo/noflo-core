@@ -1,6 +1,6 @@
 noflo = require 'noflo'
 
-if typeof process is 'object' and process.title is 'node'
+unless noflo.isBrowser()
   chai = require 'chai' unless chai
   Callback = require '../components/Callback.coffee'
 else
