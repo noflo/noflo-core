@@ -33,6 +33,7 @@
     "components/Repeat.coffee",
     "components/RepeatAsync.coffee",
     "components/Split.coffee",
+    "components/RunInterval.coffee",
     "index.js"
   ],
   "json": [
@@ -48,7 +49,8 @@
       "Output": "components/Output.coffee",
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
-      "Split": "components/Split.coffee"
+      "Split": "components/Split.coffee",
+      "RunInterval": "components/RunInterval.coffee"
     }
   }
 }

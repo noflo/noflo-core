@@ -64,7 +64,8 @@
       "ReadEnv": "components/ReadEnv.coffee",
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
-      "Split": "components/Split.coffee"
+      "Split": "components/Split.coffee",
+      "RunInterval": "components/RunInterval.coffee"
     }
   },
   "scripts": {
