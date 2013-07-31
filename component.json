@@ -25,6 +25,7 @@
   },
   "scripts": [
     "components/Callback.coffee",
+    "components/Copy.coffee",
     "components/Drop.coffee",
     "components/Group.coffee",
     "components/Kick.coffee",
