@@ -1,6 +1,7 @@
 .DS_Store
 *.swp
 *.js
+!index.js
 node_modules/
 npm-debug.log
 components/*/
