@@ -22,4 +22,7 @@ class RunInterval extends noflo.Component
       clearInterval @interval
       @outPorts.out.disconnect()
 
+  shutdown: ->
+    clearInterval @interval if @interval
+
 exports.getComponent = -> new RunInterval
