@@ -32,7 +32,8 @@ class MakeFunction extends noflo.Component
       if @f
         try
           @f(true)
-          @outPorts.function.send @f
+          if @outPorts.function.isAttached()
+            @outPorts.function.send @f
         catch error
           @error 'Error evaluating function: ' + data
 
