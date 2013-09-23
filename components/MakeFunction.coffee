@@ -2,9 +2,9 @@ noflo = require 'noflo'
 
 class MakeFunction extends noflo.Component
   description: 'Evaluates a function each time data hits the "in" port
-  and sends the return value to "out". Within the function "data" will
+  and sends the return value to "out". Within the function "x" will
   be the variable from the in port. For example, to make a ^2 function
-  input "return data*data;" to the function port.'
+  input "return x*x;" to the function port.'
 
   constructor: ->
     @f = null
@@ -17,18 +17,25 @@ class MakeFunction extends noflo.Component
     # The optional error port is used in case of wrong setups
     @outPorts =
       out: new noflo.Port 'all'
+      function: new noflo.Port 'function'
       error: new noflo.Port 'object'
 
     # Set callback
     @inPorts.function.on 'data', (data) =>
-      try
-        @f = Function("data", data)
-      catch error
-        @error 'Error creating function: ' + data
-      try
-        @f(true)
-      catch error
-        @error 'Error evaluating function: ' + data
+      if typeof data is "function"
+        @f = data
+      else
+        try
+          @f = Function("x", data)
+        catch error
+          @error 'Error creating function: ' + data
+      if @f
+        try
+          @f(true)
+          @outPorts.function.send @f
+        catch error
+          @error 'Error evaluating function: ' + data
+
 
     # Evaluate the function when receiving data
     @inPorts.in.on 'data', (data) =>

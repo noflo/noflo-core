@@ -11,6 +11,7 @@ describe 'MakeFunction component', ->
   ins = null
   func = null
   out = null
+  outfunc = null
   err = null
 
   beforeEach ->
@@ -18,10 +19,12 @@ describe 'MakeFunction component', ->
     c.inPorts.in.attach noflo.internalSocket.createSocket()
     c.inPorts.function.attach noflo.internalSocket.createSocket()
     c.outPorts.out.attach noflo.internalSocket.createSocket()
+    c.outPorts.function.attach noflo.internalSocket.createSocket()
     c.outPorts.error.attach noflo.internalSocket.createSocket()
     ins = c.inPorts.in
     func = c.inPorts.function
     out = c.outPorts.out
+    outfunc = c.outPorts.function
     err = c.outPorts.error
 
   describe 'when instantiated', ->
@@ -48,16 +51,29 @@ describe 'MakeFunction component', ->
 
       func.send 'Foo bar'
 
+    it 'output function', (done) ->
+      outfunc.on 'data', (data) ->
+        chai.expect(typeof data).to.equal "function"
+        done()
+      func.send 'return x*x;'
+
     it 'square function', (done) ->
-      func.send 'return data*data;'
+      func.send 'return x*x;'
       out.on 'data', (data) ->
         chai.expect(data).to.equal 81
         done()
       ins.send 9
 
     it 'concat function', (done) ->
-      func.send 'return data+data;'
+      func.send 'return x+x;'
       out.on 'data', (data) ->
         chai.expect(data).to.equal "99"
         done()
       ins.send "9"
+
+    it 'pass function', (done) ->
+      func.send( (x) -> return x+"!" )
+      out.on 'data', (data) ->
+        chai.expect(data).to.equal "hello function!"
+        done()
+      ins.send "hello function"
