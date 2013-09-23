@@ -1,0 +1,47 @@
+noflo = require 'noflo'
+
+class MakeFunction extends noflo.Component
+  description: 'Evaluates a function each time data hits the "in" port
+  and sends the return value to "out". Within the function "data" will
+  be the variable from the in port. For example, to make a ^2 function
+  input "return data*data;" to the function port.'
+
+  constructor: ->
+    @f = null
+
+    # We have two input ports. One for the callback to call, and one
+    # for IPs to call it with
+    @inPorts =
+      in: new noflo.Port 'all'
+      function: new noflo.Port 'string'
+    # The optional error port is used in case of wrong setups
+    @outPorts =
+      out: new noflo.Port 'all'
+      error: new noflo.Port 'object'
+
+    # Set callback
+    @inPorts.function.on 'data', (data) =>
+      try
+        @f = Function("data", data)
+      catch error
+        @error 'Error creating function: ' + data
+      try
+        @f(true)
+      catch error
+        @error 'Error evaluating function: ' + data
+
+    # Evaluate the function when receiving data
+    @inPorts.in.on 'data', (data) =>
+      unless @f
+        @error 'No function defined'
+        return
+      @outPorts.out.send @f data
+
+  error: (msg) ->
+    if @outPorts.error.isAttached()
+      @outPorts.error.send new Error msg
+      @outPorts.error.disconnect()
+      return
+    throw new Error msg
+
+exports.getComponent = -> new MakeFunction
