@@ -25,6 +25,7 @@
   },
   "scripts": [
     "components/Callback.coffee",
+    "components/DisconnectAfterPacket.coffee",
     "components/Drop.coffee",
     "components/Group.coffee",
     "components/Kick.coffee",
@@ -43,6 +44,7 @@
   "noflo": {
     "components": {
       "Callback": "components/Callback.coffee",
+      "DisconnectAfterPacket": "components/DisconnectAfterPacket.coffee",
       "Drop": "components/Drop.coffee",
       "Group": "components/Group.coffee",
       "Kick": "components/Kick.coffee",
