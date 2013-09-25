@@ -1,6 +1,7 @@
 noflo = require 'noflo'
 
 class DisconnectAfterPacket extends noflo.Component
+  description: 'Forwards any packets, but also sends a disconnect after each of them'
   constructor: ->
     @inPorts =
       in: new noflo.Port()

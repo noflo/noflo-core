@@ -7,7 +7,6 @@ else
     inspect: (data) -> data
 
 class Output extends noflo.Component
-
   description: 'This component receives input on a single inport, and
     sends the data items directly to console.log'
 
