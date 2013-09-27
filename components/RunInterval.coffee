@@ -13,7 +13,7 @@ class RunInterval extends noflo.Component
       out: new noflo.Port 'bang'
 
     @inPorts.interval.on 'data', (interval) =>
-      @interval = data
+      @interval = interval
       # Restart if currently running
       if @timer?
         clearInterval @timer
