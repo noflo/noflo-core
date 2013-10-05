@@ -11,10 +11,7 @@ class Output extends noflo.Component
     sends the data items directly to console.log'
 
   constructor: ->
-    @options =
-      showHidden: false
-      depth: 2
-      colors: false
+    @options = null
 
     @inPorts =
       in: new noflo.ArrayPort
@@ -35,11 +32,15 @@ class Output extends noflo.Component
 
   setOptions: (options) ->
     throw new Error 'Options is not an object' unless typeof options is 'object'
+    @options ?= {}
     for own key, value of options
       @options[key] = value
 
   log: (data) ->
-    console.log util.inspect data,
-      @options.showHidden, @options.depth, @options.colors
+    if @options?
+      console.log util.inspect data,
+        @options.showHidden, @options.depth, @options.colors
+    else
+      console.log data
 
 exports.getComponent = -> new Output()
