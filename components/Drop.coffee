@@ -6,7 +6,7 @@ class Drop extends noflo.Component
 
   constructor: ->
     @inPorts =
-      in: new noflo.Port
+      in: new noflo.Port 'all'
 
     @outPorts = {}
 

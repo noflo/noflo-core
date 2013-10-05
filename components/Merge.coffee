@@ -6,9 +6,9 @@ class Merge extends noflo.Component
 
   constructor: ->
     @inPorts =
-      in: new noflo.ArrayPort()
+      in: new noflo.ArrayPort 'all'
     @outPorts =
-      out: new noflo.Port()
+      out: new noflo.Port 'all'
 
     @inPorts.in.on 'connect', =>
       @outPorts.out.connect()

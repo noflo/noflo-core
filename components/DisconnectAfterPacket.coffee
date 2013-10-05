@@ -4,9 +4,9 @@ class DisconnectAfterPacket extends noflo.Component
   description: 'Forwards any packets, but also sends a disconnect after each of them'
   constructor: ->
     @inPorts =
-      in: new noflo.Port()
+      in: new noflo.Port 'all'
     @outPorts =
-      out: new noflo.Port()
+      out: new noflo.Port 'all'
 
     @inPorts.in.on 'begingroup', (group) =>
       @outPorts.out.beginGroup group

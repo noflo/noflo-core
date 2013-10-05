@@ -14,11 +14,11 @@ class Output extends noflo.Component
     @options = null
 
     @inPorts =
-      in: new noflo.ArrayPort
-      options: new noflo.Port
+      in: new noflo.ArrayPort 'all'
+      options: new noflo.Port 'object'
 
     @outPorts =
-      out: new noflo.Port
+      out: new noflo.Port 'all'
 
     @inPorts.in.on 'data', (data) =>
       @log data

@@ -1,11 +1,5 @@
 noflo = require 'noflo'
 
-unless noflo.isBrowser()
-  util = require 'util'
-else
-  util =
-    inspect: (data) -> data
-
 class RepeatAsync extends noflo.Component
 
   description: "Like 'Repeat', except repeat on next tick"
@@ -15,9 +9,9 @@ class RepeatAsync extends noflo.Component
 
     # Ports
     @inPorts =
-      in: new noflo.Port()
+      in: new noflo.Port 'all'
     @outPorts =
-      out: new noflo.Port()
+      out: new noflo.Port 'all'
 
     # Forward on next tick
     @inPorts.in.on 'begingroup', (group) =>

@@ -8,11 +8,11 @@ class Group extends noflo.Component
     @threshold = null # How many groups to be saved?
 
     @inPorts =
-      in: new noflo.ArrayPort
-      group: new noflo.ArrayPort
-      threshold: new noflo.Port
+      in: new noflo.ArrayPort 'all'
+      group: new noflo.ArrayPort 'string'
+      threshold: new noflo.Port 'integer'
     @outPorts =
-      out: new noflo.Port
+      out: new noflo.Port 'all'
 
     @inPorts.in.on 'connect', () =>
       @outPorts.out.beginGroup group for group in @newGroups
