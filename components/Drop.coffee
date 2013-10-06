@@ -3,10 +3,11 @@ noflo = require 'noflo'
 class Drop extends noflo.Component
   description: 'This component drops every packet it receives with no
   action'
+  icon: 'trash'
 
   constructor: ->
     @inPorts =
-      in: new noflo.Port 'all'
+      in: new noflo.ArrayPort 'all'
 
     @outPorts = {}
 

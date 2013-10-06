@@ -3,6 +3,7 @@ noflo = require 'noflo'
 class Merge extends noflo.Component
   description: 'This component receives data on multiple input ports and
     sends the same data out to the connected output port'
+  icon: 'resize-small'
 
   constructor: ->
     @inPorts =

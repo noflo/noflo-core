@@ -3,6 +3,7 @@ owl = require 'owl-deepcopy'
 
 class Copy extends noflo.Component
   description: 'deep (i.e. recursively) copy an object'
+  icon: 'copy'
 
   constructor: ->
     @inPorts =

@@ -3,6 +3,7 @@ noflo = require 'noflo'
 class RepeatAsync extends noflo.Component
 
   description: "Like 'Repeat', except repeat on next tick"
+  icon: 'step-forward'
 
   constructor: ->
     @groups = []

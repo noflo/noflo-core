@@ -2,6 +2,7 @@ noflo = require 'noflo'
 
 class ReadEnv extends noflo.Component
   description: 'Reads an environment variable'
+  icon: 'dollar'
   constructor: ->
     @inPorts =
       key: new noflo.Port 'string'

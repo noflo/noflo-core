@@ -5,6 +5,7 @@ class Callback extends noflo.Component
   description: 'This component calls a given callback function for each
   IP it receives.  The Callback component is typically used to connect
   NoFlo with external Node.js code.'
+  icon: 'signout'
 
   constructor: ->
     @callback = null

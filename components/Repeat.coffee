@@ -3,6 +3,7 @@ noflo = require 'noflo'
 class Repeat extends noflo.Component
 
   description: 'Forwards packets and metadata in the same way it receives them'
+  icon: 'forward'
 
   constructor: ->
     @inPorts =

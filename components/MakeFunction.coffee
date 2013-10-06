@@ -5,6 +5,7 @@ class MakeFunction extends noflo.Component
   and sends the return value to "out". Within the function "x" will
   be the variable from the in port. For example, to make a ^2 function
   input "return x*x;" to the function port.'
+  icon: 'code'
 
   constructor: ->
     @f = null

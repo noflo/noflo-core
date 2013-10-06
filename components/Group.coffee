@@ -2,6 +2,7 @@ noflo = require 'noflo'
 
 class Group extends noflo.Component
   description: 'Adds a set of groups around the packets received at each connection'
+  icon: 'tags'
   constructor: ->
     @groups = []
     @newGroups = []
