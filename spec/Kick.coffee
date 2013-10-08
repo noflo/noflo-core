@@ -59,3 +59,26 @@ describe 'Kick component', ->
         foo: 'bar'
       ins.send 'foo'
       ins.disconnect()
+
+    it 'test kick with data and groups', (done) ->
+      expectedGroups = [
+        'foo'
+        'bar'
+      ]
+      receivedGroups = []
+      out.on 'begingroup', (group) =>
+        receivedGroups.push group
+      out.once "data", (data) ->
+        chai.expect(data.foo).to.be.ok
+        chai.expect(data.foo).to.be.equal 'bar'
+        chai.expect(receivedGroups).to.eql expectedGroups
+        done()
+
+      data.send
+        foo: 'bar'
+      for grp in expectedGroups
+        ins.beginGroup grp
+      ins.send 'foo'
+      for grp in expectedGroups
+        ins.endGroup grp
+      ins.disconnect()
