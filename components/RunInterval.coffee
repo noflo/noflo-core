@@ -2,7 +2,7 @@ noflo = require 'noflo'
 
 class RunInterval extends noflo.Component
   description: 'Send a packet at the given interval'
-  icon: 'clock'
+  icon: 'clock-o'
   constructor: ->
     @timer = null
     @interval = null

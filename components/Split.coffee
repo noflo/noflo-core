@@ -3,7 +3,7 @@ noflo = require 'noflo'
 class Split extends noflo.Component
   description: 'This component receives data on a single input port and
     sends the same data out to all connected output ports'
-  icon: 'resize-full'
+  icon: 'expand'
 
   constructor: ->
     @inPorts =
