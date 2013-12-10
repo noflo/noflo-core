@@ -30,13 +30,8 @@ class MakeFunction extends noflo.Component
           @f = Function("x", data)
         catch error
           @error 'Error creating function: ' + data
-      if @f
-        try
-          @f(true)
-          if @outPorts.function.isAttached()
-            @outPorts.function.send @f
-        catch error
-          @error 'Error evaluating function: ' + data
+      if @f and @outPorts.function.isAttached()
+          @outPorts.function.send @f
 
 
     # Evaluate the function when receiving data
@@ -44,7 +39,10 @@ class MakeFunction extends noflo.Component
       unless @f
         @error 'No function defined'
         return
-      @outPorts.out.send @f data
+      try
+        @outPorts.out.send @f data
+      catch error
+        @error 'Error evaluating function.'
 
   error: (msg) ->
     if @outPorts.error.isAttached()
