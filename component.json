@@ -17,8 +17,7 @@
       "email": "ryanshaw@unc.edu"
     }
   ],
-  "keywords": [
-  ],
+  "keywords": [],
   "dependencies": {
     "noflo/noflo": "*",
     "component/underscore": "*"
@@ -35,6 +34,7 @@
     "components/RepeatAsync.coffee",
     "components/Split.coffee",
     "components/RunInterval.coffee",
+    "components/RunTimeout.coffee",
     "components/MakeFunction.coffee",
     "index.js"
   ],
@@ -54,6 +54,7 @@
       "RepeatAsync": "components/RepeatAsync.coffee",
       "Split": "components/Split.coffee",
       "RunInterval": "components/RunInterval.coffee",
+      "RunTimeout": "components/RunTimeout.coffee",
       "MakeFunction": "components/MakeFunction.coffee"
     }
   }
