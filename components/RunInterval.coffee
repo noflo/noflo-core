@@ -18,22 +18,24 @@ class RunInterval extends noflo.Component
       # Restart if currently running
       if @timer?
         clearInterval @timer
-        @timer = setInterval =>
-          @outPorts.out.send true
-        , @interval
+        do @start
 
     @inPorts.start.on 'data', =>
       clearInterval @timer if @timer?
       @outPorts.out.connect()
-      @timer = setInterval =>
-        @outPorts.out.send true
-      , @interval
+      do @start
 
     @inPorts.stop.on 'data', =>
       return unless @timer
       clearInterval @timer
       @timer = null
       @outPorts.out.disconnect()
+
+  start: ->
+    out = @outPorts.out
+    @timer = setInterval ->
+      out.send true
+    , @interval
 
   shutdown: ->
     clearInterval @timer if @timer?
