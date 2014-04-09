@@ -20,6 +20,7 @@ class RunTimeout extends noflo.Component
         clearTimeout @timer
         @timer = setTimeout =>
           @outPorts.out.send true
+          @outPorts.out.disconnect()
         , @time
 
     @inPorts.start.on 'data', =>

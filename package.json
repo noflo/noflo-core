@@ -67,6 +67,7 @@
       "RepeatAsync": "components/RepeatAsync.coffee",
       "Split": "components/Split.coffee",
       "RunInterval": "components/RunInterval.coffee",
+      "RunTimeout": "components/RunTimeout.coffee",
       "MakeFunction": "components/MakeFunction.coffee"
     }
   },
