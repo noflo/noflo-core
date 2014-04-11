@@ -1,7 +1,7 @@
 {
   "name": "noflo-core",
   "description": "NoFlo Essentials",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "author": {
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
@@ -66,6 +66,7 @@
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
       "RepeatDelayed": "components/RepeatDelayed.coffee",
+      "SendNext": "components/SendNext.coffee",
       "Split": "components/Split.coffee",
       "RunInterval": "components/RunInterval.coffee",
       "MakeFunction": "components/MakeFunction.coffee"
