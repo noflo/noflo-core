@@ -69,7 +69,8 @@
       "SendNext": "components/SendNext.coffee",
       "Split": "components/Split.coffee",
       "RunInterval": "components/RunInterval.coffee",
-      "MakeFunction": "components/MakeFunction.coffee"
+      "MakeFunction": "components/MakeFunction.coffee",
+      "Copy": "components/Copy.coffee"
     }
   },
   "scripts": {
