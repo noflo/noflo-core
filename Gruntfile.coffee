@@ -38,8 +38,11 @@ module.exports = ->
         input: 'browser/noflo-core.js'
         output: 'browser/noflo-core.js'
         tokens: [
-          token: '.coffee'
-          string: '.js'
+          token: '.coffee"'
+          string: '.js"'
+        ,
+          token: ".coffee'"
+          string: ".js'"
         ]
 
     # JavaScript minification for the browser
