@@ -13,31 +13,31 @@ class RunTimeout extends noflo.Component
     @outPorts =
       out: new noflo.Port 'bang'
 
-    @inPorts.time.on 'data', (time) =>
-      @time = time
-      # Restart if currently running
-      if @timer?
-        clearTimeout @timer
-        @timer = setTimeout =>
-          @outPorts.out.send true
-          @outPorts.out.disconnect()
-        , @time
+    @inPorts.time.on 'data', (@time) =>
+      @startTimer()
 
     @inPorts.start.on 'data', =>
-      clearTimeout @timer if @timer?
-      @outPorts.out.connect()
-      @timer = setTimeout =>
-        @outPorts.out.send true
-        @outPorts.out.disconnect()
-      , @time
+      @startTimer()
 
     @inPorts.clear.on 'data', =>
-      return unless @timer
-      clearTimeout @timer
-      @timer = null
+      @stopTimer() if @timer
+
+  startTimer: ->
+    @stopTimer() if @timer
+    @outPorts.out.connect()
+    @timer = setTimeout =>
+      @outPorts.out.send true
       @outPorts.out.disconnect()
+      @timer = null
+    , @time
+
+  stopTimer: ->
+    return unless @timer
+    clearTimeout @timer
+    @timer = null
+    @outPorts.out.disconnect()
 
   shutdown: ->
-    clearTimeout @timer if @timer?
+    @stopTimer() if @timer
 
 exports.getComponent = -> new RunTimeout
