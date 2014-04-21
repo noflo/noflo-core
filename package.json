@@ -70,6 +70,7 @@
       "Split": "components/Split.coffee",
       "RunInterval": "components/RunInterval.coffee",
       "MakeFunction": "components/MakeFunction.coffee",
+      "RunTimeout": "components/RunTimeout.coffee",
       "Copy": "components/Copy.coffee"
     }
   },
