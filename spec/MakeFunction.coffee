@@ -16,16 +16,16 @@ describe 'MakeFunction component', ->
 
   beforeEach ->
     c = MakeFunction.getComponent()
-    c.inPorts.in.attach noflo.internalSocket.createSocket()
-    c.inPorts.function.attach noflo.internalSocket.createSocket()
-    c.outPorts.out.attach noflo.internalSocket.createSocket()
-    c.outPorts.function.attach noflo.internalSocket.createSocket()
-    c.outPorts.error.attach noflo.internalSocket.createSocket()
-    ins = c.inPorts.in
-    func = c.inPorts.function
-    out = c.outPorts.out
-    outfunc = c.outPorts.function
-    err = c.outPorts.error
+    ins = noflo.internalSocket.createSocket()
+    func = noflo.internalSocket.createSocket()
+    out = noflo.internalSocket.createSocket()
+    outfunc = noflo.internalSocket.createSocket()
+    err = noflo.internalSocket.createSocket()
+    c.inPorts.in.attach ins
+    c.inPorts.function.attach func
+    c.outPorts.out.attach out
+    c.outPorts.function.attach outfunc
+    c.outPorts.error.attach err
 
   describe 'when instantiated', ->
     it 'should have input ports', ->

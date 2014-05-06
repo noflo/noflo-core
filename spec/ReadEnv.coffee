@@ -10,12 +10,12 @@ describe 'ReadEnv component', ->
 
   beforeEach ->
     c = ReadEnv.getComponent()
-    c.inPorts.key.attach noflo.internalSocket.createSocket()
-    c.outPorts.out.attach noflo.internalSocket.createSocket()
-    c.outPorts.error.attach noflo.internalSocket.createSocket()
-    key = c.inPorts.key
-    out = c.outPorts.out
-    err = c.outPorts.error
+    key = noflo.internalSocket.createSocket()
+    out = noflo.internalSocket.createSocket()
+    err = noflo.internalSocket.createSocket()
+    c.inPorts.key.attach key
+    c.outPorts.out.attach out
+    c.outPorts.error.attach err
 
   describe 'when instantiated', ->
     it 'should have input port', ->
