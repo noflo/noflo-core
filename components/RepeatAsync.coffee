@@ -9,10 +9,12 @@ class RepeatAsync extends noflo.Component
     @groups = []
 
     # Ports
-    @inPorts =
-      in: new noflo.Port 'all'
-    @outPorts =
-      out: new noflo.Port 'all'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
 
     # Forward on next tick
     @inPorts.in.on 'begingroup', (group) =>

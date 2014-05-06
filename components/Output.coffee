@@ -14,12 +14,16 @@ class Output extends noflo.Component
   constructor: ->
     @options = null
 
-    @inPorts =
-      in: new noflo.ArrayPort 'all'
-      options: new noflo.Port 'object'
-
-    @outPorts =
-      out: new noflo.Port 'all'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+        description: 'Packet to be printed through console.log'
+      options:
+        datatype: 'object'
+        description: 'Options to be passed to console.log'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
 
     @inPorts.in.on 'data', (data) =>
       @log data

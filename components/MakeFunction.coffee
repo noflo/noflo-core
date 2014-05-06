@@ -12,14 +12,21 @@ class MakeFunction extends noflo.Component
 
     # We have two input ports. One for the callback to call, and one
     # for IPs to call it with
-    @inPorts =
-      in: new noflo.Port 'all'
-      function: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+        description: 'Packet to be processed'
+      function:
+        datatype: 'string'
+        description: 'Function to evaluate'
     # The optional error port is used in case of wrong setups
-    @outPorts =
-      out: new noflo.Port 'all'
-      function: new noflo.Port 'function'
-      error: new noflo.Port 'object'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
+      function:
+        datatype: 'function'
+      error:
+        datatype: 'object'
 
     # Set callback
     @inPorts.function.on 'data', (data) =>

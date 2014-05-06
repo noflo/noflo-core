@@ -6,9 +6,10 @@ class Drop extends noflo.Component
   icon: 'trash-o'
 
   constructor: ->
-    @inPorts =
-      in: new noflo.ArrayPort 'all'
-
-    @outPorts = {}
+    @inPorts = new noflo.InPorts
+      in:
+        datatypes: 'all'
+        description: 'Packet to be dropped'
+    @outPorts = new noflo.OutPorts
 
 exports.getComponent = -> new Drop

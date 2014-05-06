@@ -6,10 +6,13 @@ class Copy extends noflo.Component
   icon: 'copy'
 
   constructor: ->
-    @inPorts =
-      in: new noflo.Port 'all'
-    @outPorts =
-      out: new noflo.Port 'all'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+        description: 'Packet to be copied'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
 
     @inPorts.in.on 'begingroup', (group) =>
       @outPorts.out.beginGroup group

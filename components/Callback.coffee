@@ -12,12 +12,17 @@ class Callback extends noflo.Component
 
     # We have two input ports. One for the callback to call, and one
     # for IPs to call it with
-    @inPorts =
-      in: new noflo.Port 'all'
-      callback: new noflo.Port 'function'
+    @inPorts = new noflo.InPorts
+      in:
+        description: 'Object passed as argument of the callback'
+        datatype: 'all'
+      callback:
+        description: 'Callback to invoke'
+        datatype: 'function'
     # The optional error port is used in case of wrong setups
-    @outPorts =
-      error: new noflo.Port 'object'
+    @outPorts = new noflo.OutPorts
+      error:
+        datatype: 'object'
 
     # Set callback
     @inPorts.callback.on 'data', (data) =>

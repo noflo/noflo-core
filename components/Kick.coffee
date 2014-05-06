@@ -12,12 +12,16 @@ class Kick extends noflo.Component
       group: []
     @groups = []
 
-    @inPorts =
-      in: new noflo.Port 'bang'
-      data: new noflo.Port 'all'
-
-    @outPorts =
-      out: new noflo.ArrayPort 'all'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'bang'
+        description: 'Signal to send the data packet'
+      data:
+        datatype: 'all'
+        description: 'Packet to be sent'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
 
     @inPorts.in.on 'begingroup', (group) =>
       @groups.push group
