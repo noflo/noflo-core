@@ -14,12 +14,12 @@ describe 'Callback component', ->
 
   beforeEach ->
     c = Callback.getComponent()
-    c.inPorts.in.attach noflo.internalSocket.createSocket()
-    c.inPorts.callback.attach noflo.internalSocket.createSocket()
-    c.outPorts.error.attach noflo.internalSocket.createSocket()
-    ins = c.inPorts.in
-    cb = c.inPorts.callback
-    err = c.outPorts.error
+    ins = noflo.internalSocket.createSocket()
+    cb = noflo.internalSocket.createSocket()
+    err = noflo.internalSocket.createSocket()
+    c.inPorts.in.attach ins
+    c.inPorts.callback.attach cb
+    c.outPorts.error.attach err
 
   describe 'when instantiated', ->
     it 'should have input ports', ->

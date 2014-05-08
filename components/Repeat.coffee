@@ -6,10 +6,13 @@ class Repeat extends noflo.Component
   icon: 'forward'
 
   constructor: ->
-    @inPorts =
-      in: new noflo.Port()
-    @outPorts =
-      out: new noflo.Port()
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+        description: 'Packet to be forwarded'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
 
     @inPorts.in.on 'connect', =>
       @outPorts.out.connect()

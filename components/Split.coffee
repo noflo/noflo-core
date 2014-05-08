@@ -6,10 +6,13 @@ class Split extends noflo.Component
   icon: 'expand'
 
   constructor: ->
-    @inPorts =
-      in: new noflo.Port 'all'
-    @outPorts =
-      out: new noflo.ArrayPort 'all'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+        description: 'Packet to be forwarded'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
 
     @inPorts.in.on 'connect', =>
       @outPorts.out.connect()

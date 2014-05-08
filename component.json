@@ -22,6 +22,9 @@
     "noflo/noflo": "*",
     "component/underscore": "*"
   },
+  "remotes": [
+    "https://raw.githubusercontent.com"
+  ],
   "scripts": [
     "components/Callback.coffee",
     "components/DisconnectAfterPacket.coffee",

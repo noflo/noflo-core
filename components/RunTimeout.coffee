@@ -6,12 +6,20 @@ class RunTimeout extends noflo.Component
   constructor: ->
     @timer = null
     @time = null
-    @inPorts =
-      time: new noflo.Port 'number'
-      start: new noflo.Port 'bang'
-      clear: new noflo.Port 'bang'
-    @outPorts =
-      out: new noflo.Port 'bang'
+    @inPorts = new noflo.InPorts
+      time:
+        datatype: 'number'
+        description: 'Time after which a packet will be sent'
+      start:
+        datatype: 'bang'
+        description: 'Start the timeout before sending a packet'
+      clear:
+        datatype: 'bang'
+        description: 'Clear the timeout'
+        required: no
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'bang'
 
     @inPorts.time.on 'data', (@time) =>
       @startTimer()

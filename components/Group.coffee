@@ -8,12 +8,20 @@ class Group extends noflo.Component
     @newGroups = []
     @threshold = null # How many groups to be saved?
 
-    @inPorts =
-      in: new noflo.ArrayPort 'all'
-      group: new noflo.ArrayPort 'string'
-      threshold: new noflo.Port 'integer'
-    @outPorts =
-      out: new noflo.Port 'all'
+    @inPorts = new noflo.InPorts
+      in:
+        datatype: 'all'
+      group:
+        datatype: 'string'
+        description: 'The group to add around forwarded packets'
+      threshold:
+        datatype: 'integer'
+        description: 'Maximum number of groups kept around'
+        required: no
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'all'
+        required: no
 
     @inPorts.in.on 'connect', () =>
       @outPorts.out.beginGroup group for group in @newGroups

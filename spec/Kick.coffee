@@ -14,12 +14,12 @@ describe 'Kick component', ->
 
   beforeEach ->
     c = Kick.getComponent()
-    c.inPorts.in.attach noflo.internalSocket.createSocket()
-    c.inPorts.data.attach noflo.internalSocket.createSocket()
-    c.outPorts.out.attach noflo.internalSocket.createSocket()
-    ins = c.inPorts.in
-    data = c.inPorts.data
-    out = c.outPorts.out
+    ins = noflo.internalSocket.createSocket()
+    data = noflo.internalSocket.createSocket()
+    out = noflo.internalSocket.createSocket()
+    c.inPorts.in.attach ins
+    c.inPorts.data.attach data
+    c.outPorts.out.attach out
 
   describe 'when instantiated', ->
     it 'should have input ports', ->

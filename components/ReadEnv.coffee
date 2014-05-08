@@ -4,11 +4,15 @@ class ReadEnv extends noflo.Component
   description: 'Reads an environment variable'
   icon: 'dollar'
   constructor: ->
-    @inPorts =
-      key: new noflo.Port 'string'
-    @outPorts =
-      out: new noflo.ArrayPort 'string'
-      error: new noflo.Port 'string'
+    @inPorts = new noflo.InPorts
+      key:
+        datatype: 'string'
+        description: 'Environment variable to read'
+    @outPorts = new noflo.OutPorts
+      out:
+        datatype: 'string'
+      error:
+        datatype: 'string'
 
     @inPorts.key.on 'data', (data) =>
       if process.env[data] isnt undefined

@@ -6,12 +6,19 @@ class RunInterval extends noflo.Component
   constructor: ->
     @timer = null
     @interval = null
-    @inPorts =
-      interval: new noflo.Port 'number'
-      start: new noflo.Port 'bang'
-      stop: new noflo.Port 'bang'
+    @inPorts = new noflo.InPorts
+      interval:
+        datatype: 'number'
+        description: 'Interval at which output packets are emitted (ms)'
+      start:
+        datatype: 'bang'
+        description: 'Start the emission'
+      stop:
+        datatype: 'bang'
+        description: 'Stop the emission'
     @outPorts =
-      out: new noflo.Port 'bang'
+      out:
+        datatype: 'bang'
 
     @inPorts.interval.on 'data', (interval) =>
       @interval = interval
