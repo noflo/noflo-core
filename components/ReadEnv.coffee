@@ -1,5 +1,7 @@
 noflo = require 'noflo'
 
+# @runtime noflo-nodejs
+
 class ReadEnv extends noflo.Component
   description: 'Reads an environment variable'
   icon: 'dollar'

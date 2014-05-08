@@ -53,16 +53,16 @@
       "Drop": "components/Drop.coffee",
       "Group": "components/Group.coffee",
       "Kick": "components/Kick.coffee",
+      "MakeFunction": "components/MakeFunction.coffee",
       "Merge": "components/Merge.coffee",
       "Output": "components/Output.coffee",
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
       "RepeatDelayed": "components/RepeatDelayed.coffee",
-      "SendNext": "components/SendNext.coffee",
-      "Split": "components/Split.coffee",
       "RunInterval": "components/RunInterval.coffee",
       "RunTimeout": "components/RunTimeout.coffee",
-      "MakeFunction": "components/MakeFunction.coffee"
+      "SendNext": "components/SendNext.coffee",
+      "Split": "components/Split.coffee"
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "noflo-core",
   "description": "NoFlo Essentials",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "author": {
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
@@ -33,7 +33,7 @@
     }
   ],
   "dependencies": {
-    "noflo": "~0.5.0",
+    "noflo": "~0.5.2",
     "underscore": "~1.5.1",
     "owl-deepcopy": "0.0.2"
   },
@@ -45,33 +45,31 @@
     "chai": "~1.5.0",
     "mocha": "~1.9.0",
     "grunt-mocha-phantomjs": "~0.2.2",
-    "grunt-component-build": "~0.2.7",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-watch": "~0.3.1",
-    "component-json": "~0.1.4",
-    "grunt-combine": "~0.8.3",
-    "grunt-component": "~0.1.2"
+    "grunt-noflo-manifest": "^0.1.4",
+    "grunt-noflo-browser": "^0.1.1"
   },
   "keywords": [],
   "noflo": {
     "components": {
       "Callback": "components/Callback.coffee",
+      "Copy": "components/Copy.coffee",
       "DisconnectAfterPacket": "components/DisconnectAfterPacket.coffee",
       "Drop": "components/Drop.coffee",
       "Group": "components/Group.coffee",
       "Kick": "components/Kick.coffee",
+      "MakeFunction": "components/MakeFunction.coffee",
       "Merge": "components/Merge.coffee",
       "Output": "components/Output.coffee",
       "ReadEnv": "components/ReadEnv.coffee",
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
       "RepeatDelayed": "components/RepeatDelayed.coffee",
-      "SendNext": "components/SendNext.coffee",
-      "Split": "components/Split.coffee",
       "RunInterval": "components/RunInterval.coffee",
-      "MakeFunction": "components/MakeFunction.coffee",
       "RunTimeout": "components/RunTimeout.coffee",
-      "Copy": "components/Copy.coffee"
+      "SendNext": "components/SendNext.coffee",
+      "Split": "components/Split.coffee"
     }
   },
   "scripts": {
