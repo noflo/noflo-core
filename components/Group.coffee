@@ -15,7 +15,7 @@ class Group extends noflo.Component
         datatype: 'string'
         description: 'The group to add around forwarded packets'
       threshold:
-        datatype: 'integer'
+        datatype: 'int'
         description: 'Maximum number of groups kept around'
         required: no
     @outPorts = new noflo.OutPorts
