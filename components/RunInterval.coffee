@@ -16,7 +16,7 @@ class RunInterval extends noflo.Component
       stop:
         datatype: 'bang'
         description: 'Stop the emission'
-    @outPorts =
+    @outPorts = new noflo.OutPorts
       out:
         datatype: 'bang'
 
