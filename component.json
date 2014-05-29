@@ -20,7 +20,7 @@
   "keywords": [],
   "dependencies": {
     "noflo/noflo": "*",
-    "component/underscore": "*"
+    "jashkenas/underscore": "*"
   },
   "remotes": [
     "https://raw.githubusercontent.com"
