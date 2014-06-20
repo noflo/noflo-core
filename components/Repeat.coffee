@@ -1,28 +1,20 @@
 noflo = require 'noflo'
 
-class Repeat extends noflo.Component
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Forwards packets and metadata in the same way it receives them'
+  c.icon = 'forward'
+  c.inPorts.add 'in',
+    datatype: 'all'
+    description: 'Packet to forward'
+  c.outPorts.add 'out',
+    datatype: 'all'
 
-  description: 'Forwards packets and metadata in the same way it receives them'
-  icon: 'forward'
+  noflo.helpers.WirePattern c,
+    in: ['in']
+    out: 'out'
+    forwardGroups: true
+  , (data, groups, out) ->
+    out.send data
 
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'all'
-        description: 'Packet to be forwarded'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'all'
-
-    @inPorts.in.on 'connect', =>
-      @outPorts.out.connect()
-    @inPorts.in.on 'begingroup', (group) =>
-      @outPorts.out.beginGroup group
-    @inPorts.in.on 'data', (data) =>
-      @outPorts.out.send data
-    @inPorts.in.on 'endgroup', =>
-      @outPorts.out.endGroup()
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new Repeat()
+  c
