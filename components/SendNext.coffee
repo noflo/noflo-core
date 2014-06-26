@@ -15,6 +15,9 @@ class SendNext extends noflo.Component
     @outPorts = new noflo.OutPorts
       out:
         datatype: 'all'
+      empty:
+        datatype: 'bang'
+        required: false
 
     @inPorts.in.on 'data', =>
       do @sendNext
@@ -23,7 +26,10 @@ class SendNext extends noflo.Component
     sent = false
     loop
       packet = @inPorts.data.receive()
-      break unless packet
+      unless packet
+        @outPorts.empty.send true
+        @outPorts.empty.disconnect()
+        break
       groups = []
       switch packet.event
         when 'begingroup'
