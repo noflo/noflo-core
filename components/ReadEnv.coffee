@@ -2,27 +2,30 @@ noflo = require 'noflo'
 
 # @runtime noflo-nodejs
 
-class ReadEnv extends noflo.Component
-  description: 'Reads an environment variable'
-  icon: 'dollar'
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      key:
-        datatype: 'string'
-        description: 'Environment variable to read'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
-      error:
-        datatype: 'string'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Reads an environment variable'
+  c.icon = 'usd'
 
-    @inPorts.key.on 'data', (data) =>
-      if process.env[data] isnt undefined
-        @outPorts.out.send process.env[data]
-        @outPorts.out.disconnect()
-        return
-      if @outPorts.error.isAttached()
-        @outPorts.error.send "No environment variable #{data} set"
-        @outPorts.error.disconnect()
+  c.inPorts.add 'key',
+    datatype: 'string'
+    required: true
+    description: 'Environment variable to read'
+  c.outPorts.add 'out',
+    datatype: 'string'
+  c.outPorts.add 'error',
+    datatype: 'object'
+    required: false
 
-exports.getComponent = -> new ReadEnv
+  noflo.helpers.WirePattern c,
+    in: 'key'
+    out: 'out'
+    forwardGroups: true
+  , (data, groups, out) ->
+    if process.env[data] isnt undefined
+      out.send process.env[data]
+      return
+    c.outPorts.error.send new Error "No environment variable #{data} set"
+    c.outPorts.error.disconnect()
+
+  c

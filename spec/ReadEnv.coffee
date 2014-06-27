@@ -28,7 +28,7 @@ describe 'ReadEnv component', ->
   describe 'reading a nonexistent env var', ->
     it 'should return an error', (done) ->
       err.once 'data', (data) ->
-        chai.expect(data).to.be.a 'string'
+        chai.expect(data).to.be.an 'object'
       err.once 'disconnect', ->
         done()
       key.send 'baz'
