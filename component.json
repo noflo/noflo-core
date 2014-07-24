@@ -2,7 +2,7 @@
   "name": "noflo-core",
   "description": "NoFlo Essentials",
   "repo": "noflo/noflo-core",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "author": {
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
@@ -41,7 +41,8 @@
     "components/RunInterval.coffee",
     "components/RunTimeout.coffee",
     "components/MakeFunction.coffee",
-    "index.js"
+    "index.js",
+    "components/ReadGlobal.coffee"
   ],
   "json": [
     "component.json"
@@ -56,6 +57,7 @@
       "MakeFunction": "components/MakeFunction.coffee",
       "Merge": "components/Merge.coffee",
       "Output": "components/Output.coffee",
+      "ReadGlobal": "components/ReadGlobal.coffee",
       "Repeat": "components/Repeat.coffee",
       "RepeatAsync": "components/RepeatAsync.coffee",
       "RepeatDelayed": "components/RepeatDelayed.coffee",
