@@ -54,6 +54,17 @@ describe 'ReadGlobal', ->
 
         nameIn.send 'TEST_VAR'
 
+      describe 'and a group', ->
+
+        it 'should forward the group', (done) ->
+          valueOut.on 'begingroup', (group) ->
+            expect(group).to.equal 'group-1'
+            done()
+
+          nameIn.beginGroup 'group-1'
+          nameIn.send 'TEST_VAR'
+          nameIn.endGroup()
+
     describe 'with an undefined variable', ->
 
       beforeEach ->
