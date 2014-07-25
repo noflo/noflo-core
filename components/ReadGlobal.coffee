@@ -24,14 +24,13 @@ exports.getComponent = ->
   noflo.helpers.WirePattern c,
     in: ['name']
     out: ['value']
-    # forwardGroups: true
+    forwardGroups: true
   ,
     (data, groups, out) ->
       value = if isNode then global[data] else window[data]
 
       if typeof value is 'undefined'
-        err = new Error
-          message: "\"#{data}\" is undefined on the global object."
+        err = new Error "\"#{data}\" is undefined on the global object."
         if c.outPorts.error.isAttached()
           c.outPorts.error.send err
         else
