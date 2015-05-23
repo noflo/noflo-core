@@ -21,11 +21,11 @@ exports.getComponent = ->
     in: 'key'
     out: 'out'
     forwardGroups: true
-  , (data, groups, out) ->
-    if process.env[data] isnt undefined
-      out.send process.env[data]
-      return
-    c.outPorts.error.send new Error "No environment variable #{data} set"
-    c.outPorts.error.disconnect()
+    async: true
+  , (data, groups, out, callback) ->
+    value = process.env[data]
+    return callback new Error "No environment variable #{data} set" if value is undefined
+    out.send process.env[data]
+    do callback
 
   c
