@@ -2,7 +2,7 @@
   "name": "noflo-core",
   "description": "NoFlo Essentials",
   "repo": "noflo/noflo-core",
-  "version": "0.1.9",
+  "version": "0.1.13",
   "author": {
     "name": "Henri Bergius",
     "email": "henri.bergius@iki.fi"
