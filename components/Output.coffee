@@ -1,3 +1,4 @@
+# @runtime noflo-nodejs
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
@@ -6,46 +7,35 @@ else
   util =
     inspect: (data) -> data
 
-class Output extends noflo.Component
-  description: 'This component receives input on a single inport, and
-    sends the data items directly to console.log'
-  icon: 'bug'
+log = (options, data) ->
+  if options?
+    console.log util.inspect data,
+      options.showHidden, options.depth, options.colors
+  else
+    console.log data
 
-  constructor: ->
-    @options = null
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Sends the data items to console.log'
+  c.icon = 'bug'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'all'
-        description: 'Packet to be printed through console.log'
-      options:
-        datatype: 'object'
-        description: 'Options to be passed to console.log'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'all'
+  c.inPorts.add 'in',
+    datatype: 'all'
+    description: 'Packet to be printed through console.log'
+  c.inPorts.add 'options',
+    datatype: 'object'
+    description: 'Options to be passed to console.log'
+  c.outPorts.add 'out',
+    datatype: 'all'
 
-    @inPorts.in.on 'data', (data) =>
-      @log data
-      @outPorts.out.send data if @outPorts.out.isAttached()
+  noflo.helpers.WirePattern c,
+    in: 'in'
+    out: 'out'
+    forwardGroups: true
+    async: true
+  , (data, groups, out, callback) ->
+    log c.params.options, data
+    out.send data
+    do callback
 
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect() if @outPorts.out.isAttached()
-
-    @inPorts.options.on 'data', (data) =>
-      @setOptions data
-
-  setOptions: (options) ->
-    throw new Error 'Options is not an object' unless typeof options is 'object'
-    @options ?= {}
-    for own key, value of options
-      @options[key] = value
-
-  log: (data) ->
-    if @options?
-      console.log util.inspect data,
-        @options.showHidden, @options.depth, @options.colors
-    else
-      console.log data
-
-exports.getComponent = -> new Output()
+  c
