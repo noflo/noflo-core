@@ -10,4 +10,4 @@ nodeRuntime =
   id: "7807f4d8-63e0-4a89-a577-2770c14f8106"
   command: 'noflo-nodejs --verbose --debug  --catch-exceptions=false --secret notasecret'
 
-fbpspec.mocha.run nodeRuntime, './spec/Core.yaml', { fixturetimeout: 20000 }
+fbpspec.mocha.run nodeRuntime, './spec', { fixturetimeout: 20000 }
