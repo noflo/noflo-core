@@ -5,8 +5,9 @@ nodeRuntime =
   description: ""
   type: "noflo"
   protocol: "websocket"
+  secret: 'notasecret'
   address: "ws://localhost:3333"
   id: "7807f4d8-63e0-4a89-a577-2770c14f8106"
-  command: 'noflo-nodejs'
+  command: 'noflo-nodejs --verbose --debug  --catch-exceptions=false --secret notasecret'
 
-fbpspec.mocha.run nodeRuntime, './spec/Core.yaml', {}
+fbpspec.mocha.run nodeRuntime, './spec/Core.yaml', { fixturetimeout: 20000 }
