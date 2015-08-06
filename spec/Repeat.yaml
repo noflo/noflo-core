@@ -24,3 +24,10 @@ cases:
     in: 1000
   expect:
     out: 1000
+-
+  name: 'sending a string'
+  assertion: 'should repeat the same'
+  inputs:
+    in: "my string"
+  expect:
+    out: "my string"
