@@ -6,3 +6,4 @@ node_modules/
 npm-debug.log
 components/*/
 spec/*.xml
+flowhub.json
