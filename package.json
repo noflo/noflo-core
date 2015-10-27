@@ -44,7 +44,7 @@
     "grunt-cafe-mocha": "0.1.13",
     "grunt-coffeelint": "0.0.13",
     "grunt-contrib-coffee": "0.11.1",
-    "grunt-contrib-uglify": "0.6.0",
+    "grunt-contrib-uglify": "0.10.0",
     "grunt-contrib-watch": "0.6.1",
     "grunt-mocha-phantomjs": "0.6.2",
     "grunt-noflo-browser": "0.1.11",
