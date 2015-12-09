@@ -1,37 +1,39 @@
 noflo = require 'noflo'
 
-class RepeatDelayed extends noflo.AsyncComponent
-  description: 'Forward packet after a set delay'
-  icon: 'clock-o'
-  constructor: ->
-    @timers = []
-    @delay = 0
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'all'
-        description: 'Packet to be forwarded with a delay'
-      delay:
-        datatype: 'number'
-        description: 'How much to delay'
-        default: 500
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'all'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Forward packet after a set delay'
+  c.icon = 'clock-o'
 
-    @inPorts.delay.on 'data', (@delay) =>
+  c.timers = []
 
-    super()
+  c.inPorts.add 'in',
+    datatype: 'all'
+    description: 'Packet to be forwarded with a delay'
+  c.inPorts.add 'delay',
+    datatype: 'number'
+    description: 'How much to delay'
+    default: 500
 
-  doAsync: (packet, callback) ->
+  c.outPorts.add 'out',
+    datatype: 'all'
+
+  noflo.helpers.WirePattern c,
+    in: 'in'
+    params: 'delay'
+    out: 'out'
+    forwardGroups: true
+    async: true
+  , (payload, groups, out, callback) ->
     timer = setTimeout =>
-      @outPorts.out.send packet
-      callback()
-      @timers.splice @timers.indexOf(timer), 1
-    , @delay
-    @timers.push timer
+      out.send payload
+      do callback
+      c.timers.splice c.timers.indexOf(timer), 1
+    , c.params.delay
+    c.timers.push timer
 
-  shutdown: ->
-    clearTimeout timer for timer in @timers
-    @timers = []
-
-exports.getComponent = -> new RepeatDelayed
+  c.shutdown = ->
+    clearTimeout timer for timer in c.timers
+    c.timers = []
+  
+  c
