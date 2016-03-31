@@ -50,7 +50,7 @@
     "grunt-noflo-browser": "0.1.11",
     "grunt-noflo-manifest": "0.1.11",
     "mocha": "2.3.3",
-    "noflo-nodejs": "0.5.2"
+    "noflo-nodejs": "0.7.0"
   },
   "keywords": [],
   "noflo": {
