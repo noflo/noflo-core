@@ -41,11 +41,13 @@ module.exports = ->
       tasks: ['test']
 
     # BDD tests on Node.js
-    cafemocha:
+    mochaTest:
       nodejs:
         src: ['spec/*.coffee']
         options:
           reporter: 'spec'
+          require: 'coffee-script/register'
+          grep: process.env.TESTS
 
     # BDD tests on browser
     mocha_phantomjs:
@@ -73,7 +75,7 @@ module.exports = ->
 
   # Grunt plugins used for testing
   @loadNpmTasks 'grunt-contrib-watch'
-  @loadNpmTasks 'grunt-cafe-mocha'
+  @loadNpmTasks 'grunt-mocha-test'
   @loadNpmTasks 'grunt-mocha-phantomjs'
   @loadNpmTasks 'grunt-coffeelint'
 
@@ -87,7 +89,7 @@ module.exports = ->
     @task.run 'coffeelint'
     @task.run 'build'
     if target is 'all' or target is 'nodejs'
-      @task.run 'cafemocha'
+      @task.run 'mochaTest'
     if target is 'all' or target is 'browser'
       @task.run 'coffee'
       @task.run 'mocha_phantomjs'
