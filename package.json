@@ -48,7 +48,7 @@
     "mocha": "^2.5.1",
     "noflo-nodejs": "^0.5.2"
   },
-  "keywords": [],
+  "keywords": ["noflo"],
   "noflo": {
     "components": {
       "Callback": "components/Callback.coffee",
