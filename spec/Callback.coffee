@@ -20,6 +20,9 @@ describe 'Callback component', ->
     c.inPorts.in.attach ins
     c.inPorts.callback.attach cb
     c.outPorts.error.attach err
+  afterEach ->
+    c.outPorts.error.detach err
+    err = null
 
   describe 'when instantiated', ->
     it 'should have input ports', ->
@@ -36,7 +39,9 @@ describe 'Callback component', ->
         done()
 
       cb.send 'Foo bar'
+      ins.connect()
       ins.send 'Hello'
+      ins.disconnect()
 
     it 'right callback', (done) ->
       callback = (data) ->
@@ -44,4 +49,6 @@ describe 'Callback component', ->
         done()
       cb.send callback
 
+      ins.connect()
       ins.send 'hello, world'
+      ins.disconnect()
