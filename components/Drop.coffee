@@ -1,15 +1,19 @@
 noflo = require 'noflo'
 
-class Drop extends noflo.Component
-  description: 'This component drops every packet it receives with no
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'This component drops every packet it receives with no
   action'
-  icon: 'trash-o'
+  c.icon = 'trash-o'
 
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      in:
-        datatypes: 'all'
-        description: 'Packet to be dropped'
-    @outPorts = new noflo.OutPorts
+  c.inPorts.add 'in',
+    datatypes: 'all'
+    description: 'Packet to be dropped'
 
-exports.getComponent = -> new Drop
+  c.process (input, output) ->
+    data = input.get 'in'
+    return unless data.type is 'data'
+    data.drop()
+    data.type = 'data'
+    output.done()
+    return
