@@ -55,7 +55,6 @@
       "Copy": "components/Copy.coffee",
       "DisconnectAfterPacket": "components/DisconnectAfterPacket.coffee",
       "Drop": "components/Drop.coffee",
-      "Group": "components/Group.coffee",
       "Kick": "components/Kick.coffee",
       "MakeFunction": "components/MakeFunction.coffee",
       "Merge": "components/Merge.coffee",
