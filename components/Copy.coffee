@@ -1,8 +1,6 @@
 noflo = require 'noflo'
 owl = require 'owl-deepcopy'
 
-# @runtime noflo-nodejs
-
 class Copy extends noflo.Component
   description: 'deep (i.e. recursively) copy an object'
   icon: 'copy'

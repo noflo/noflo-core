@@ -20,13 +20,15 @@
   "keywords": [],
   "dependencies": {
     "noflo/noflo": "*",
-    "jashkenas/underscore": "1.8.3"
+    "jashkenas/underscore": "1.8.3",
+    "mrluc/owl-deepcopy": "*"
   },
   "remotes": [
     "https://raw.githubusercontent.com"
   ],
   "scripts": [
     "components/Callback.coffee",
+    "components/Copy.coffee",
     "components/DisconnectAfterPacket.coffee",
     "components/Drop.coffee",
     "components/Group.coffee",
@@ -50,6 +52,7 @@
   "noflo": {
     "components": {
       "Callback": "components/Callback.coffee",
+      "Copy": "components/Copy.coffee",
       "DisconnectAfterPacket": "components/DisconnectAfterPacket.coffee",
       "Drop": "components/Drop.coffee",
       "Group": "components/Group.coffee",
