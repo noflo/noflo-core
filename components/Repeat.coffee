@@ -10,11 +10,7 @@ exports.getComponent = ->
   c.outPorts.add 'out',
     datatype: 'all'
 
-  noflo.helpers.WirePattern c,
-    in: ['in']
-    out: 'out'
-    forwardGroups: true
-  , (data, groups, out) ->
-    out.send data
-
-  c
+  c.process (input, output) ->
+    data = input.getData 'in'
+    output.sendDone
+      out: data
