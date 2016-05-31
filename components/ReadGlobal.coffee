@@ -1,8 +1,6 @@
 noflo = require 'noflo'
 
 exports.getComponent = ->
-  isNode = typeof window is 'undefined'
-
   c = new noflo.Component
   c.description = 'Returns the value of a global variable.'
   c.icon = 'usd'
@@ -19,23 +17,19 @@ exports.getComponent = ->
 
   c.outPorts.add 'error',
     description: 'Any errors that occured reading the variables value.'
-    required: false
+    required: true
 
-  noflo.helpers.WirePattern c,
-    in: ['name']
-    out: ['value']
-    forwardGroups: true
-  ,
-    (data, groups, out) ->
-      value = if isNode then global[data] else window[data]
+  c.forwardBrackets =
+    name: ['value', 'error']
 
-      if typeof value is 'undefined'
-        err = new Error "\"#{data}\" is undefined on the global object."
-        if c.outPorts.error.isAttached()
-          c.outPorts.error.send err
-        else
-          throw err
-      else
-        out.send value
+  c.process (input, output) ->
+    data = input.getData 'name'
 
-  return c
+    value = unless noflo.isBrowser() then global[data] else window[data]
+
+    if typeof value is 'undefined'
+      err = new Error "\"#{data}\" is undefined on the global object."
+      output.sendDone err
+      return
+    output.sendDone
+      value: value
