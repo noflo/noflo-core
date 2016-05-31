@@ -25,7 +25,7 @@ exports.getComponent = ->
     forwardGroups: true
     async: true
   , (payload, groups, out, callback) ->
-    timer = setTimeout =>
+    timer = setTimeout ->
       out.send payload
       do callback
       c.timers.splice c.timers.indexOf(timer), 1
