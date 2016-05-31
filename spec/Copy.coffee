@@ -39,3 +39,4 @@ describe 'Copy component', ->
         done()
 
       ins.send original
+      ins.disconnect()
