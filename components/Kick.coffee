@@ -1,53 +1,49 @@
 noflo = require 'noflo'
 
-class Kick extends noflo.Component
-  description: 'This component generates a single packet and sends it to
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'This component generates a single packet and sends it to
   the output port. Mostly usable for debugging, but can also be useful
   for starting up networks.'
-  icon: 'share'
+  c.icon = 'share'
 
-  constructor: ->
-    @data =
-      packet: null
-      group: []
-    @groups = []
+  c.inPorts.add 'in',
+    datatype: 'bang'
+    description: 'Signal to send the data packet'
+  c.inPorts.add 'data',
+    datatype: 'all'
+    description: 'Packet to be sent'
+    control: true
+    default: null
+  c.outPorts.add 'out',
+    datatype: 'all'
 
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'bang'
-        description: 'Signal to send the data packet'
-      data:
-        datatype: 'all'
-        description: 'Packet to be sent'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'all'
+  brackets = []
+  scope = []
+  c.ordered = true
+  c.forwardBrackets = {}
+  c.process (input, output) ->
+    return unless input.has 'in'
+    data = input.get 'in'
+    if data.type is 'openBracket'
+      brackets.push data.data
+    if data.type is 'closeBracket'
+      brackets.pop()
+    if data.type is 'data'
+      scope = brackets.slice 0
 
-    @inPorts.in.on 'begingroup', (group) =>
-      @groups.push group
+    if data.type in ['data', 'closeBracket'] and brackets.length is 0
+      content = input.get 'data'
+      for bracket in scope
+        output.sendIP 'out', new noflo.IP 'openBracket', bracket
+      output.sendIP 'out', content
+      for bracket in scope
+        output.sendIP 'out', new noflo.IP 'closeBracket', bracket
 
-    @inPorts.in.on 'data', =>
-      @data.group = @groups.slice 0
+    output.done()
 
-    @inPorts.in.on 'endgroup', (group) =>
-      @groups.pop()
+  c.shutdown = ->
+    brackets = []
+    scope = []
 
-    @inPorts.in.on 'disconnect', =>
-      @sendKick @data
-      @groups = []
-
-    @inPorts.data.on 'data', (data) =>
-      @data.packet = data
-
-  sendKick: (kick) ->
-    for group in kick.group
-      @outPorts.out.beginGroup group
-
-    @outPorts.out.send kick.packet
-
-    for group in kick.group
-      @outPorts.out.endGroup()
-
-    @outPorts.out.disconnect()
-
-exports.getComponent = -> new Kick
+  c
