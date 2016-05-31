@@ -39,10 +39,11 @@ describe 'MakeFunction component', ->
   describe 'test function', ->
     it 'without function', (done) ->
       err.on 'data', (data) ->
-        chai.expect(data).to.be.ok
+        chai.expect(data).to.be.an 'error'
         done()
 
       ins.send 'Foo bar'
+      ins.disconnect()
 
     it 'wrong function', (done) ->
       err.on 'data', (data) ->
@@ -54,26 +55,38 @@ describe 'MakeFunction component', ->
     it 'output function', (done) ->
       outfunc.on 'data', (data) ->
         chai.expect(typeof data).to.equal "function"
+        chai.expect(data(2)).to.equal 4
         done()
+      err.on 'data', (data) ->
+        done data
       func.send 'return x*x;'
 
     it 'square function', (done) ->
-      func.send 'return x*x;'
       out.on 'data', (data) ->
         chai.expect(data).to.equal 81
         done()
+      err.on 'data', (data) ->
+        done data
+      func.send 'return x*x;'
       ins.send 9
+      ins.disconnect()
 
     it 'concat function', (done) ->
       func.send 'return x+x;'
       out.on 'data', (data) ->
         chai.expect(data).to.equal "99"
         done()
+      err.on 'data', (data) ->
+        done data
       ins.send "9"
+      ins.disconnect()
 
     it 'pass function', (done) ->
       func.send( (x) -> return x+"!" )
       out.on 'data', (data) ->
         chai.expect(data).to.equal "hello function!"
         done()
+      err.on 'data', (data) ->
+        done data
       ins.send "hello function"
+      ins.disconnect()
