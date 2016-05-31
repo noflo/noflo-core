@@ -30,19 +30,13 @@ describe 'Callback component', ->
       chai.expect(c.outPorts.error).to.be.an 'object'
 
   describe 'test callback', ->
-    it 'without callback', (done) ->
-      err.on 'data', (data) ->
-        chai.expect(data).to.be.ok
-        done()
-
-      ins.send 'Foo bar'
-
     it 'wrong callback', (done) ->
       err.on 'data', (data) ->
-        chai.expect(data).to.be.ok
+        chai.expect(data).to.be.an 'error'
         done()
 
       cb.send 'Foo bar'
+      ins.send 'Hello'
 
     it 'right callback', (done) ->
       callback = (data) ->
