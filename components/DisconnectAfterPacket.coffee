@@ -2,7 +2,8 @@ noflo = require 'noflo'
 
 exports.getComponent = ->
   c = new noflo.Component
-  c.description = 'Forwards any packets, but also sends a disconnect after each of them'
+  c.description = 'Forwards any packets, but also sends a disconnect after
+  each of them'
   c.icon = 'pause'
   c.forwardBrackets = {}
   c.autoOrdering = false
