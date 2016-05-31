@@ -32,6 +32,7 @@ describe 'RepeatAsync component', ->
 
   describe 'when receiving packets from multiple inputs', ->
     it 'should send them as a single stream', (done) ->
+      wasasync = false
       expected = [
         'CONN'
         '< a'
@@ -57,6 +58,7 @@ describe 'RepeatAsync component', ->
         received.push 'DISC'
         return unless received.length is expected.length
         chai.expect(received).to.eql expected
+        chai.expect(wasasync).to.equal true
         done()
 
       ins1.beginGroup 'a'
@@ -68,3 +70,4 @@ describe 'RepeatAsync component', ->
       ins2.send 2
       ins2.endGroup()
       ins2.disconnect()
+      wasasync = true
