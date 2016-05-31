@@ -36,7 +36,6 @@ describe 'DisconnectAfterPacket component', ->
         'DISC'
       ]
       received = []
-
       out.on 'begingroup', (group) ->
         received.push "< #{group}"
       out.on 'data', (data) ->
@@ -51,3 +50,4 @@ describe 'DisconnectAfterPacket component', ->
 
       ins.send 1
       ins.send 2
+      ins.disconnect()
