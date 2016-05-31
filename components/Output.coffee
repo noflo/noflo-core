@@ -1,4 +1,3 @@
-# @runtime noflo-nodejs
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
@@ -25,17 +24,17 @@ exports.getComponent = ->
   c.inPorts.add 'options',
     datatype: 'object'
     description: 'Options to be passed to console.log'
+    control: true
   c.outPorts.add 'out',
     datatype: 'all'
 
-  noflo.helpers.WirePattern c,
-    in: 'in'
-    out: 'out'
-    forwardGroups: true
-    async: true
-  , (data, groups, out, callback) ->
-    log c.params.options, data
-    out.send data
-    do callback
+  c.process (input, output) ->
+    options = null
+    if input.has 'options'
+      options = input.getData 'options'
 
-  c
+    return unless input.has 'in'
+    data = input.getData 'in'
+    log options, data
+    output.sendDone
+      out: data
