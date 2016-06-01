@@ -1,50 +1,56 @@
 noflo = require 'noflo'
 
-class RunInterval extends noflo.Component
-  description: 'Send a packet at the given interval'
-  icon: 'clock-o'
-  constructor: ->
-    @timer = null
-    @interval = null
-    @inPorts = new noflo.InPorts
-      interval:
-        datatype: 'number'
-        description: 'Interval at which output packets are emitted (ms)'
-      start:
-        datatype: 'bang'
-        description: 'Start the emission'
-      stop:
-        datatype: 'bang'
-        description: 'Stop the emission'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'bang'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Send a packet at the given interval'
+  c.icon = 'clock-o'
+  c.inPorts.add 'interval',
+    datatype: 'number'
+    description: 'Interval at which output packets are emitted (ms)'
+    required: true
+    control: true
+  c.inPorts.add 'start',
+    datatype: 'bang'
+    description: 'Start the emission'
+  c.inPorts.add 'stop',
+    datatype: 'bang'
+    description: 'Stop the emission'
+  c.outPorts.add 'out',
+    datatype: 'bang'
 
-    @inPorts.interval.on 'data', (interval) =>
-      @interval = interval
-      # Restart if currently running
-      if @timer?
-        clearInterval @timer
-        do @start
+  c.timers = {}
 
-    @inPorts.start.on 'data', =>
-      clearInterval @timer if @timer?
-      @outPorts.out.connect()
-      do @start
+  c.process (input, output) ->
+    return unless input.has 'interval'
 
-    @inPorts.stop.on 'data', =>
-      return unless @timer
-      clearInterval @timer
-      @timer = null
-      @outPorts.out.disconnect()
+    if input.has 'start'
+      start = input.get 'start'
+      interval = parseInt input.getData 'interval'
+      return unless start.type is 'data'
 
-  start: ->
-    out = @outPorts.out
-    @timer = setInterval ->
-      out.send true
-    , @interval
+      if c.timers[start.scope]
+        clearInterval c.timers[start.scope]
 
-  shutdown: ->
-    clearInterval @timer if @timer?
+      c.timers[start.scope] = setInterval ->
+        bang = new noflo.IP 'data', true
+        bang.scope = start.scope
+        c.outPorts.out.sendIP bang
+      , interval
+      # TODO: Notify network of running generator
+      return
 
-exports.getComponent = -> new RunInterval
+    if input.has 'stop'
+      stop = input.get 'stop'
+      return unless stop.type is 'data'
+      return unless c.timers[stop.scope]
+      clearInterval c.timers[stop.scope]
+      delete c.timers[stop.scope]
+      # TODO: Notify network of stopped generator
+      return
+
+  c.shutdown = ->
+    for scope, interval of c.timers
+      clearInterval interval
+    c.timers = {}
+
+  c
