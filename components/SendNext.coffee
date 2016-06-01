@@ -30,6 +30,13 @@ exports.getComponent = ->
         output.sendDone
           empty: true
         return
+
+      if sent
+        # If we already sent data, we look ahead to see if next packet is data and bail out
+        port = c.inPorts.data
+        buf = if packet.scope then port.scopedBuffer[packet.scope] else port.buffer
+        return if buf[0].type is 'data'
+
       packet = input.get 'data'
       switch packet.type
         when 'openBracket'
@@ -38,12 +45,6 @@ exports.getComponent = ->
           brackets[packet.scope] = [] unless brackets[packet.scope]
           brackets[packet.scope].push packet.data
         when 'data'
-          if sent
-            # Return packet to beginning of queue and abort
-            port = c.inPorts.data
-            buf = if packet.scope then port.scopedBuffer[packet.scope] else port.buffer
-            buf.unshift packet
-            return
           output.send
             out: packet
           sent = true
