@@ -45,7 +45,6 @@ class SendNext extends noflo.Component
         when 'endgroup'
           @outPorts.out.endGroup()
           groups.pop()
-          return if groups.length is 0
         when 'disconnect'
           @outPorts.out.disconnect()
           return
