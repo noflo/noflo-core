@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "~0.6.0",
+    "noflo": "~0.7.5",
     "underscore": "~1.8.3",
     "owl-deepcopy": "~0.0.4"
   },
@@ -46,7 +46,7 @@
     "grunt-noflo-browser": "^0.1.11",
     "grunt-noflo-manifest": "^0.1.11",
     "mocha": "^2.5.1",
-    "noflo-nodejs": "^0.5.2"
+    "noflo-nodejs": "^0.7.1"
   },
   "keywords": ["noflo"],
   "noflo": {
@@ -55,7 +55,6 @@
       "Copy": "components/Copy.coffee",
       "DisconnectAfterPacket": "components/DisconnectAfterPacket.coffee",
       "Drop": "components/Drop.coffee",
-      "Group": "components/Group.coffee",
       "Kick": "components/Kick.coffee",
       "MakeFunction": "components/MakeFunction.coffee",
       "Merge": "components/Merge.coffee",

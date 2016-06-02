@@ -53,6 +53,7 @@ describe 'ReadGlobal', ->
           done()
 
         nameIn.send 'TEST_VAR'
+        nameIn.disconnect()
 
       describe 'and a group', ->
 
@@ -64,6 +65,7 @@ describe 'ReadGlobal', ->
           nameIn.beginGroup 'group-1'
           nameIn.send 'TEST_VAR'
           nameIn.endGroup()
+          nameIn.disconnect()
 
     describe 'with an undefined variable', ->
 
@@ -81,15 +83,8 @@ describe 'ReadGlobal', ->
 
         it 'should send the error', (done) ->
           errorOut.on 'data', (err) ->
-            expect(err).to.be.instanceof Error
+            expect(err).to.be.an 'error'
             done()
 
           nameIn.send 'TEST_VAR'
-
-      describe 'and no error port connected', ->
-
-        it 'should throw the error', ->
-          throws = ->
-            nameIn.send 'TEST_VAR'
-
-          expect(throws).to.throw Error
+          nameIn.disconnect()

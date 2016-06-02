@@ -1,53 +1,60 @@
 noflo = require 'noflo'
 
-class SendNext extends noflo.Component
-  description: 'Sends next packet in buffer when receiving a bang'
-  icon: 'forward'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Sends next packet in buffer when receiving a bang'
+  c.icon = 'forward'
 
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      data:
-        datatype: 'all'
-        buffered: yes
-      in:
-        datatype: 'bang'
+  c.inPorts.add 'data',
+    datatype: 'all'
+  c.inPorts.add 'in',
+    datatype: 'bang'
+  c.outPorts.add 'out',
+    datatype: 'all'
+  c.outPorts.add 'empty',
+    datatype: 'bang'
+    required: false
 
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'all'
-      empty:
-        datatype: 'bang'
-        required: false
+  c.forwardBrackets = {}
 
-    @inPorts.in.on 'data', =>
-      do @sendNext
+  brackets = {}
+  c.process (input, output) ->
+    c.autoOrdering = false
+    return unless input.has 'in'
+    bang = input.get 'in'
+    return unless bang.type is 'data'
 
-  sendNext: ->
     sent = false
     loop
-      packet = @inPorts.data.receive()
-      unless packet
-        @outPorts.empty.send true
-        @outPorts.empty.disconnect()
-        break
-      groups = []
-      switch packet.event
-        when 'begingroup'
-          @outPorts.out.beginGroup packet.payload
-          groups.push packet.payload
-        when 'data'
-          if sent
-            # Return packet to beginning of queue and abort
-            @inPorts.data.buffer.unshift packet
-            return
-          @outPorts.out.send packet.payload
-          sent = true
-        when 'endgroup'
-          @outPorts.out.endGroup()
-          groups.pop()
-          return if groups.length is 0
-        when 'disconnect'
-          @outPorts.out.disconnect()
-          return
+      unless input.has 'data'
+        output.sendDone
+          empty: true
+        return
 
-exports.getComponent = -> new SendNext
+      if sent
+        # If we already sent data, we look ahead to see if next packet is data and bail out
+        port = c.inPorts.data
+        buf = if packet.scope then port.scopedBuffer[packet.scope] else port.buffer
+        return if buf[0].type is 'data'
+
+      packet = input.get 'data'
+      switch packet.type
+        when 'openBracket'
+          output.send
+            out: packet
+          brackets[packet.scope] = [] unless brackets[packet.scope]
+          brackets[packet.scope].push packet.data
+        when 'data'
+          output.send
+            out: packet
+          sent = true
+        when 'closeBracket'
+          output.send
+            out: packet
+          brackets[packet.scope].pop()
+          return unless brackets[packet.scope].length
+
+  c.shutdown = ->
+    brackets = {}
+
+  c

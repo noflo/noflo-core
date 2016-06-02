@@ -1,51 +1,42 @@
 noflo = require 'noflo'
 
-class RunTimeout extends noflo.Component
-  description: 'Send a packet after the given time in ms'
-  icon: 'clock-o'
-  constructor: ->
-    @timer = null
-    @time = null
-    @inPorts = new noflo.InPorts
-      time:
-        datatype: 'number'
-        description: 'Time after which a packet will be sent'
-      start:
-        datatype: 'bang'
-        description: 'Start the timeout before sending a packet'
-      clear:
-        datatype: 'bang'
-        description: 'Clear the timeout'
-        required: no
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'bang'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Send a packet after the given time in ms'
+  c.icon = 'clock-o'
 
-    @inPorts.time.on 'data', (@time) =>
-      @startTimer()
+  c.timer = null
 
-    @inPorts.start.on 'data', =>
-      @startTimer()
+  c.inPorts.add 'time',
+    datatype: 'number'
+    description: 'Time after which a packet will be sent'
+    required: true
+    control: true
+  c.inPorts.add 'start',
+    datatype: 'bang'
+    description: 'Start the timeout before sending a packet'
+  c.outPorts.add 'out',
+    datatype: 'bang'
 
-    @inPorts.clear.on 'data', =>
-      @stopTimer() if @timer
+  c.forwardBrackets =
+    start: ['out']
 
-  startTimer: ->
-    @stopTimer() if @timer
-    @outPorts.out.connect()
-    @timer = setTimeout =>
-      @outPorts.out.send true
-      @outPorts.out.disconnect()
-      @timer = null
-    , @time
+  c.process (input, output) ->
+    return unless input.has 'time', 'start'
+    time = input.getData 'time'
+    c.stopTimer() if c.timer
+    c.timer = setTimeout ->
+      c.timer = null
+      output.sendDone
+        out: true
+    , time
 
-  stopTimer: ->
-    return unless @timer
-    clearTimeout @timer
-    @timer = null
-    @outPorts.out.disconnect()
+  c.stopTimer = ->
+    return unless c.timer
+    clearTimeout c.timer
+    c.timer = null
 
-  shutdown: ->
-    @stopTimer() if @timer
+  c.shutdown = ->
+    c.stopTimer()
 
-exports.getComponent = -> new RunTimeout
+  c

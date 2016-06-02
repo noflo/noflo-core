@@ -14,22 +14,21 @@ exports.getComponent = ->
     datatype: 'number'
     description: 'How much to delay'
     default: 500
+    control: true
 
   c.outPorts.add 'out',
     datatype: 'all'
 
-  noflo.helpers.WirePattern c,
-    in: 'in'
-    params: 'delay'
-    out: 'out'
-    forwardGroups: true
-    async: true
-  , (payload, groups, out, callback) ->
-    timer = setTimeout =>
-      out.send payload
-      do callback
+  c.process (input, output) ->
+    return unless input.has 'in'
+    delay = input.getData 'delay'
+    payload = input.getData 'in'
+
+    timer = setTimeout ->
       c.timers.splice c.timers.indexOf(timer), 1
-    , c.params.delay
+      output.sendDone
+        out: payload
+    , delay
     c.timers.push timer
 
   c.shutdown = ->

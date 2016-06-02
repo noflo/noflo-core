@@ -32,26 +32,28 @@ describe 'Kick component', ->
   describe 'test kick', ->
     it 'test that no packets are sent before disconnect', (done) ->
       sent = false
-      out.once "data", (data) ->
+      out.on 'data', (data) ->
         sent = true
 
+      ins.connect()
       ins.send 'foo'
       setTimeout ->
-        chai.expect(sent).to.be.false
+        chai.expect(sent, 'Should not have sent data').to.be.false
         done()
       , 5
 
     it 'test kick without specified data', (done) ->
-      out.once "data", (data) ->
+      out.on 'data', (data) ->
         chai.expect(data).to.be.null
         done()
 
+      ins.connect()
       ins.send 'foo'
       ins.disconnect()
 
     it 'test kick with data', (done) ->
       out.once "data", (data) ->
-        chai.expect(data.foo).to.be.ok
+        chai.expect(data).to.be.an 'object'
         chai.expect(data.foo).to.be.equal 'bar'
         done()
 
@@ -60,25 +62,43 @@ describe 'Kick component', ->
       ins.send 'foo'
       ins.disconnect()
 
-    it 'test kick with data and groups', (done) ->
-      expectedGroups = [
-        'foo'
-        'bar'
-      ]
-      receivedGroups = []
-      out.on 'begingroup', (group) =>
-        receivedGroups.push group
+    it 'test kick with no brackets', (done) ->
       out.once "data", (data) ->
-        chai.expect(data.foo).to.be.ok
+        chai.expect(data).to.be.an 'object'
         chai.expect(data.foo).to.be.equal 'bar'
-        chai.expect(receivedGroups).to.eql expectedGroups
         done()
 
       data.send
         foo: 'bar'
-      for grp in expectedGroups
-        ins.beginGroup grp
+      ins.post new noflo.IP 'data', 'foo'
+
+    it 'test kick with data and groups', (done) ->
+      expected = [
+        'CONN'
+        '< foo'
+        '< bar'
+        'DATA {"foo":"bar"}'
+        '>'
+        '>'
+        'DISC'
+      ]
+      received = []
+      out.on 'connect', ->
+        received.push 'CONN'
+      out.on 'begingroup', (group) ->
+        received.push "< #{group}"
+      out.on 'data', (data) ->
+        received.push "DATA #{JSON.stringify(data)}"
+      out.on 'endgroup', ->
+        received.push '>'
+      out.on 'disconnect', ->
+        received.push 'DISC'
+        chai.expect(received).to.eql expected
+        done()
+
+      data.send
+        foo: 'bar'
+      ins.beginGroup grp for grp in ['foo', 'bar']
       ins.send 'foo'
-      for grp in expectedGroups
-        ins.endGroup grp
+      ins.endGroup() for grp in ['foo', 'bar']
       ins.disconnect()

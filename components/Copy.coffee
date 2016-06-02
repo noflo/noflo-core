@@ -1,31 +1,23 @@
 noflo = require 'noflo'
 owl = require 'owl-deepcopy'
 
-# @runtime noflo-nodejs
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'deep (i.e. recursively) copy an object'
+  c.icon = 'copy'
 
-class Copy extends noflo.Component
-  description: 'deep (i.e. recursively) copy an object'
-  icon: 'copy'
+  c.inPorts.add 'in',
+    datatype: 'all'
+    description: 'Packet to be copied'
+  c.outPorts.add 'out',
+    datatype: 'all'
+    description: 'Copy of the original packet'
 
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'all'
-        description: 'Packet to be copied'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'all'
+  c.process (input, output) ->
+    data = input.get 'in'
+    return unless data.type is 'data'
 
-    @inPorts.in.on 'begingroup', (group) =>
-      @outPorts.out.beginGroup group
-
-    @inPorts.in.on 'data', (data) =>
-      @outPorts.out.send owl.deepCopy data
-
-    @inPorts.in.on 'endgroup', =>
-      @outPorts.out.endGroup()
-
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect()
-
-exports.getComponent = -> new Copy
+    copy = owl.deepCopy data
+    output.sendDone
+      out: copy
+    return

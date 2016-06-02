@@ -17,15 +17,15 @@ exports.getComponent = ->
     datatype: 'object'
     required: false
 
-  noflo.helpers.WirePattern c,
-    in: 'key'
-    out: 'out'
-    forwardGroups: true
-    async: true
-  , (data, groups, out, callback) ->
-    value = process.env[data]
-    return callback new Error "No environment variable #{data} set" if value is undefined
-    out.send process.env[data]
-    do callback
+  c.forwardBrackets =
+    key: ['out', 'error']
 
-  c
+  c.process (input, output) ->
+    data = input.getData 'key'
+    return unless data
+    value = process.env[data]
+    if value is undefined
+      output.sendDone new Error "No environment variable #{data} set"
+      return
+    output.sendDone
+      out: value

@@ -10,15 +10,9 @@ exports.getComponent = ->
   c.outPorts.add 'out',
     datatype: 'all'
 
-  noflo.helpers.WirePattern c,
-    in: ['in']
-    out: 'out'
-    forwardGroups: true
-    async: true
-  , (data, groups, out, callback) ->
+  c.process (input, output) ->
+    data = input.getData 'in'
     setTimeout ->
-      out.send data
-      do callback
+      output.sendDone
+        out: data
     , 0
-
-  c
