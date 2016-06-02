@@ -37,7 +37,7 @@
     "coffee-script": "^1.10.0",
     "fbp-spec": "^0.1.14",
     "grunt": "^0.4.5",
-    "grunt-coffeelint": "^0.0.15",
+    "grunt-coffeelint": "^0.0.16",
     "grunt-contrib-coffee": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
@@ -48,7 +48,9 @@
     "mocha": "^2.5.1",
     "noflo-nodejs": "^0.7.1"
   },
-  "keywords": ["noflo"],
+  "keywords": [
+    "noflo"
+  ],
   "noflo": {
     "components": {
       "Callback": "components/Callback.coffee",
