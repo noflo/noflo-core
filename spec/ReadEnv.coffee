@@ -29,7 +29,6 @@ describe 'ReadEnv component', ->
     it 'should return an error', (done) ->
       err.once 'data', (data) ->
         chai.expect(data).to.be.an 'error'
-      err.once 'disconnect', ->
         done()
       key.send 'baz'
       key.disconnect()
@@ -39,7 +38,6 @@ describe 'ReadEnv component', ->
     it 'should return the value', (done) ->
       out.once 'data', (data) ->
         chai.expect(data).to.equal 'bar'
-      out.once 'disconnect', ->
         done()
       key.send 'foo'
       key.disconnect()
