@@ -8,16 +8,13 @@ exports.getComponent = ->
   # inPorts
   c.inPorts.add 'name',
     description: 'The name of the global variable.'
-    required: true
 
   # outPorts
   c.outPorts.add 'value',
     description: 'The value of the variable.'
-    required: false
 
   c.outPorts.add 'error',
     description: 'Any errors that occured reading the variables value.'
-    required: true
 
   c.forwardBrackets =
     name: ['value', 'error']
