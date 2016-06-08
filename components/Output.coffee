@@ -1,4 +1,3 @@
-# @runtime noflo-nodejs
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
