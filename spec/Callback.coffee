@@ -1,10 +1,11 @@
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  Callback = require '../components/Callback.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
 else
-  Callback = require 'noflo-core/components/Callback.js'
+  baseDir = 'noflo-core'
 
 describe 'Callback component', ->
   c = null
@@ -12,13 +13,19 @@ describe 'Callback component', ->
   cb = null
   err = null
 
+  before (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'core/Callback', (err, instance) ->
+      return done err if err
+      c = instance
+      ins = noflo.internalSocket.createSocket()
+      cb = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+      c.inPorts.callback.attach cb
+      done()
   beforeEach ->
-    c = Callback.getComponent()
-    ins = noflo.internalSocket.createSocket()
-    cb = noflo.internalSocket.createSocket()
     err = noflo.internalSocket.createSocket()
-    c.inPorts.in.attach ins
-    c.inPorts.callback.attach cb
     c.outPorts.error.attach err
   afterEach ->
     c.outPorts.error.detach err
