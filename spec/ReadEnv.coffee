@@ -1,6 +1,7 @@
 noflo = require 'noflo'
 chai = require 'chai' unless chai
-ReadEnv = require '../components/ReadEnv.coffee'
+path = require 'path'
+baseDir = path.resolve __dirname, '../'
 
 describe 'ReadEnv component', ->
   c = null
@@ -8,14 +9,23 @@ describe 'ReadEnv component', ->
   out = null
   err = null
 
+  before (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'core/ReadEnv', (err, instance) ->
+      return done err if err
+      c = instance
+      key = noflo.internalSocket.createSocket()
+      c.inPorts.key.attach key
+      done()
   beforeEach ->
-    c = ReadEnv.getComponent()
-    key = noflo.internalSocket.createSocket()
     out = noflo.internalSocket.createSocket()
     err = noflo.internalSocket.createSocket()
-    c.inPorts.key.attach key
     c.outPorts.out.attach out
     c.outPorts.error.attach err
+  afterEach ->
+    c.outPorts.out.detach out
+    c.outPorts.error.detach err
 
   describe 'when instantiated', ->
     it 'should have input port', ->
