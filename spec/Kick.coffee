@@ -1,10 +1,11 @@
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  Kick = require '../components/Kick.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
 else
-  Kick = require 'noflo-core/components/Kick.js'
+  baseDir = 'noflo-core'
 
 describe 'Kick component', ->
   c = null
@@ -12,14 +13,23 @@ describe 'Kick component', ->
   data = null
   out = null
 
+  before (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'core/Kick', (err, instance) ->
+      return done err if err
+      c = instance
+      ins = noflo.internalSocket.createSocket()
+      data = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+      c.inPorts.data.attach data
+      done()
   beforeEach ->
-    c = Kick.getComponent()
-    ins = noflo.internalSocket.createSocket()
-    data = noflo.internalSocket.createSocket()
     out = noflo.internalSocket.createSocket()
-    c.inPorts.in.attach ins
-    c.inPorts.data.attach data
     c.outPorts.out.attach out
+  afterEach ->
+    c.outPorts.out.detach out
+    out = null
 
   describe 'when instantiated', ->
     it 'should have input ports', ->
