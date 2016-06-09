@@ -1,22 +1,28 @@
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  Split = require '../components/Split.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
 else
-  Split = require 'noflo-core/components/Split.js'
+  baseDir = 'noflo-core'
 
 describe 'Split component', ->
   c = null
   ins = null
   out = null
 
-  beforeEach ->
-    c = Split.getComponent()
-    ins = noflo.internalSocket.createSocket()
-    out = noflo.internalSocket.createSocket()
-    c.inPorts.in.attach ins
-    c.outPorts.out.attach out
+  beforeEach (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'core/Split', (err, instance) ->
+      return done err if err
+      c = instance
+      ins = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+      out = noflo.internalSocket.createSocket()
+      c.outPorts.out.attach out
+      done()
 
   describe 'when instantiated', ->
     it 'should have an input port', ->
