@@ -1,10 +1,11 @@
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  MakeFunction = require '../components/MakeFunction.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
 else
-  MakeFunction = require 'noflo-core/components/MakeFunction.js'
+  baseDir = 'noflo-core'
 
 describe 'MakeFunction component', ->
   c = null
@@ -14,18 +15,28 @@ describe 'MakeFunction component', ->
   outfunc = null
   err = null
 
+  before (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'core/MakeFunction', (err, instance) ->
+      return done err if err
+      c = instance
+      ins = noflo.internalSocket.createSocket()
+      func = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+      c.inPorts.function.attach func
+      done()
   beforeEach ->
-    c = MakeFunction.getComponent()
-    ins = noflo.internalSocket.createSocket()
-    func = noflo.internalSocket.createSocket()
     out = noflo.internalSocket.createSocket()
     outfunc = noflo.internalSocket.createSocket()
     err = noflo.internalSocket.createSocket()
-    c.inPorts.in.attach ins
-    c.inPorts.function.attach func
     c.outPorts.out.attach out
     c.outPorts.function.attach outfunc
     c.outPorts.error.attach err
+  afterEach ->
+    c.outPorts.out.detach out
+    c.outPorts.function.detach outfunc
+    c.outPorts.error.detach err
 
   describe 'when instantiated', ->
     it 'should have input ports', ->
