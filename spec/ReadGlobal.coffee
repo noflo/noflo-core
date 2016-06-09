@@ -1,21 +1,26 @@
 noflo = require 'noflo'
 
 unless noflo.isBrowser()
-  chai = require 'chai' unless chai
-  ReadGlobal = require '../components/ReadGlobal.coffee'
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
   window = global
 else
-  ReadGlobal = require 'noflo-core/components/ReadGlobal.js'
+  baseDir = 'noflo-core'
 
 expect = chai.expect
-
 
 describe 'ReadGlobal', ->
 
   c = null
 
-  beforeEach ->
-    c = ReadGlobal.getComponent()
+  beforeEach (done) ->
+    @timeout 4000
+    loader = new noflo.ComponentLoader baseDir
+    loader.load 'core/ReadGlobal', (err, instance) ->
+      return done err if err
+      c = instance
+      done()
 
   describe 'inPorts', ->
 
