@@ -20,7 +20,6 @@
   "keywords": [],
   "dependencies": {
     "noflo/noflo": "*",
-    "jashkenas/underscore": "1.8.3",
     "mrluc/owl-deepcopy": "*"
   },
   "remotes": [
