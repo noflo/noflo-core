@@ -1,7 +1,11 @@
 noflo = require 'noflo'
-chai = require 'chai' unless chai
-path = require 'path'
-baseDir = path.resolve __dirname, '../'
+unless noflo.isBrowser()
+  chai = require 'chai'
+  path = require 'path'
+  baseDir = path.resolve __dirname, '../'
+  window = global
+else
+  baseDir = 'noflo-core'
 
 describe 'ReadEnv component', ->
   c = null
@@ -11,6 +15,7 @@ describe 'ReadEnv component', ->
 
   before (done) ->
     @timeout 4000
+    return @skip() if noflo.isBrowser()
     loader = new noflo.ComponentLoader baseDir
     loader.load 'core/ReadEnv', (err, instance) ->
       return done err if err
@@ -28,6 +33,8 @@ describe 'ReadEnv component', ->
     c.outPorts.error.detach err
 
   describe 'when instantiated', ->
+    before ->
+      return @skip() if noflo.isBrowser()
     it 'should have input port', ->
       chai.expect(c.inPorts.key).to.be.an 'object'
 
@@ -36,6 +43,8 @@ describe 'ReadEnv component', ->
       chai.expect(c.outPorts.error).to.be.an 'object'
 
   describe 'reading a nonexistent env var', ->
+    before ->
+      return @skip() if noflo.isBrowser()
     it 'should return an error', (done) ->
       err.once 'data', (data) ->
         chai.expect(data).to.be.an 'error'
@@ -44,7 +53,9 @@ describe 'ReadEnv component', ->
       key.disconnect()
 
   describe 'reading a existing env var', ->
-    process.env.foo = 'bar'
+    before ->
+      return @skip() if noflo.isBrowser()
+      process.env.foo = 'bar'
     it 'should return the value', (done) ->
       out.once 'data', (data) ->
         chai.expect(data).to.equal 'bar'

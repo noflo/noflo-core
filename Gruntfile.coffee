@@ -15,6 +15,13 @@ module.exports = ->
       build:
         files:
           'browser/noflo-core.js': ['component.json']
+    # Generate runner.html
+    noflo_browser_mocha:
+      all:
+        options:
+          scripts: ["../browser/<%=pkg.name%>.js"]
+        files:
+          'spec/runner.html': ['spec/*.js', '!spec/fbpspec.js']
 
     # CoffeeScript compilation
     coffee:
@@ -92,6 +99,7 @@ module.exports = ->
       @task.run 'mochaTest'
     if target is 'all' or target is 'browser'
       @task.run 'coffee'
+      @task.run 'noflo_browser_mocha'
       @task.run 'mocha_phantomjs'
 
   @registerTask 'default', ['test']
