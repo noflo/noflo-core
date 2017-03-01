@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "0.x >= 0.7",
+    "noflo": "0.8.0",
     "owl-deepcopy": "~0.0.4"
   },
   "devDependencies": {
