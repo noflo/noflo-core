@@ -48,7 +48,7 @@
     "grunt-noflo-manifest": "^0.1.12",
     "json-loader": "^0.5.4",
     "mocha": "^3.2.0",
-    "noflo-nodejs": "0.x >= 0.7"
+    "noflo-nodejs": "0.8.1"
   },
   "keywords": [
     "noflo"
