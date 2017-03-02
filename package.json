@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "noflo": "0.8.0",
+    "noflo": "0.x >= 0.8",
     "owl-deepcopy": "~0.0.4"
   },
   "devDependencies": {
@@ -48,7 +48,7 @@
     "grunt-noflo-manifest": "^0.1.12",
     "json-loader": "^0.5.4",
     "mocha": "^3.2.0",
-    "noflo-nodejs": "0.8.1"
+    "noflo-nodejs": "0.x >= 0.8"
   },
   "keywords": [
     "noflo"
