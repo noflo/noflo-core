@@ -12,8 +12,6 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     data = input.get 'in'
-    return unless data.type is 'data'
     data.drop()
-    data.type = 'data'
     output.done()
     return
