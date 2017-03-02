@@ -19,17 +19,15 @@ exports.getComponent = ->
     datatype: 'object'
 
   c.process (input, output) ->
-    return unless input.has 'callback', 'in'
-    [callback, data] = input.get 'callback', 'in'
-    unless typeof callback.data is 'function'
+    return unless input.hasData 'callback', 'in'
+    [callback, data] = input.getData 'callback', 'in'
+    unless typeof callback is 'function'
       output.sendDone new Error 'The provided callback must be a function'
       return
 
-    return unless data.type is 'data'
-
     # Call the callback when receiving data
     try
-      callback.data data.data
+      callback data
     catch e
       return output.sendDone e
     output.done()

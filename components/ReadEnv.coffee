@@ -21,8 +21,8 @@ exports.getComponent = ->
     key: ['out', 'error']
 
   c.process (input, output) ->
+    return unless input.hasData 'key'
     data = input.getData 'key'
-    return unless data
     value = process.env[data]
     if value is undefined
       output.sendDone new Error "No environment variable #{data} set"
