@@ -40,16 +40,18 @@ describe 'Kick component', ->
       chai.expect(c.outPorts.out).to.be.an 'object'
 
   describe 'test kick', ->
-    it 'test that no packets are sent before disconnect', (done) ->
+    it 'test that no packets are sent before a stream is complete', (done) ->
       sent = false
       out.on 'data', (data) ->
         sent = true
 
-      ins.connect()
+      ins.beginGroup 'bar'
       ins.send 'foo'
       setTimeout ->
         chai.expect(sent, 'Should not have sent data').to.be.false
-        done()
+        c.shutdown (err) ->
+          return done err if err
+          c.start done
       , 5
 
     it 'test kick without specified data', (done) ->
