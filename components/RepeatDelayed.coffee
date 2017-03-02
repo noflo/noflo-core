@@ -19,8 +19,13 @@ exports.getComponent = ->
   c.outPorts.add 'out',
     datatype: 'all'
 
+  c.tearDown = (callback) ->
+    clearTimeout timer for timer in c.timers
+    c.timers = []
+    callback()
+
   c.process (input, output) ->
-    return unless input.has 'in'
+    return unless input.hasData 'in'
     delay = input.getData 'delay'
     payload = input.getData 'in'
 
@@ -30,9 +35,3 @@ exports.getComponent = ->
         out: payload
     , delay
     c.timers.push timer
-
-  c.shutdown = ->
-    clearTimeout timer for timer in c.timers
-    c.timers = []
-  
-  c
