@@ -20,6 +20,7 @@ exports.getComponent = ->
     name: ['value', 'error']
 
   c.process (input, output) ->
+    return unless input.hasData 'name'
     data = input.getData 'name'
 
     value = unless noflo.isBrowser() then global[data] else window[data]

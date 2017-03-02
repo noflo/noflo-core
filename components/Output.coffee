@@ -29,11 +29,12 @@ exports.getComponent = ->
     datatype: 'all'
 
   c.process (input, output) ->
+    return unless input.hasData 'in'
+
     options = null
     if input.has 'options'
       options = input.getData 'options'
 
-    return unless input.has 'in'
     data = input.getData 'in'
     log options, data
     output.sendDone

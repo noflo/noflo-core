@@ -24,7 +24,7 @@ describe 'Drop component', ->
     it 'should drop it', (done) ->
       ip = new noflo.IP 'data', 'Foo'
       setTimeout ->
-        chai.expect(Object.keys(ip)).to.eql ['type']
+        chai.expect(Object.keys(ip)).to.eql []
         done()
       , 200
       ins.connect()

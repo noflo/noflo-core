@@ -14,8 +14,8 @@ exports.getComponent = ->
     description: 'Copy of the original packet'
 
   c.process (input, output) ->
-    data = input.get 'in'
-    return unless data.type is 'data'
+    return unless input.hasData 'in'
+    data = input.getData 'in'
 
     copy = owl.deepCopy data
     output.sendDone

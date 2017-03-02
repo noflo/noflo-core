@@ -21,22 +21,27 @@ exports.getComponent = ->
   c.forwardBrackets =
     start: ['out']
 
-  c.process (input, output) ->
-    return unless input.has 'time', 'start'
+  c.stopTimer = ->
+    return unless c.timer
+    clearTimeout c.timer.timeout
+    c.timer.deactivate()
+    c.timer = null
+
+  c.tearDown = (callback) ->
+    c.stopTimer()
+    callback()
+
+  c.process (input, output, context) ->
+    return unless input.hasData 'time', 'start'
     time = input.getData 'time'
-    c.stopTimer() if c.timer
-    c.timer = setTimeout ->
+    bang = input.getData 'start'
+    # Ensure we deactivate previous timeout, if any
+    c.stopTimer()
+    # Set up new timer
+    context.timeout = setTimeout ->
       c.timer = null
       output.sendDone
         out: true
     , time
-
-  c.stopTimer = ->
-    return unless c.timer
-    clearTimeout c.timer
-    c.timer = null
-
-  c.shutdown = ->
-    c.stopTimer()
-
-  c
+    c.timer = context
+    return

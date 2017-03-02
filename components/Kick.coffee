@@ -18,32 +18,10 @@ exports.getComponent = ->
   c.outPorts.add 'out',
     datatype: 'all'
 
-  brackets = []
-  scope = []
-  c.ordered = true
-  c.forwardBrackets = {}
   c.process (input, output) ->
-    return unless input.has 'in'
-    data = input.get 'in'
-    if data.type is 'openBracket'
-      brackets.push data.data
-    if data.type is 'closeBracket'
-      brackets.pop()
-    if data.type is 'data'
-      scope = brackets.slice 0
-
-    if data.type in ['data', 'closeBracket'] and brackets.length is 0
-      content = input.get 'data'
-      for bracket in scope
-        output.sendIP 'out', new noflo.IP 'openBracket', bracket
-      output.sendIP 'out', content
-      for bracket in scope
-        output.sendIP 'out', new noflo.IP 'closeBracket', bracket
-
+    return unless input.hasStream 'in'
+    bang = input.getData 'in'
+    data = input.getData 'data'
+    output.send
+      out: data
     output.done()
-
-  c.shutdown = ->
-    brackets = []
-    scope = []
-
-  c
