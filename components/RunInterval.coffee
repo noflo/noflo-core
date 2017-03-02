@@ -20,37 +20,41 @@ exports.getComponent = ->
 
   c.timers = {}
 
-  c.process (input, output) ->
-    return unless input.has 'interval'
+  cleanUp = (scope) ->
+    return unless c.timers[scope]
+    clearInterval c.timers[scope].interval
+    c.timers[scope].deactivate()
+    c.timers[scope] = null
 
-    if input.has 'start'
+  c.tearDown = (callback) ->
+    for scope, context of c.timers
+      cleanUp scope
+    c.timers = {}
+    callback()
+
+  c.process (input, output, context) ->
+    if input.hasData 'start'
+      return unless input.hasData 'interval'
       start = input.get 'start'
-      interval = parseInt input.getData 'interval'
       return unless start.type is 'data'
+      interval = parseInt input.getData 'interval'
+      # Ensure we deactivate previous interval in this scope, if any
+      cleanUp start.scope
 
-      if c.timers[start.scope]
-        clearInterval c.timers[start.scope]
-
-      c.timers[start.scope] = setInterval ->
+      # Set up interval
+      context.interval = setInterval ->
         bang = new noflo.IP 'data', true
         bang.scope = start.scope
         c.outPorts.out.sendIP bang
       , interval
-      # TODO: Notify network of running generator
+
+      # Register scope, we keep it active until stopped
+      c.timers[start.scope] = context
       return
 
-    if input.has 'stop'
+    if input.hasData 'stop'
       stop = input.get 'stop'
       return unless stop.type is 'data'
-      return unless c.timers[stop.scope]
-      clearInterval c.timers[stop.scope]
-      delete c.timers[stop.scope]
-      # TODO: Notify network of stopped generator
+      # Deactivate interval in this scope
+      cleanUp stop.scope
       return
-
-  c.shutdown = ->
-    for scope, interval of c.timers
-      clearInterval interval
-    c.timers = {}
-
-  c
