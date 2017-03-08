@@ -33,8 +33,7 @@ exports.getComponent = ->
     forwardGroups: true
     async: true
   , (data, groups, out, callback) ->
-    log c.params.options, data
+    options = c.params.options? or null
+    log options, data
     out.send data
     do callback
-
-  c
