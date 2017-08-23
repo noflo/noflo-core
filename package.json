@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "chai": "^4.0.0",
-    "coffee-loader": "^0.7.2",
+    "coffee-loader": "^0.8.0",
     "coffee-script": "^1.10.0",
     "fbp-loader": "^0.1.1",
     "fbp-spec": "^0.2.0",
