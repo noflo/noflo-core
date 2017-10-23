@@ -18,8 +18,7 @@ exports.getComponent = ->
   c.forwardBrackets = {}
   c.process (input, output) ->
     return unless input.hasData 'in'
-    bang = input.get 'in'
-    return unless bang.type is 'data'
+    bang = input.getData 'in'
 
     unless input.hasData 'data'
       # No data packets in the buffer, send "empty"
