@@ -22,12 +22,12 @@ exports.getComponent = ->
     return unless input.hasData 'callback', 'in'
     [callback, data] = input.getData 'callback', 'in'
     unless typeof callback is 'function'
-      output.sendDone new Error 'The provided callback must be a function'
+      output.done new Error 'The provided callback must be a function'
       return
 
     # Call the callback when receiving data
     try
       callback data
     catch e
-      return output.sendDone e
+      return output.done e
     output.done()
