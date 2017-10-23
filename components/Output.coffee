@@ -30,6 +30,7 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     return unless input.hasData 'in'
+    return if input.attached('options').length and not input.hasData 'options'
 
     options = null
     if input.has 'options'
