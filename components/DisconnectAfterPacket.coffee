@@ -2,8 +2,7 @@ noflo = require 'noflo'
 
 exports.getComponent = ->
   c = new noflo.Component
-  c.description = 'Forwards any packets, but also sends a disconnect after
-  each of them'
+  c.description = 'Makes each data packet a stream of its own'
   c.icon = 'pause'
   c.forwardBrackets = {}
   c.autoOrdering = false
@@ -14,30 +13,32 @@ exports.getComponent = ->
   c.outPorts.add 'out',
     datatype: 'all'
 
-  brackets = []
+  brackets = {}
+  c.tearDown = (callback) ->
+    brackets = {}
   c.process (input, output) ->
     # Force auto-ordering to be off for this one
     c.autoOrdering = false
 
     data = input.get 'in'
+    brackets[input.scope] = [] unless brackets[input.scope]
     if data.type is 'openBracket'
-      brackets.push data.data
+      brackets[input.scope].push data.data
+      output.done()
       return
     if data.type is 'closeBracket'
-      brackets.pop()
+      brackets[input.scope].pop()
+      output.done()
       return
 
     return unless data.type is 'data'
 
-    for bracket in brackets
+    for bracket in brackets[input.scope]
       output.sendIP 'out', new noflo.IP 'openBracket', bracket
     output.sendIP 'out', data
-    for bracket in brackets
+    closes = brackets[input.scope].slice 0
+    closes.reverse()
+    for bracket in closes
       output.sendIP 'out', new noflo.IP 'closeBracket', bracket
 
     output.done()
-
-  c.shutdown = ->
-    brackets = []
-
-  c
