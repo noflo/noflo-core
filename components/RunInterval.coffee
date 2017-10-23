@@ -32,6 +32,7 @@ exports.getComponent = ->
     c.timers = {}
     callback()
 
+  c.forwardBrackets = {}
   c.process (input, output, context) ->
     if input.hasData 'start'
       return unless input.hasData 'interval'
