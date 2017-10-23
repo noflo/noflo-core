@@ -11,7 +11,7 @@ exports.getComponent = ->
     datatype: 'all'
 
   c.process (input, output) ->
-    data = input.getData 'in'
+    data = input.get 'in'
     setTimeout ->
       output.sendDone
         out: data

@@ -26,8 +26,12 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     return unless input.hasData 'in'
-    delay = input.getData 'delay'
-    payload = input.getData 'in'
+    return if input.attached('delay').length and not input.hasData 'delay'
+
+    delay = 500
+    if input.hasData 'delay'
+      delay = input.getData 'delay'
+    payload = input.get 'in'
 
     timer = setTimeout ->
       c.timers.splice c.timers.indexOf(timer), 1
