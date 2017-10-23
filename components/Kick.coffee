@@ -20,6 +20,7 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     return unless input.hasStream 'in'
+    return if input.attached('data').length and not input.hasData 'data'
     bang = input.getData 'in'
     data = input.getData 'data'
     output.send
