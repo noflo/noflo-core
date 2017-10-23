@@ -21,9 +21,7 @@ describe 'MakeFunction component', ->
     loader.load 'core/MakeFunction', (err, instance) ->
       return done err if err
       c = instance
-      ins = noflo.internalSocket.createSocket()
       func = noflo.internalSocket.createSocket()
-      c.inPorts.in.attach ins
       c.inPorts.function.attach func
       done()
   beforeEach ->
@@ -47,15 +45,7 @@ describe 'MakeFunction component', ->
       chai.expect(c.outPorts.out).to.be.an 'object'
       chai.expect(c.outPorts.error).to.be.an 'object'
 
-  describe 'test function', ->
-    it 'without function', (done) ->
-      err.on 'data', (data) ->
-        chai.expect(data).to.be.an 'error'
-        done()
-
-      ins.send 'Foo bar'
-      ins.disconnect()
-
+  describe 'with only function', ->
     it 'wrong function', (done) ->
       err.on 'data', (data) ->
         chai.expect(data).to.be.ok
@@ -72,6 +62,13 @@ describe 'MakeFunction component', ->
         done data
       func.send 'return x*x;'
 
+  describe 'with function and input data', ->
+    before ->
+      ins = noflo.internalSocket.createSocket()
+      c.inPorts.in.attach ins
+    after ->
+      c.inPorts.in.detach ins
+      ins = null
     it 'square function', (done) ->
       out.on 'data', (data) ->
         chai.expect(data).to.equal 81

@@ -22,31 +22,42 @@ exports.getComponent = ->
   c.outPorts.add 'error',
     datatype: 'object'
 
+  prepareFunction = (func, callback) ->
+    if typeof func is 'function'
+      callback null, func
+      return
+    try
+      newFunc = Function 'x', func
+    catch e
+      callback e
+      return
+    callback null, newFunc
+
   c.process (input, output) ->
-    if input.has 'function'
-      func = input.getData 'function'
-      unless typeof func is 'function'
-        try
-          func = Function 'x', func
-        catch e
-          output.sendDone e
+    return if input.attached('in').length and not input.hasData 'in'
+    if input.hasData 'function', 'in'
+      # Both function and input data
+      prepareFunction input.getData('function'), (err, func) ->
+        if err
+          output.done e
           return
-      unless input.has 'in'
+        data = input.getData 'in'
+        try
+          result = func data
+        catch e
+          output.done e
+          return
         output.sendDone
           function: func
+          out: result
         return
-
-    unless func
-      output.sendDone new Error 'No function defined'
       return
-
-    data = input.getData 'in'
-    try
-      result = func data
-    catch e
-      output.sendDone e
+    return unless input.hasData 'function'
+    prepareFunction input.getData('function'), (err, func) ->
+      if err
+        output.done e
+        return
+      output.sendDone
+        function: func
       return
-
-    output.sendDone
-      function: func
-      out: result
+    return
