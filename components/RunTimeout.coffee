@@ -5,7 +5,7 @@ exports.getComponent = ->
   c.description = 'Send a packet after the given time in ms'
   c.icon = 'clock-o'
 
-  c.timer = null
+  c.timer = {}
 
   c.inPorts.add 'time',
     datatype: 'number'
@@ -21,14 +21,15 @@ exports.getComponent = ->
   c.forwardBrackets =
     start: ['out']
 
-  c.stopTimer = ->
-    return unless c.timer
-    clearTimeout c.timer.timeout
-    c.timer.deactivate()
-    c.timer = null
+  c.stopTimer = (scope) ->
+    return unless c.timer[scope]
+    clearTimeout c.timer[scope].timeout
+    c.timer[scope].deactivate()
+    delete c.timer[scope]
 
   c.tearDown = (callback) ->
-    c.stopTimer()
+    for scope, timer of c.timer
+      c.stopTimer scope
     callback()
 
   c.process (input, output, context) ->
@@ -36,12 +37,12 @@ exports.getComponent = ->
     time = input.getData 'time'
     bang = input.getData 'start'
     # Ensure we deactivate previous timeout, if any
-    c.stopTimer()
+    c.stopTimer input.scope
     # Set up new timer
     context.timeout = setTimeout ->
       c.timer = null
       output.sendDone
         out: true
     , time
-    c.timer = context
+    c.timer[input.scope] = context
     return
