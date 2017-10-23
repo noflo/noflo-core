@@ -20,16 +20,16 @@ describe 'Kick component', ->
       return done err if err
       c = instance
       ins = noflo.internalSocket.createSocket()
-      data = noflo.internalSocket.createSocket()
       c.inPorts.in.attach ins
-      c.inPorts.data.attach data
       done()
-  beforeEach ->
+  beforeEach (done) ->
     out = noflo.internalSocket.createSocket()
     c.outPorts.out.attach out
-  afterEach ->
+    c.start done
+  afterEach (done) ->
     c.outPorts.out.detach out
     out = null
+    c.shutdown done
 
   describe 'when instantiated', ->
     it 'should have input ports', ->
@@ -39,8 +39,8 @@ describe 'Kick component', ->
     it 'should have an output port', ->
       chai.expect(c.outPorts.out).to.be.an 'object'
 
-  describe 'test kick', ->
-    it 'test that no packets are sent before a stream is complete', (done) ->
+  describe 'without full stream', ->
+    it 'should not send anything', (done) ->
       sent = false
       out.on 'data', (data) ->
         sent = true
@@ -54,7 +54,8 @@ describe 'Kick component', ->
           c.start done
       , 5
 
-    it 'test kick without specified data', (done) ->
+  describe 'without specified data', ->
+    it 'it should send a NULL', (done) ->
       out.on 'data', (data) ->
         chai.expect(data).to.be.null
         done()
@@ -63,7 +64,14 @@ describe 'Kick component', ->
       ins.send 'foo'
       ins.disconnect()
 
-    it 'test kick with data', (done) ->
+  describe 'with data', ->
+    before ->
+      data = noflo.internalSocket.createSocket()
+      c.inPorts.data.attach data
+    after ->
+      c.inPorts.data.detach data
+      data = null
+    it 'should send the supplied data', (done) ->
       out.once "data", (data) ->
         chai.expect(data).to.be.an 'object'
         chai.expect(data.foo).to.be.equal 'bar'
@@ -74,7 +82,7 @@ describe 'Kick component', ->
       ins.send 'foo'
       ins.disconnect()
 
-    it 'test kick with no brackets', (done) ->
+    it 'should send data on a kick IP', (done) ->
       out.once "data", (data) ->
         chai.expect(data).to.be.an 'object'
         chai.expect(data.foo).to.be.equal 'bar'
@@ -84,7 +92,7 @@ describe 'Kick component', ->
         foo: 'bar'
       ins.post new noflo.IP 'data', 'foo'
 
-    it 'test kick with data and groups', (done) ->
+    it 'should send data on a kick stream', (done) ->
       expected = [
         'CONN'
         '< foo'
