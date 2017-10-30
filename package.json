@@ -33,8 +33,10 @@
   },
   "devDependencies": {
     "chai": "^4.0.0",
+    "coffee-coverage": "^2.0.1",
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.10.0",
+    "coveralls": "^3.0.0",
     "fbp-loader": "^0.1.1",
     "fbp-spec": "^0.2.0",
     "grunt": "^1.0.1",
@@ -47,33 +49,18 @@
     "grunt-noflo-browser": "^1.4.0",
     "json-loader": "^0.5.4",
     "mocha": "^4.0.0",
-    "noflo-nodejs": "0.x >= 0.8"
+    "noflo-nodejs": "0.x >= 0.8",
+    "nyc": "^11.2.1"
   },
   "keywords": [
     "noflo"
   ],
-  "noflo": {
-    "components": {
-      "Callback": "components/Callback.coffee",
-      "Copy": "components/Copy.coffee",
-      "DisconnectAfterPacket": "components/DisconnectAfterPacket.coffee",
-      "Drop": "components/Drop.coffee",
-      "Kick": "components/Kick.coffee",
-      "MakeFunction": "components/MakeFunction.coffee",
-      "Merge": "components/Merge.coffee",
-      "Output": "components/Output.coffee",
-      "ReadEnv": "components/ReadEnv.coffee",
-      "ReadGlobal": "components/ReadGlobal.coffee",
-      "Repeat": "components/Repeat.coffee",
-      "RepeatAsync": "components/RepeatAsync.coffee",
-      "RepeatDelayed": "components/RepeatDelayed.coffee",
-      "RunInterval": "components/RunInterval.coffee",
-      "RunTimeout": "components/RunTimeout.coffee",
-      "SendNext": "components/SendNext.coffee",
-      "Split": "components/Split.coffee"
-    }
-  },
   "scripts": {
-    "test": "grunt test"
+    "test": "nyc grunt test"
+  },
+  "nyc": {
+    "include": [
+      "components/*.coffee"
+    ]
   }
 }

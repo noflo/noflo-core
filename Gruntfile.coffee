@@ -46,7 +46,10 @@ module.exports = ->
         src: ['spec/*.coffee']
         options:
           reporter: 'spec'
-          require: 'coffee-script/register'
+          require: [
+            'coffee-script/register'
+            'coffee-coverage/register-istanbul'
+          ]
           grep: process.env.TESTS
 
     # BDD tests on browser
