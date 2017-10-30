@@ -8,3 +8,5 @@ components/*/
 spec/*.xml
 spec/runner.html
 flowhub.json
+/.nyc_output/
+/coverage/
