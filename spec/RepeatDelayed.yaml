@@ -1,14 +1,4 @@
 topic: "core/RepeatDelayed"
-fixture:
- type: 'fbp'
- data: |
-  # @runtime noflo
-
-  INPORT=it.IN:IN
-  OUTPORT=f.OUT:OUT
-
-  it(core/RepeatDelayed) OUT -> IN f(core/RepeatDelayed)
-
 cases:
 -
   name: 'sending a boolean'

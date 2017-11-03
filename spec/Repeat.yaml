@@ -1,14 +1,4 @@
 topic: "core/Repeat"
-fixture:
- type: 'fbp'
- data: |
-  # @runtime noflo
-
-  INPORT=it.IN:IN
-  OUTPORT=f.OUT:OUT
-
-  it(core/Repeat) OUT -> IN f(core/Repeat)
-
 cases:
 -
   name: 'sending a boolean'
