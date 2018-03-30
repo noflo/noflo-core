@@ -46,7 +46,7 @@
     "grunt-mocha-test": "^0.13.2",
     "grunt-noflo-browser": "^1.5.0",
     "mocha": "^5.0.0",
-    "noflo-nodejs": "0.x >= 0.8",
+    "noflo-nodejs": "^0.10.1",
     "nyc": "^11.2.1"
   },
   "keywords": [
