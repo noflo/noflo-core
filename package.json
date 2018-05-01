@@ -35,7 +35,7 @@
     "chai": "^4.0.0",
     "coffee-coverage": "^3.0.0",
     "coffeescript": "^2.0.2",
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.1",
     "fbp-spec": "^0.6.0",
     "grunt": "^1.0.1",
     "grunt-coffeelint": "^0.0.16",
