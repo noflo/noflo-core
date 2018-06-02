@@ -1,3 +1,6 @@
+/* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true}] */
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+
 module.exports = (config) => {
   const files = [
     {

@@ -11,3 +11,4 @@ flowhub.json
 /.nyc_output/
 /coverage/
 /.cache/
+/browser/
