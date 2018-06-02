@@ -14,3 +14,5 @@ deploy:
   on:
     tags: true
     repo: noflo/noflo-core
+addons:
+  chrome: stable

@@ -37,16 +37,6 @@ module.exports = function () {
         },
       },
     },
-
-    // BDD tests on browser
-    mocha_phantomjs: {
-      options: {
-        output: 'spec/result.xml',
-        reporter: 'spec',
-        failWithOutput: true,
-      },
-      all: ['spec/runner.html'],
-    },
   });
 
   // Grunt plugins used for building
@@ -54,7 +44,6 @@ module.exports = function () {
 
   // Grunt plugins used for testing
   this.loadNpmTasks('grunt-mocha-test');
-  this.loadNpmTasks('grunt-mocha-phantomjs');
 
   // Our local tasks
   this.registerTask('build', 'Build NoFlo for the chosen target platform', (target = 'all') => {
@@ -67,10 +56,6 @@ module.exports = function () {
     this.task.run('build');
     if ((target === 'all') || (target === 'nodejs')) {
       this.task.run('mochaTest');
-    }
-    if ((target === 'all') || (target === 'browser')) {
-      this.task.run('noflo_browser_mocha');
-      this.task.run('mocha_phantomjs');
     }
   });
 

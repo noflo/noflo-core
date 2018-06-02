@@ -10,3 +10,4 @@ spec/runner.html
 flowhub.json
 /.nyc_output/
 /coverage/
+/.cache/
