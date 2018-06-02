@@ -50,6 +50,7 @@
     "noflo"
   ],
   "scripts": {
+    "pretest": "eslint *.js **/*.js",
     "test": "nyc grunt test"
   },
   "nyc": {
