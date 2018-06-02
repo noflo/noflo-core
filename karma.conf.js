@@ -22,7 +22,13 @@ module.exports = (config) => {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: false,
-    browsers: ['ChromeHeadless'],
+    browsers: ['Chrome_without_security'],
+    customLaunchers: {
+      Chrome_without_security: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox'],
+      },
+    },
     singleRun: true,
     concurrency: Infinity,
   };
