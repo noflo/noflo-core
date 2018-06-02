@@ -30,9 +30,7 @@ module.exports = function () {
         src: ['spec/*.js'],
         options: {
           reporter: 'spec',
-          require: [
-            'coffeescript/register',
-          ],
+          require: [],
           grep: process.env.TESTS,
         },
       },

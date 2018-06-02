@@ -1,25 +1,11 @@
-/* eslint-disable
-    func-names,
-    global-require,
-    import/no-unresolved,
-    no-return-assign,
-    no-undef,
-    one-var,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let baseDir,
-  chai;
+/* global describe it before beforeEach afterEach */
 const noflo = require('noflo');
+const path = require('path');
+const chai = require('chai');
+
+let baseDir;
 
 if (!noflo.isBrowser()) {
-  chai = require('chai');
-  const path = require('path');
   baseDir = path.resolve(__dirname, '../');
 } else {
   baseDir = 'noflo-core';
@@ -32,24 +18,27 @@ describe('Copy component', () => {
   before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/Copy', (err, instance) => {
-      if (err) { return done(err); }
+    loader.load('core/Copy', (err, instance) => {
+      if (err) {
+        done(err);
+        return;
+      }
       c = instance;
       ins = noflo.internalSocket.createSocket();
       c.inPorts.in.attach(ins);
-      return done();
+      done();
     });
   });
   beforeEach(() => {
     out = noflo.internalSocket.createSocket();
-    return c.outPorts.out.attach(out);
+    c.outPorts.out.attach(out);
   });
   afterEach(() => {
     c.outPorts.out.detach(out);
-    return out = null;
+    out = null;
   });
 
-  return describe('when receiving an object', () =>
+  describe('when receiving an object', () =>
     it('should send a copy of the object', (done) => {
       const original = {
         hello: 'world',
@@ -59,10 +48,10 @@ describe('Copy component', () => {
       out.on('data', (data) => {
         chai.expect(data).to.eql(original);
         chai.expect(data).to.not.equal(original);
-        return done();
+        done();
       });
 
       ins.send(original);
-      return ins.disconnect();
+      ins.disconnect();
     }));
 });

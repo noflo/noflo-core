@@ -1,26 +1,11 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    global-require,
-    import/no-unresolved,
-    no-return-assign,
-    no-undef,
-    one-var,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let baseDir,
-  chai;
+/* global describe it before beforeEach afterEach */
 const noflo = require('noflo');
+const path = require('path');
+const chai = require('chai');
+
+let baseDir;
 
 if (!noflo.isBrowser()) {
-  chai = require('chai');
-  const path = require('path');
   baseDir = path.resolve(__dirname, '../');
 } else {
   baseDir = 'noflo-core';
@@ -33,21 +18,24 @@ describe('DisconnectAfterPacket component', () => {
   before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/DisconnectAfterPacket', (err, instance) => {
-      if (err) { return done(err); }
+    loader.load('core/DisconnectAfterPacket', (err, instance) => {
+      if (err) {
+        done(err);
+        return;
+      }
       c = instance;
       ins = noflo.internalSocket.createSocket();
       c.inPorts.in.attach(ins);
-      return done();
+      done();
     });
   });
   beforeEach(() => {
     out = noflo.internalSocket.createSocket();
-    return c.outPorts.out.attach(out);
+    c.outPorts.out.attach(out);
   });
   afterEach(() => {
     c.outPorts.out.detach(out);
-    return out = null;
+    out = null;
   });
 
   describe('when receiving two packets', () =>
@@ -66,15 +54,15 @@ describe('DisconnectAfterPacket component', () => {
         received.push('DISC');
         if (received.length !== expected.length) { return; }
         chai.expect(received).to.eql(expected);
-        return done();
+        done();
       });
 
       ins.send(1);
       ins.send(2);
-      return ins.disconnect();
+      ins.disconnect();
     }));
 
-  return describe('when receiving complex substream of packets', () =>
+  describe('when receiving complex substream of packets', () => {
     it('should send a disconnect for each', (done) => {
       const expected = [
         'CONN',
@@ -106,7 +94,7 @@ describe('DisconnectAfterPacket component', () => {
         received.push('DISC');
         if (received.length !== expected.length) { return; }
         chai.expect(received).to.eql(expected);
-        return done();
+        done();
       });
 
       ins.connect();
@@ -117,6 +105,7 @@ describe('DisconnectAfterPacket component', () => {
       ins.send(3);
       ins.endGroup();
       ins.endGroup();
-      return ins.disconnect();
-    }));
+      ins.disconnect();
+    });
+  });
 });

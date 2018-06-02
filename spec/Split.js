@@ -1,31 +1,10 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    global-require,
-    import/no-unresolved,
-    no-loop-func,
-    no-restricted-syntax,
-    no-undef,
-    no-var,
-    one-var,
-    vars-on-top,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let baseDir,
-  chai;
+/* global describe it beforeEach */
 const noflo = require('noflo');
+const path = require('path');
+const chai = require('chai');
 
+let baseDir;
 if (!noflo.isBrowser()) {
-  chai = require('chai');
-  const path = require('path');
   baseDir = path.resolve(__dirname, '../');
 } else {
   baseDir = 'noflo-core';
@@ -39,21 +18,28 @@ describe('Split component', () => {
   beforeEach(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/Split', (err, instance) => {
-      if (err) { return done(err); }
+    loader.load('core/Split', (err, instance) => {
+      if (err) {
+        done(err);
+        return;
+      }
       c = instance;
       ins = noflo.internalSocket.createSocket();
       c.inPorts.in.attach(ins);
       out = noflo.internalSocket.createSocket();
       c.outPorts.out.attach(out);
-      return done();
+      done();
     });
   });
 
   describe('when instantiated', () => {
-    it('should have an input port', () => chai.expect(c.inPorts.in).to.be.an('object'));
+    it('should have an input port', () => {
+      chai.expect(c.inPorts.in).to.be.an('object');
+    });
 
-    return it('should have an output port', () => chai.expect(c.outPorts.out).to.be.an('object'));
+    it('should have an output port', () => {
+      chai.expect(c.outPorts.out).to.be.an('object');
+    });
   });
 
   describe('when sending no packet, only groups', () =>
@@ -61,33 +47,33 @@ describe('Split component', () => {
       this.timeout(500);
       setTimeout(done, 100);
       ins.beginGroup('foo');
-      return ins.endGroup();
+      ins.endGroup();
     }));
 
   describe('when sending only one packet', () => {
     it('should forward the packet', (done) => {
       out.on('data', (data) => {
         chai.expect(data).to.equal('foo');
-        return done();
+        done();
       });
-      return ins.send('foo');
+      ins.send('foo');
     });
-    return it('should forward groups', (done) => {
+    it('should forward groups', (done) => {
       const groups = [];
       out.on('begingroup', group => groups.push(group));
       out.on('endgroup', () => groups.pop());
       out.on('data', (data) => {
         chai.expect(data).to.equal('foo');
         chai.expect(groups[0]).to.equal('bar');
-        return done();
+        done();
       });
       ins.beginGroup('bar');
       ins.send('foo');
-      return ins.endGroup();
+      ins.endGroup();
     });
   });
 
-  return describe('when sending many packets', () => {
+  describe('when sending many packets', () => {
     it('should forward all packets', (done) => {
       const ids = ['foo', 'bar', 'baz'];
       let packets = [];
@@ -95,68 +81,47 @@ describe('Split component', () => {
         packets.push(data);
         if (packets.length > 2) {
           chai.expect(packets.length).to.deep.equal(3);
-          for (const id of Array.from(ids)) {
+          ids.forEach((id) => {
             chai.expect(packets).to.include(id);
-          }
+          });
           packets = [];
-          return done();
+          done();
         }
       });
-      return (() => {
-        const result = [];
-        for (const id of Array.from(ids)) {
-          result.push(ins.send(id));
-        }
-        return result;
-      })();
+      ids.forEach((id) => {
+        ins.send(id);
+      });
     });
-    return it('should forward the right groups', (done) => {
+    it('should forward the right groups', (done) => {
       const ids = ['foo', 'bar', 'baz'];
       let packets = [];
       const groups = [];
       out.on('begingroup', group => groups.push(group));
       out.on('endgroup', () => groups.pop());
       out.on('data', (data) => {
-        let packet;
         packets.push({
           data,
           groups: groups.slice(0),
         });
         if (packets.length > 2) {
           chai.expect(packets.length).to.deep.equal(3);
-          for (var id of Array.from(ids)) {
-            const allData = ((() => {
-              const result = [];
-              for (packet of Array.from(packets)) {
-                result.push(packet.data);
-              }
-              return result;
-            })());
-            const idGroups = ((() => {
-              const result1 = [];
-              for (packet of Array.from(packets)) {
-                if (packet.data === id) {
-                  result1.push(packet.groups);
-                }
-              }
-              return result1;
-            })());
+          ids.forEach((id) => {
+            const allData = packets.map(p => p.data);
+            const idGroups = packets
+              .filter(p => p.data === id)
+              .map(p => p.groups);
             chai.expect(allData).to.include(id);
             chai.expect(idGroups[0]).to.deep.equal([`group-of-${id}`]);
-          }
+          });
           packets = [];
-          return done();
+          done();
         }
       });
-      return (() => {
-        const result = [];
-        for (const id of Array.from(ids)) {
-          ins.beginGroup(`group-of-${id}`);
-          ins.send(id);
-          result.push(ins.endGroup());
-        }
-        return result;
-      })();
+      ids.forEach((id) => {
+        ins.beginGroup(`group-of-${id}`);
+        ins.send(id);
+        ins.endGroup();
+      });
     });
   });
 });

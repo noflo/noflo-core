@@ -1,26 +1,10 @@
-/* eslint-disable
-    func-names,
-    global-require,
-    import/no-unresolved,
-    no-return-assign,
-    no-undef,
-    no-unused-vars,
-    one-var,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let baseDir,
-  chai;
+/* global describe it before beforeEach afterEach */
 const noflo = require('noflo');
+const path = require('path');
+const chai = require('chai');
 
+let baseDir;
 if (!noflo.isBrowser()) {
-  chai = require('chai');
-  const path = require('path');
   baseDir = path.resolve(__dirname, '../');
 } else {
   baseDir = 'noflo-core';
@@ -35,38 +19,42 @@ describe('SendNext component', () => {
   before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/SendNext', (err, instance) => {
-      if (err) { return done(err); }
+    loader.load('core/SendNext', (err, instance) => {
+      if (err) {
+        done(err);
+        return;
+      }
       c = instance;
       data = noflo.internalSocket.createSocket();
       c.inPorts.data.attach(data);
       ins = noflo.internalSocket.createSocket();
       c.inPorts.in.attach(ins);
-      return done();
+      done();
     });
   });
   beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     c.outPorts.out.attach(out);
     empty = noflo.internalSocket.createSocket();
-    return c.outPorts.empty.attach(empty);
+    c.outPorts.empty.attach(empty);
   });
   afterEach(() => {
     c.outPorts.out.detach(out);
     out = null;
     c.outPorts.empty.detach(empty);
-    return empty = null;
+    empty = null;
   });
 
-  describe('receiving bang when there is no data', () =>
+  describe('receiving bang when there is no data', () => {
     it('should send a bang to the empty port', (done) => {
-      empty.on('data', d => done());
+      empty.on('data', () => done());
 
       ins.send(true);
-      return ins.disconnect();
-    }));
+      ins.disconnect();
+    });
+  });
 
-  return describe('receiving two bangs with a grouped data stream', () =>
+  describe('receiving two bangs with a grouped data stream', () => {
     it('should send the correct sequence of packets', (done) => {
       let received = [];
       const expected1 = [
@@ -98,23 +86,18 @@ describe('SendNext component', () => {
 
       ins.send(true);
       ins.disconnect();
-      return setTimeout(
-        () => {
-          chai.expect(received).to.eql(expected1);
-          received = [];
+      setTimeout(() => {
+        chai.expect(received).to.eql(expected1);
+        received = [];
 
-          ins.send(true);
-          ins.disconnect();
-          return setTimeout(
-            () => {
-              chai.expect(received).to.eql(expected2);
-              received = [];
-              return done();
-            }
-            , 1,
-          );
-        }
-        , 1,
-      );
-    }));
+        ins.send(true);
+        ins.disconnect();
+        setTimeout(() => {
+          chai.expect(received).to.eql(expected2);
+          received = [];
+          done();
+        }, 1);
+      }, 1);
+    });
+  });
 });
