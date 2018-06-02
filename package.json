@@ -41,22 +41,15 @@
     "grunt": "^1.0.1",
     "grunt-mocha-test": "^0.13.2",
     "grunt-noflo-browser": "^1.5.0",
-    "karma": "^2.0.2",
-    "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-mocha": "^1.3.0",
-    "karma-mocha-reporter": "^2.2.5",
-    "mocha": "^5.0.0",
     "noflo-nodejs": "^0.10.1",
-    "nyc": "^11.2.1",
-    "puppeteer": "^1.4.0"
+    "nyc": "^11.2.1"
   },
   "keywords": [
     "noflo"
   ],
   "scripts": {
     "pretest": "eslint *.js **/*.js",
-    "test": "nyc grunt test && karma start"
+    "test": "nyc grunt test"
   },
   "nyc": {
     "include": [
