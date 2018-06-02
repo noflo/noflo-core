@@ -1,34 +1,19 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    import/no-unresolved,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
   c.description = 'Sends next packet in buffer when receiving a bang';
   c.icon = 'forward';
 
-  c.inPorts.add(
-    'data',
-    { datatype: 'all' },
-  );
-  c.inPorts.add(
-    'in',
-    { datatype: 'bang' },
-  );
-  c.outPorts.add(
-    'out',
-    { datatype: 'all' },
-  );
+  c.inPorts.add('data', {
+    datatype: 'all',
+  });
+  c.inPorts.add('in', {
+    datatype: 'bang',
+  });
+  c.outPorts.add('out', {
+    datatype: 'all',
+  });
   c.outPorts.add('empty', {
     datatype: 'bang',
     required: false,
@@ -60,6 +45,6 @@ exports.getComponent = function () {
       if (packet.type === 'data') { sent = true; }
     }
     // After the loop we can deactivate
-    return output.done();
+    output.done();
   });
 };

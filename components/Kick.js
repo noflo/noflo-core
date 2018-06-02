@@ -1,24 +1,10 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    import/no-unresolved,
-    no-multi-str,
-    no-unused-vars,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
-  c.description = 'This component generates a single packet and sends it to \
-the output port. Mostly usable for debugging, but can also be useful \
-for starting up networks.';
+  c.description = `This component generates a single packet and sends it to
+the output port. Mostly usable for debugging, but can also be useful
+for starting up networks.`;
   c.icon = 'share';
 
   c.inPorts.add('in', {
@@ -31,17 +17,16 @@ for starting up networks.';
     control: true,
     default: null,
   });
-  c.outPorts.add(
-    'out',
-    { datatype: 'all' },
-  );
+  c.outPorts.add('out', {
+    datatype: 'all',
+  });
 
   return c.process((input, output) => {
     if (!input.hasStream('in')) { return; }
     if (input.attached('data').length && !input.hasData('data')) { return; }
-    const bang = input.getData('in');
+    input.getData('in');
     const data = input.getData('data');
     output.send({ out: data });
-    return output.done();
+    output.done();
   });
 };

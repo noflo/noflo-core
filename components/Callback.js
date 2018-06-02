@@ -1,24 +1,10 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    import/no-unresolved,
-    no-multi-str,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
-  c.description = 'This component calls a given callback function for each \
-IP it receives.  The Callback component is typically used to connect \
-NoFlo with external Node.js code.';
+  c.description = `This component calls a given callback function for each
+IP it receives.  The Callback component is typically used to connect
+NoFlo with external Node.js code.`;
   c.icon = 'sign-out';
 
   c.inPorts.add('in', {
@@ -37,8 +23,10 @@ NoFlo with external Node.js code.';
   );
 
   return c.process((input, output) => {
-    if (!input.hasData('callback', 'in')) { return; }
-    const [callback, data] = Array.from(input.getData('callback', 'in'));
+    if (!input.hasData('callback', 'in')) {
+      return;
+    }
+    const [callback, data] = input.getData('callback', 'in');
     if (typeof callback !== 'function') {
       output.done(new Error('The provided callback must be a function'));
       return;
@@ -48,8 +36,9 @@ NoFlo with external Node.js code.';
     try {
       callback(data);
     } catch (e) {
-      return output.done(e);
+      output.done(e);
+      return;
     }
-    return output.done();
+    output.done();
   });
 };

@@ -1,22 +1,6 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    import/no-unresolved,
-    no-restricted-syntax,
-    no-var,
-    vars-on-top,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
   c.description = 'Forward packet after a set delay';
   c.icon = 'clock-o';
@@ -34,13 +18,12 @@ exports.getComponent = function () {
     control: true,
   });
 
-  c.outPorts.add(
-    'out',
-    { datatype: 'all' },
-  );
+  c.outPorts.add('out', {
+    datatype: 'all',
+  });
 
-  c.tearDown = function (callback) {
-    for (const timer of Array.from(c.timers)) { clearTimeout(timer); }
+  c.tearDown = (callback) => {
+    c.timers.forEach(timer => clearTimeout(timer));
     c.timers = [];
     return callback();
   };
@@ -55,13 +38,10 @@ exports.getComponent = function () {
     }
     const payload = input.get('in');
 
-    var timer = setTimeout(
-      () => {
-        c.timers.splice(c.timers.indexOf(timer), 1);
-        return output.sendDone({ out: payload });
-      }
-      , delay,
-    );
-    return c.timers.push(timer);
+    const timer = setTimeout(() => {
+      c.timers.splice(c.timers.indexOf(timer), 1);
+      return output.sendDone({ out: payload });
+    }, delay);
+    c.timers.push(timer);
   });
 };

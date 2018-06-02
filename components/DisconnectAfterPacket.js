@@ -1,25 +1,6 @@
-/* eslint-disable
-    block-scoped-var,
-    consistent-return,
-    func-names,
-    import/no-unresolved,
-    no-restricted-syntax,
-    no-return-assign,
-    no-unused-vars,
-    no-var,
-    vars-on-top,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
   c.description = 'Makes each data packet a stream of its own';
   c.icon = 'pause';
@@ -30,13 +11,15 @@ exports.getComponent = function () {
     datatype: 'all',
     description: 'Packet to be forward with disconnection',
   });
-  c.outPorts.add(
-    'out',
-    { datatype: 'all' },
-  );
+  c.outPorts.add('out', {
+    datatype: 'all',
+  });
 
   let brackets = {};
-  c.tearDown = callback => brackets = {};
+  c.tearDown = (callback) => {
+    brackets = {};
+    callback();
+  };
   return c.process((input, output) => {
     // Force auto-ordering to be off for this one
     c.autoOrdering = false;
@@ -56,16 +39,16 @@ exports.getComponent = function () {
 
     if (data.type !== 'data') { return; }
 
-    for (var bracket of Array.from(brackets[input.scope])) {
+    brackets[input.scope].forEach((bracket) => {
       output.sendIP('out', new noflo.IP('openBracket', bracket));
-    }
+    });
     output.sendIP('out', data);
     const closes = brackets[input.scope].slice(0);
     closes.reverse();
-    for (bracket of Array.from(closes)) {
+    brackets[input.scope].forEach((bracket) => {
       output.sendIP('out', new noflo.IP('closeBracket', bracket));
-    }
+    });
 
-    return output.done();
+    output.done();
   });
 };

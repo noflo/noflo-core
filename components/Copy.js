@@ -1,18 +1,7 @@
-/* eslint-disable
-    func-names,
-    import/no-unresolved,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 const owl = require('owl-deepcopy');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
   c.description = 'deep (i.e. recursively) copy an object';
   c.icon = 'copy';
@@ -27,7 +16,9 @@ exports.getComponent = function () {
   });
 
   return c.process((input, output) => {
-    if (!input.hasData('in')) { return; }
+    if (!input.hasData('in')) {
+      return;
+    }
     const data = input.getData('in');
 
     const copy = owl.deepCopy(data);

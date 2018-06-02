@@ -1,24 +1,6 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    guard-for-in,
-    import/no-unresolved,
-    no-param-reassign,
-    no-restricted-syntax,
-    no-return-assign,
-    no-unused-vars,
-    radix,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const noflo = require('noflo');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
   c.description = 'Send a packet at the given interval';
   c.icon = 'clock-o';
@@ -36,27 +18,23 @@ exports.getComponent = function () {
     datatype: 'bang',
     description: 'Stop the emission',
   });
-  c.outPorts.add(
-    'out',
-    { datatype: 'bang' },
-  );
+  c.outPorts.add('out', {
+    datatype: 'bang',
+  });
 
   c.timers = {};
 
-  const cleanUp = function (scope) {
+  const cleanUp = (scope) => {
     if (!c.timers[scope]) { return; }
     clearInterval(c.timers[scope].interval);
     c.timers[scope].deactivate();
-    return c.timers[scope] = null;
+    c.timers[scope] = null;
   };
 
-  c.tearDown = function (callback) {
-    for (const scope in c.timers) {
-      const context = c.timers[scope];
-      cleanUp(scope);
-    }
+  c.tearDown = (callback) => {
+    Object.keys(c.timers).forEach(cleanUp);
     c.timers = {};
-    return callback();
+    callback();
   };
 
   c.forwardBrackets = {};
@@ -65,19 +43,17 @@ exports.getComponent = function () {
       if (!input.hasData('interval')) { return; }
       const start = input.get('start');
       if (start.type !== 'data') { return; }
-      const interval = parseInt(input.getData('interval'));
+      const interval = parseInt(input.getData('interval'), 10);
       // Ensure we deactivate previous interval in this scope, if any
       cleanUp(start.scope);
 
       // Set up interval
-      context.interval = setInterval(
-        () => {
-          const bang = new noflo.IP('data', true);
-          bang.scope = start.scope;
-          return c.outPorts.out.sendIP(bang);
-        }
-        , interval,
-      );
+      const ctx = context;
+      ctx.interval = setInterval(() => {
+        const bang = new noflo.IP('data', true);
+        bang.scope = start.scope;
+        return c.outPorts.out.sendIP(bang);
+      }, interval);
 
       // Register scope, we keep it active until stopped
       c.timers[start.scope] = context;

@@ -1,39 +1,19 @@
-/* eslint-disable
-    consistent-return,
-    func-names,
-    global-require,
-    import/no-unresolved,
-    no-console,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let util;
 const noflo = require('noflo');
+const { inspect } = require('util');
 
-if (!noflo.isBrowser()) {
-  util = require('util');
-} else {
-  util =
-    { inspect(data) { return data; } };
-}
-
-const log = function (options, data) {
+const log = (options, data) => {
   if (options != null) {
-    return console.log(util.inspect(
+    return console.log(inspect(
       data,
-      options.showHidden, options.depth, options.colors,
+      options.showHidden,
+      options.depth,
+      options.colors,
     ));
   }
   return console.log(data);
 };
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
   c.description = 'Sends the data items to console.log';
   c.icon = 'bug';
@@ -47,10 +27,9 @@ exports.getComponent = function () {
     description: 'Options to be passed to console.log',
     control: true,
   });
-  c.outPorts.add(
-    'out',
-    { datatype: 'all' },
-  );
+  c.outPorts.add('out', {
+    datatype: 'all',
+  });
 
   return c.process((input, output) => {
     if (!input.hasData('in')) { return; }
@@ -63,6 +42,6 @@ exports.getComponent = function () {
 
     const data = input.getData('in');
     log(options, data);
-    return output.sendDone({ out: data });
+    output.sendDone({ out: data });
   });
 };

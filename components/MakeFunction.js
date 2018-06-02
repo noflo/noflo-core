@@ -1,30 +1,12 @@
-/* eslint-disable
-    block-scoped-var,
-    consistent-return,
-    func-names,
-    import/no-unresolved,
-    no-multi-str,
-    no-new-func,
-    no-undef,
-    no-use-before-define,
-    no-var,
-    vars-on-top,
-*/
-// TODO: This file was created by bulk-decaffeinate.
-// Fix any style issues and re-enable lint.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
+/* eslint no-new-func: "warn" */
 const noflo = require('noflo');
 
-exports.getComponent = function () {
+exports.getComponent = () => {
   const c = new noflo.Component();
-  c.description = 'Evaluates a function each time data hits the "in" port \
-and sends the return value to "out". Within the function "x" will \
-be the variable from the in port. For example, to make a ^2 function \
-input "return x*x;" to the function port.';
+  c.description = `Evaluates a function each time data hits the "in" port 
+and sends the return value to "out". Within the function "x" will 
+be the variable from the in port. For example, to make a ^2 function 
+input "return x*x;" to the function port.`;
   c.icon = 'code';
 
   c.inPorts.add('in', {
@@ -36,20 +18,17 @@ input "return x*x;" to the function port.';
     description: 'Function to evaluate',
     control: true,
   });
-  c.outPorts.add(
-    'out',
-    { datatype: 'all' },
-  );
-  c.outPorts.add(
-    'function',
-    { datatype: 'function' },
-  );
-  c.outPorts.add(
-    'error',
-    { datatype: 'object' },
-  );
+  c.outPorts.add('out', {
+    datatype: 'all',
+  });
+  c.outPorts.add('function', {
+    datatype: 'function',
+  });
+  c.outPorts.add('error', {
+    datatype: 'object',
+  });
 
-  const prepareFunction = function (func, callback) {
+  const prepareFunction = (func, callback) => {
     let newFunc;
     if (typeof func === 'function') {
       callback(null, func);
@@ -61,7 +40,7 @@ input "return x*x;" to the function port.';
       callback(e);
       return;
     }
-    return callback(null, newFunc);
+    callback(null, newFunc);
   };
 
   return c.process((input, output) => {
@@ -71,15 +50,14 @@ input "return x*x;" to the function port.';
       prepareFunction(input.getData('function'), (err, func) => {
         let result;
         if (err) {
-          output.done(e);
+          output.done(err);
           return;
         }
         const data = input.getData('in');
         try {
           result = func(data);
         } catch (error) {
-          var e = error;
-          output.done(e);
+          output.done(error);
           return;
         }
         output.sendDone({
@@ -92,7 +70,7 @@ input "return x*x;" to the function port.';
     if (!input.hasData('function')) { return; }
     prepareFunction(input.getData('function'), (err, func) => {
       if (err) {
-        output.done(e);
+        output.done(err);
         return;
       }
       output.sendDone({ function: func });
