@@ -1,4 +1,5 @@
-module.exports = () => {
+/* eslint-disable func-names */
+module.exports = function () {
   // Project configuration
   this.initConfig({
     pkg: this.file.readJSON('package.json'),
