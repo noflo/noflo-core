@@ -1,41 +1,56 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS101: Remove unnecessary use of Array.from
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const noflo = require('noflo');
 
-exports.getComponent = ->
-  c = new noflo.Component
-  c.description = 'Forward packet after a set delay'
-  c.icon = 'clock-o'
+exports.getComponent = function() {
+  const c = new noflo.Component;
+  c.description = 'Forward packet after a set delay';
+  c.icon = 'clock-o';
 
-  c.timers = []
+  c.timers = [];
 
-  c.inPorts.add 'in',
-    datatype: 'all'
+  c.inPorts.add('in', {
+    datatype: 'all',
     description: 'Packet to be forwarded with a delay'
-  c.inPorts.add 'delay',
-    datatype: 'number'
-    description: 'How much to delay'
-    default: 500
+  }
+  );
+  c.inPorts.add('delay', {
+    datatype: 'number',
+    description: 'How much to delay',
+    default: 500,
     control: true
+  }
+  );
 
-  c.outPorts.add 'out',
-    datatype: 'all'
+  c.outPorts.add('out',
+    {datatype: 'all'});
 
-  c.tearDown = (callback) ->
-    clearTimeout timer for timer in c.timers
-    c.timers = []
-    callback()
+  c.tearDown = function(callback) {
+    for (let timer of Array.from(c.timers)) { clearTimeout(timer); }
+    c.timers = [];
+    return callback();
+  };
 
-  c.process (input, output) ->
-    return unless input.hasData 'in'
-    return if input.attached('delay').length and not input.hasData 'delay'
+  return c.process(function(input, output) {
+    if (!input.hasData('in')) { return; }
+    if (input.attached('delay').length && !input.hasData('delay')) { return; }
 
-    delay = 500
-    if input.hasData 'delay'
-      delay = input.getData 'delay'
-    payload = input.get 'in'
+    let delay = 500;
+    if (input.hasData('delay')) {
+      delay = input.getData('delay');
+    }
+    const payload = input.get('in');
 
-    timer = setTimeout ->
-      c.timers.splice c.timers.indexOf(timer), 1
-      output.sendDone
-        out: payload
-    , delay
-    c.timers.push timer
+    var timer = setTimeout(function() {
+      c.timers.splice(c.timers.indexOf(timer), 1);
+      return output.sendDone({
+        out: payload});
+    }
+    , delay);
+    return c.timers.push(timer);
+  });
+};

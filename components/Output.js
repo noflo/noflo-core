@@ -1,42 +1,60 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+let util;
+const noflo = require('noflo');
 
-unless noflo.isBrowser()
-  util = require 'util'
-else
+if (!noflo.isBrowser()) {
+  util = require('util');
+} else {
   util =
-    inspect: (data) -> data
+    {inspect(data) { return data; }};
+}
 
-log = (options, data) ->
-  if options?
-    console.log util.inspect data,
-      options.showHidden, options.depth, options.colors
-  else
-    console.log data
+const log = function(options, data) {
+  if (options != null) {
+    return console.log(util.inspect(data,
+      options.showHidden, options.depth, options.colors)
+    );
+  } else {
+    return console.log(data);
+  }
+};
 
-exports.getComponent = ->
-  c = new noflo.Component
-  c.description = 'Sends the data items to console.log'
-  c.icon = 'bug'
+exports.getComponent = function() {
+  const c = new noflo.Component;
+  c.description = 'Sends the data items to console.log';
+  c.icon = 'bug';
 
-  c.inPorts.add 'in',
-    datatype: 'all'
+  c.inPorts.add('in', {
+    datatype: 'all',
     description: 'Packet to be printed through console.log'
-  c.inPorts.add 'options',
-    datatype: 'object'
-    description: 'Options to be passed to console.log'
+  }
+  );
+  c.inPorts.add('options', {
+    datatype: 'object',
+    description: 'Options to be passed to console.log',
     control: true
-  c.outPorts.add 'out',
-    datatype: 'all'
+  }
+  );
+  c.outPorts.add('out',
+    {datatype: 'all'});
 
-  c.process (input, output) ->
-    return unless input.hasData 'in'
-    return if input.attached('options').length and not input.hasData 'options'
+  return c.process(function(input, output) {
+    if (!input.hasData('in')) { return; }
+    if (input.attached('options').length && !input.hasData('options')) { return; }
 
-    options = null
-    if input.has 'options'
-      options = input.getData 'options'
+    let options = null;
+    if (input.has('options')) {
+      options = input.getData('options');
+    }
 
-    data = input.getData 'in'
-    log options, data
-    output.sendDone
-      out: data
+    const data = input.getData('in');
+    log(options, data);
+    return output.sendDone({
+      out: data});
+  });
+};

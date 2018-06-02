@@ -1,42 +1,58 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+let baseDir, chai;
+const noflo = require('noflo');
 
-unless noflo.isBrowser()
-  chai = require 'chai'
-  path = require 'path'
-  baseDir = path.resolve __dirname, '../'
-else
-  baseDir = 'noflo-core'
+if (!noflo.isBrowser()) {
+  chai = require('chai');
+  const path = require('path');
+  baseDir = path.resolve(__dirname, '../');
+} else {
+  baseDir = 'noflo-core';
+}
 
-describe 'Copy component', ->
-  c = null
-  ins = null
-  out = null
-  before (done) ->
-    @timeout 4000
-    loader = new noflo.ComponentLoader baseDir
-    loader.load 'core/Copy', (err, instance) ->
-      return done err if err
-      c = instance
-      ins = noflo.internalSocket.createSocket()
-      c.inPorts.in.attach ins
-      done()
-  beforeEach ->
-    out = noflo.internalSocket.createSocket()
-    c.outPorts.out.attach out
-  afterEach ->
-    c.outPorts.out.detach out
-    out = null
+describe('Copy component', function() {
+  let c = null;
+  let ins = null;
+  let out = null;
+  before(function(done) {
+    this.timeout(4000);
+    const loader = new noflo.ComponentLoader(baseDir);
+    return loader.load('core/Copy', function(err, instance) {
+      if (err) { return done(err); }
+      c = instance;
+      ins = noflo.internalSocket.createSocket();
+      c.inPorts.in.attach(ins);
+      return done();
+    });
+  });
+  beforeEach(function() {
+    out = noflo.internalSocket.createSocket();
+    return c.outPorts.out.attach(out);
+  });
+  afterEach(function() {
+    c.outPorts.out.detach(out);
+    return out = null;
+  });
 
-  describe 'when receiving an object', ->
-    it 'should send a copy of the object', (done) ->
-      original =
-        hello: 'world'
+  return describe('when receiving an object', () =>
+    it('should send a copy of the object', function(done) {
+      const original = {
+        hello: 'world',
         list: [1, 2, 3]
+      };
 
-      out.on 'data', (data) ->
-        chai.expect(data).to.eql original
-        chai.expect(data).to.not.equal original
-        done()
+      out.on('data', function(data) {
+        chai.expect(data).to.eql(original);
+        chai.expect(data).to.not.equal(original);
+        return done();
+      });
 
-      ins.send original
-      ins.disconnect()
+      ins.send(original);
+      return ins.disconnect();
+    })
+  );
+});

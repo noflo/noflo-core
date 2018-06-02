@@ -1,70 +1,81 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+let baseDir, chai;
+const noflo = require('noflo');
 
-unless noflo.isBrowser()
-  chai = require 'chai'
-  path = require 'path'
-  baseDir = path.resolve __dirname, '../'
-else
-  baseDir = 'noflo-core'
+if (!noflo.isBrowser()) {
+  chai = require('chai');
+  const path = require('path');
+  baseDir = path.resolve(__dirname, '../');
+} else {
+  baseDir = 'noflo-core';
+}
 
-describe 'Output component', ->
-  c = null
-  ins1 = null
-  ins2 = null
-  out = null
-  before (done) ->
-    @timeout 4000
-    loader = new noflo.ComponentLoader baseDir
-    loader.load 'core/Output', (err, instance) ->
-      return done err if err
-      c = instance
-      ins1 = noflo.internalSocket.createSocket()
-      c.inPorts.in.attach ins1
-      ins2 = noflo.internalSocket.createSocket()
-      c.inPorts.in.attach ins2
-      done()
-  beforeEach ->
-    out = noflo.internalSocket.createSocket()
-    c.outPorts.out.attach out
-  afterEach ->
-    c.outPorts.out.detach out
-    out = null
+describe('Output component', function() {
+  let c = null;
+  let ins1 = null;
+  let ins2 = null;
+  let out = null;
+  before(function(done) {
+    this.timeout(4000);
+    const loader = new noflo.ComponentLoader(baseDir);
+    return loader.load('core/Output', function(err, instance) {
+      if (err) { return done(err); }
+      c = instance;
+      ins1 = noflo.internalSocket.createSocket();
+      c.inPorts.in.attach(ins1);
+      ins2 = noflo.internalSocket.createSocket();
+      c.inPorts.in.attach(ins2);
+      return done();
+    });
+  });
+  beforeEach(function() {
+    out = noflo.internalSocket.createSocket();
+    return c.outPorts.out.attach(out);
+  });
+  afterEach(function() {
+    c.outPorts.out.detach(out);
+    return out = null;
+  });
 
-  describe 'when receiving packets from multiple inputs', ->
-    it 'should send them as a single stream', (done) ->
-      expected = [
-        'CONN'
-        '< a'
-        'DATA 1'
-        '>'
+  return describe('when receiving packets from multiple inputs', () =>
+    it('should send them as a single stream', function(done) {
+      const expected = [
+        'CONN',
+        '< a',
+        'DATA 1',
+        '>',
+        'DISC',
+        'CONN',
+        '< b',
+        'DATA 2',
+        '>',
         'DISC'
-        'CONN'
-        '< b'
-        'DATA 2'
-        '>'
-        'DISC'
-      ]
-      received = []
-      out.on 'connect', ->
-        received.push 'CONN'
-      out.on 'begingroup', (group) ->
-        received.push "< #{group}"
-      out.on 'data', (data) ->
-        received.push "DATA #{data}"
-      out.on 'endgroup', ->
-        received.push '>'
-      out.on 'disconnect', ->
-        received.push 'DISC'
-        return unless received.length is expected.length
-        chai.expect(received).to.eql expected
-        done()
+      ];
+      const received = [];
+      out.on('connect', () => received.push('CONN'));
+      out.on('begingroup', group => received.push(`< ${group}`));
+      out.on('data', data => received.push(`DATA ${data}`));
+      out.on('endgroup', () => received.push('>'));
+      out.on('disconnect', function() {
+        received.push('DISC');
+        if (received.length !== expected.length) { return; }
+        chai.expect(received).to.eql(expected);
+        return done();
+      });
 
-      ins1.beginGroup 'a'
-      ins1.send 1
-      ins1.endGroup()
-      ins1.disconnect()
+      ins1.beginGroup('a');
+      ins1.send(1);
+      ins1.endGroup();
+      ins1.disconnect();
 
-      ins2.beginGroup 'b'
-      ins2.send 2
-      ins2.endGroup()
-      ins2.disconnect()
+      ins2.beginGroup('b');
+      ins2.send(2);
+      ins2.endGroup();
+      return ins2.disconnect();
+    })
+  );
+});

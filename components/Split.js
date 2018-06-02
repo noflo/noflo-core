@@ -1,19 +1,28 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const noflo = require('noflo');
 
-exports.getComponent = ->
-  c = new noflo.Component
-  c.icon = 'expand'
-  c.description = 'This component receives data on a single input port and
-    sends the same data out to all connected output ports'
+exports.getComponent = function() {
+  const c = new noflo.Component;
+  c.icon = 'expand';
+  c.description = `This component receives data on a single input port and \
+sends the same data out to all connected output ports`;
 
-  c.inPorts.add 'in',
-    datatype: 'all'
+  c.inPorts.add('in', {
+    datatype: 'all',
     description: 'Packet to be forwarded'
+  }
+  );
 
-  c.outPorts.add 'out',
-    datatype: 'all'
+  c.outPorts.add('out',
+    {datatype: 'all'});
 
-  c.process (input, output) ->
-    data = input.get 'in'
-    output.sendDone
-      out: data
+  return c.process(function(input, output) {
+    const data = input.get('in');
+    return output.sendDone({
+      out: data});
+  });
+};

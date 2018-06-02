@@ -1,31 +1,43 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+const noflo = require('noflo');
 
-# @runtime noflo-nodejs
+// @runtime noflo-nodejs
 
-exports.getComponent = ->
-  c = new noflo.Component
-  c.description = 'Reads an environment variable'
-  c.icon = 'usd'
+exports.getComponent = function() {
+  const c = new noflo.Component;
+  c.description = 'Reads an environment variable';
+  c.icon = 'usd';
 
-  c.inPorts.add 'key',
-    datatype: 'string'
-    required: true
+  c.inPorts.add('key', {
+    datatype: 'string',
+    required: true,
     description: 'Environment variable to read'
-  c.outPorts.add 'out',
-    datatype: 'string'
-  c.outPorts.add 'error',
-    datatype: 'object'
+  }
+  );
+  c.outPorts.add('out',
+    {datatype: 'string'});
+  c.outPorts.add('error', {
+    datatype: 'object',
     required: false
+  }
+  );
 
   c.forwardBrackets =
-    key: ['out', 'error']
+    {key: ['out', 'error']};
 
-  c.process (input, output) ->
-    return unless input.hasData 'key'
-    data = input.getData 'key'
-    value = process.env[data]
-    if value is undefined
-      output.sendDone new Error "No environment variable #{data} set"
-      return
-    output.sendDone
-      out: value
+  return c.process(function(input, output) {
+    if (!input.hasData('key')) { return; }
+    const data = input.getData('key');
+    const value = process.env[data];
+    if (value === undefined) {
+      output.sendDone(new Error(`No environment variable ${data} set`));
+      return;
+    }
+    return output.sendDone({
+      out: value});
+  });
+};

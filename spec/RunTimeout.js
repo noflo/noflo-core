@@ -1,43 +1,56 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+let baseDir, chai;
+const noflo = require('noflo');
 
-unless noflo.isBrowser()
-  chai = require 'chai'
-  path = require 'path'
-  baseDir = path.resolve __dirname, '../'
-else
-  baseDir = 'noflo-core'
+if (!noflo.isBrowser()) {
+  chai = require('chai');
+  const path = require('path');
+  baseDir = path.resolve(__dirname, '../');
+} else {
+  baseDir = 'noflo-core';
+}
 
-describe 'RunTimeout component', ->
-  c = null
-  start = null
-  time = null
-  out = null
-  before (done) ->
-    @timeout 4000
-    loader = new noflo.ComponentLoader baseDir
-    loader.load 'core/RunTimeout', (err, instance) ->
-      return done err if err
-      c = instance
-      start = noflo.internalSocket.createSocket()
-      c.inPorts.start.attach start
-      time = noflo.internalSocket.createSocket()
-      c.inPorts.time.attach time
-      done()
-  beforeEach ->
-    out = noflo.internalSocket.createSocket()
-    c.outPorts.out.attach out
-  afterEach ->
-    c.outPorts.out.detach out
+describe('RunTimeout component', function() {
+  let c = null;
+  let start = null;
+  let time = null;
+  let out = null;
+  before(function(done) {
+    this.timeout(4000);
+    const loader = new noflo.ComponentLoader(baseDir);
+    return loader.load('core/RunTimeout', function(err, instance) {
+      if (err) { return done(err); }
+      c = instance;
+      start = noflo.internalSocket.createSocket();
+      c.inPorts.start.attach(start);
+      time = noflo.internalSocket.createSocket();
+      c.inPorts.time.attach(time);
+      return done();
+    });
+  });
+  beforeEach(function() {
+    out = noflo.internalSocket.createSocket();
+    return c.outPorts.out.attach(out);
+  });
+  afterEach(() => c.outPorts.out.detach(out));
 
-  describe 'receiving a time and a bang', ->
-    it 'should send a bang out after the timeout', (done) ->
-      started = null
-      out.on 'data', (data) ->
-        received = new Date
-        chai.expect(received - started).to.be.at.least 500
-        done()
+  return describe('receiving a time and a bang', () =>
+    it('should send a bang out after the timeout', function(done) {
+      let started = null;
+      out.on('data', function(data) {
+        const received = new Date;
+        chai.expect(received - started).to.be.at.least(500);
+        return done();
+      });
 
-      time.send 500
-      started = new Date
-      start.send null
-      start.disconnect()
+      time.send(500);
+      started = new Date;
+      start.send(null);
+      return start.disconnect();
+    })
+  );
+});

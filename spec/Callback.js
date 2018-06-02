@@ -1,61 +1,79 @@
-noflo = require 'noflo'
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+let baseDir, chai;
+const noflo = require('noflo');
 
-unless noflo.isBrowser()
-  chai = require 'chai'
-  path = require 'path'
-  baseDir = path.resolve __dirname, '../'
-else
-  baseDir = 'noflo-core'
+if (!noflo.isBrowser()) {
+  chai = require('chai');
+  const path = require('path');
+  baseDir = path.resolve(__dirname, '../');
+} else {
+  baseDir = 'noflo-core';
+}
 
-describe 'Callback component', ->
-  c = null
-  ins = null
-  cb = null
-  err = null
+describe('Callback component', function() {
+  let c = null;
+  let ins = null;
+  let cb = null;
+  let err = null;
 
-  before (done) ->
-    @timeout 4000
-    loader = new noflo.ComponentLoader baseDir
-    loader.load 'core/Callback', (err, instance) ->
-      return done err if err
-      c = instance
-      ins = noflo.internalSocket.createSocket()
-      cb = noflo.internalSocket.createSocket()
-      c.inPorts.in.attach ins
-      c.inPorts.callback.attach cb
-      done()
-  beforeEach ->
-    err = noflo.internalSocket.createSocket()
-    c.outPorts.error.attach err
-  afterEach ->
-    c.outPorts.error.detach err
-    err = null
+  before(function(done) {
+    this.timeout(4000);
+    const loader = new noflo.ComponentLoader(baseDir);
+    return loader.load('core/Callback', function(err, instance) {
+      if (err) { return done(err); }
+      c = instance;
+      ins = noflo.internalSocket.createSocket();
+      cb = noflo.internalSocket.createSocket();
+      c.inPorts.in.attach(ins);
+      c.inPorts.callback.attach(cb);
+      return done();
+    });
+  });
+  beforeEach(function() {
+    err = noflo.internalSocket.createSocket();
+    return c.outPorts.error.attach(err);
+  });
+  afterEach(function() {
+    c.outPorts.error.detach(err);
+    return err = null;
+  });
 
-  describe 'when instantiated', ->
-    it 'should have input ports', ->
-      chai.expect(c.inPorts.in).to.be.an 'object'
-      chai.expect(c.inPorts.callback).to.be.an 'object'
+  describe('when instantiated', function() {
+    it('should have input ports', function() {
+      chai.expect(c.inPorts.in).to.be.an('object');
+      return chai.expect(c.inPorts.callback).to.be.an('object');
+    });
 
-    it 'should have an output port', ->
-      chai.expect(c.outPorts.error).to.be.an 'object'
+    return it('should have an output port', () => chai.expect(c.outPorts.error).to.be.an('object'));
+  });
 
-  describe 'test callback', ->
-    it 'wrong callback', (done) ->
-      err.on 'data', (data) ->
-        chai.expect(data).to.be.an 'error'
-        done()
+  return describe('test callback', function() {
+    it('wrong callback', function(done) {
+      err.on('data', function(data) {
+        chai.expect(data).to.be.an('error');
+        return done();
+      });
 
-      cb.send 'Foo bar'
-      ins.connect()
-      ins.send 'Hello'
-      ins.disconnect()
+      cb.send('Foo bar');
+      ins.connect();
+      ins.send('Hello');
+      return ins.disconnect();
+    });
 
-    it 'right callback', (done) ->
-      callback = (data) ->
-        chai.expect(data).to.equal 'hello, world'
-        done()
-      cb.send callback
+    return it('right callback', function(done) {
+      const callback = function(data) {
+        chai.expect(data).to.equal('hello, world');
+        return done();
+      };
+      cb.send(callback);
 
-      ins.connect()
-      ins.send 'hello, world'
-      ins.disconnect()
+      ins.connect();
+      ins.send('hello, world');
+      return ins.disconnect();
+    });
+  });
+});
