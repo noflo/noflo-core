@@ -1,12 +1,14 @@
 .DS_Store
 *.swp
-*.js
 !index.js
 node_modules/
 npm-debug.log
+package-lock.json
 components/*/
 spec/*.xml
 spec/runner.html
 flowhub.json
 /.nyc_output/
 /coverage/
+/.cache/
+/browser/
