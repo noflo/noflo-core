@@ -1,9 +1,22 @@
+/* eslint-disable
+    func-names,
+    global-require,
+    import/no-unresolved,
+    no-return-assign,
+    no-undef,
+    no-unused-expressions,
+    one-var,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let baseDir, chai, window;
+let baseDir,
+  chai,
+  window;
 const noflo = require('noflo');
 
 if (!noflo.isBrowser()) {
@@ -17,14 +30,13 @@ if (!noflo.isBrowser()) {
 
 const { expect } = chai;
 
-describe('ReadGlobal', function() {
-
+describe('ReadGlobal', () => {
   let c = null;
 
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/ReadGlobal', function(err, instance) {
+    return loader.load('core/ReadGlobal', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       return done();
@@ -33,22 +45,19 @@ describe('ReadGlobal', function() {
 
   describe('inPorts', () =>
 
-    it('should contain "name"', () => expect(c.inPorts.name).to.be.an('object'))
-  );
+    it('should contain "name"', () => expect(c.inPorts.name).to.be.an('object')));
 
-  describe('outPorts', function() {
-
+  describe('outPorts', () => {
     it('should contain "value"', () => expect(c.outPorts.value).to.be.an('object'));
 
     return it('should contain "error"', () => expect(c.outPorts.error).to.be.an('object'));
   });
 
-  return describe('data flow', function() {
-
+  return describe('data flow', () => {
     let nameIn = null;
     let valueOut = null;
 
-    beforeEach(function() {
+    beforeEach(() => {
       nameIn = noflo.internalSocket.createSocket();
       valueOut = noflo.internalSocket.createSocket();
 
@@ -56,12 +65,11 @@ describe('ReadGlobal', function() {
       return c.outPorts.value.attach(valueOut);
     });
 
-    describe('with a defined variable', function() {
-
+    describe('with a defined variable', () => {
       beforeEach(() => window.TEST_VAR = true);
 
-      it('should read a variable from the global object', function(done) {
-        valueOut.on('data', function(data) {
+      it('should read a variable from the global object', (done) => {
+        valueOut.on('data', (data) => {
           expect(data).to.be.true;
           return done();
         });
@@ -72,8 +80,8 @@ describe('ReadGlobal', function() {
 
       return describe('and a group', () =>
 
-        it('should forward the group', function(done) {
-          valueOut.on('begingroup', function(group) {
+        it('should forward the group', (done) => {
+          valueOut.on('begingroup', (group) => {
             expect(group).to.equal('group-1');
             return done();
           });
@@ -82,26 +90,23 @@ describe('ReadGlobal', function() {
           nameIn.send('TEST_VAR');
           nameIn.endGroup();
           return nameIn.disconnect();
-        })
-      );
+        }));
     });
 
-    return describe('with an undefined variable', function() {
-
+    return describe('with an undefined variable', () => {
       beforeEach(() => delete window.TEST_VAR);
 
-      return describe('and the error port connected', function() {
-
+      return describe('and the error port connected', () => {
         let errorOut = null;
 
-        beforeEach(function() {
+        beforeEach(() => {
           errorOut = noflo.internalSocket.createSocket();
 
           return c.outPorts.error.attach(errorOut);
         });
 
-        return it('should send the error', function(done) {
-          errorOut.on('data', function(err) {
+        return it('should send the error', (done) => {
+          errorOut.on('data', (err) => {
             expect(err).to.be.an('error');
             return done();
           });

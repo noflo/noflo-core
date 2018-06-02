@@ -1,10 +1,17 @@
+/* eslint-disable
+    consistent-return,
+    func-names,
+    no-param-reassign,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-module.exports = function() {
+module.exports = function () {
   // Project configuration
   this.initConfig({
     pkg: this.file.readJSON('package.json'),
@@ -13,52 +20,52 @@ module.exports = function() {
     noflo_browser: {
       build: {
         files: {
-          'browser/noflo-core.js': ['package.json']
-        }
-      }
+          'browser/noflo-core.js': ['package.json'],
+        },
+      },
     },
     // Generate runner.html
     noflo_browser_mocha: {
       all: {
         options: {
-          scripts: ["../browser/<%=pkg.name%>.js"]
+          scripts: ['../browser/<%=pkg.name%>.js'],
         },
         files: {
-          'spec/runner.html': ['spec/*.js', '!spec/fbpspec.js']
-        }
-      }
+          'spec/runner.html': ['spec/*.js', '!spec/fbpspec.js'],
+        },
+      },
     },
 
     // CoffeeScript compilation
     coffee: {
       spec: {
         options: {
-          bare: true
+          bare: true,
         },
         expand: true,
         cwd: 'spec',
         src: ['**.coffee'],
         dest: 'spec',
-        ext: '.js'
-      }
+        ext: '.js',
+      },
     },
 
     // JavaScript minification for the browser
     uglify: {
       options: {
-        report: 'min'
+        report: 'min',
       },
       noflo: {
         files: {
-          './browser/noflo-core.min.js': ['./browser/noflo-core.js']
-        }
-      }
+          './browser/noflo-core.min.js': ['./browser/noflo-core.js'],
+        },
+      },
     },
 
     // Automated recompilation and testing when developing
     watch: {
       files: ['spec/*.coffee', 'components/*.coffee'],
-      tasks: ['test']
+      tasks: ['test'],
     },
 
     // BDD tests on Node.js
@@ -69,11 +76,11 @@ module.exports = function() {
           reporter: 'spec',
           require: [
             'coffeescript/register',
-            'coffee-coverage/register-istanbul'
+            'coffee-coverage/register-istanbul',
           ],
-          grep: process.env.TESTS
-        }
-      }
+          grep: process.env.TESTS,
+        },
+      },
     },
 
     // BDD tests on browser
@@ -81,25 +88,25 @@ module.exports = function() {
       options: {
         output: 'spec/result.xml',
         reporter: 'spec',
-        failWithOutput: true
+        failWithOutput: true,
       },
-      all: ['spec/runner.html']
+      all: ['spec/runner.html'],
     },
 
     // Coding standards
     coffeelint: {
       components: {
         files: {
-          src: ['components/*.coffee']
+          src: ['components/*.coffee'],
         },
         options: {
           max_line_length: {
             value: 80,
-            level: 'warn'
-          }
-        }
-      }
-    }
+            level: 'warn',
+          },
+        },
+      },
+    },
   });
 
   // Grunt plugins used for building
@@ -114,14 +121,14 @@ module.exports = function() {
   this.loadNpmTasks('grunt-coffeelint');
 
   // Our local tasks
-  this.registerTask('build', 'Build NoFlo for the chosen target platform', target => {
+  this.registerTask('build', 'Build NoFlo for the chosen target platform', (target) => {
     if (target == null) { target = 'all'; }
     if ((target === 'all') || (target === 'browser')) {
       return this.task.run('noflo_browser');
     }
   });
 
-  this.registerTask('test', 'Build NoFlo and run automated tests', target => {
+  this.registerTask('test', 'Build NoFlo and run automated tests', (target) => {
     if (target == null) { target = 'all'; }
     this.task.run('coffeelint');
     this.task.run('build');

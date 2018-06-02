@@ -1,3 +1,12 @@
+/* eslint-disable
+    consistent-return,
+    func-names,
+    global-require,
+    import/no-unresolved,
+    no-console,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -11,39 +20,39 @@ if (!noflo.isBrowser()) {
   util = require('util');
 } else {
   util =
-    {inspect(data) { return data; }};
+    { inspect(data) { return data; } };
 }
 
-const log = function(options, data) {
+const log = function (options, data) {
   if (options != null) {
-    return console.log(util.inspect(data,
-      options.showHidden, options.depth, options.colors)
-    );
-  } else {
-    return console.log(data);
+    return console.log(util.inspect(
+      data,
+      options.showHidden, options.depth, options.colors,
+    ));
   }
+  return console.log(data);
 };
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Sends the data items to console.log';
   c.icon = 'bug';
 
   c.inPorts.add('in', {
     datatype: 'all',
-    description: 'Packet to be printed through console.log'
-  }
-  );
+    description: 'Packet to be printed through console.log',
+  });
   c.inPorts.add('options', {
     datatype: 'object',
     description: 'Options to be passed to console.log',
-    control: true
-  }
+    control: true,
+  });
+  c.outPorts.add(
+    'out',
+    { datatype: 'all' },
   );
-  c.outPorts.add('out',
-    {datatype: 'all'});
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.hasData('in')) { return; }
     if (input.attached('options').length && !input.hasData('options')) { return; }
 
@@ -54,7 +63,6 @@ exports.getComponent = function() {
 
     const data = input.getData('in');
     log(options, data);
-    return output.sendDone({
-      out: data});
+    return output.sendDone({ out: data });
   });
 };

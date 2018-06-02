@@ -1,3 +1,16 @@
+/* eslint-disable
+    block-scoped-var,
+    consistent-return,
+    func-names,
+    import/no-unresolved,
+    no-restricted-syntax,
+    no-return-assign,
+    no-unused-vars,
+    no-var,
+    vars-on-top,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -6,8 +19,8 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Makes each data packet a stream of its own';
   c.icon = 'pause';
   c.forwardBrackets = {};
@@ -15,15 +28,16 @@ exports.getComponent = function() {
 
   c.inPorts.add('in', {
     datatype: 'all',
-    description: 'Packet to be forward with disconnection'
-  }
+    description: 'Packet to be forward with disconnection',
+  });
+  c.outPorts.add(
+    'out',
+    { datatype: 'all' },
   );
-  c.outPorts.add('out',
-    {datatype: 'all'});
 
   let brackets = {};
   c.tearDown = callback => brackets = {};
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     // Force auto-ordering to be off for this one
     c.autoOrdering = false;
 

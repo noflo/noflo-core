@@ -1,3 +1,9 @@
+/* eslint-disable
+    func-names,
+    import/no-unresolved,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -5,24 +11,26 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = "Like 'Repeat', except repeat on next tick";
   c.icon = 'step-forward';
   c.inPorts.add('in', {
     datatype: 'all',
-    description: 'Packet to forward'
-  }
+    description: 'Packet to forward',
+  });
+  c.outPorts.add(
+    'out',
+    { datatype: 'all' },
   );
-  c.outPorts.add('out',
-    {datatype: 'all'});
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     const data = input.get('in');
-    return setTimeout(() =>
-      output.sendDone({
-        out: data})
-    
-    , 0);
+    return setTimeout(
+      () =>
+        output.sendDone({ out: data })
+
+      , 0,
+    );
   });
 };

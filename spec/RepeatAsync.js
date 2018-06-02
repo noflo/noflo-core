@@ -1,9 +1,21 @@
+/* eslint-disable
+    consistent-return,
+    func-names,
+    global-require,
+    import/no-unresolved,
+    no-return-assign,
+    no-undef,
+    one-var,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let baseDir, chai;
+let baseDir,
+  chai;
 const noflo = require('noflo');
 
 if (!noflo.isBrowser()) {
@@ -14,15 +26,15 @@ if (!noflo.isBrowser()) {
   baseDir = 'noflo-core';
 }
 
-describe('RepeatAsync component', function() {
+describe('RepeatAsync component', () => {
   let c = null;
   let ins1 = null;
   let ins2 = null;
   let out = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/RepeatAsync', function(err, instance) {
+    return loader.load('core/RepeatAsync', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       ins1 = noflo.internalSocket.createSocket();
@@ -32,17 +44,17 @@ describe('RepeatAsync component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     return out = null;
   });
 
   return describe('when receiving packets from multiple inputs', () =>
-    it('should send them as a single stream', function(done) {
+    it('should send them as a single stream', (done) => {
       let wasasync = false;
       const expected = [
         'CONN',
@@ -54,14 +66,14 @@ describe('RepeatAsync component', function() {
         '< b',
         'DATA 2',
         '>',
-        'DISC'
+        'DISC',
       ];
       const received = [];
       out.on('connect', () => received.push('CONN'));
       out.on('begingroup', group => received.push(`< ${group}`));
       out.on('data', data => received.push(`DATA ${data}`));
       out.on('endgroup', () => received.push('>'));
-      out.on('disconnect', function() {
+      out.on('disconnect', () => {
         received.push('DISC');
         if (received.length !== expected.length) { return; }
         chai.expect(received).to.eql(expected);
@@ -79,6 +91,5 @@ describe('RepeatAsync component', function() {
       ins2.endGroup();
       ins2.disconnect();
       return wasasync = true;
-    })
-  );
+    }));
 });

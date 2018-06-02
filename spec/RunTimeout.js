@@ -1,9 +1,20 @@
+/* eslint-disable
+    func-names,
+    global-require,
+    import/no-unresolved,
+    no-undef,
+    no-unused-vars,
+    one-var,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let baseDir, chai;
+let baseDir,
+  chai;
 const noflo = require('noflo');
 
 if (!noflo.isBrowser()) {
@@ -14,15 +25,15 @@ if (!noflo.isBrowser()) {
   baseDir = 'noflo-core';
 }
 
-describe('RunTimeout component', function() {
+describe('RunTimeout component', () => {
   let c = null;
   let start = null;
   let time = null;
   let out = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/RunTimeout', function(err, instance) {
+    return loader.load('core/RunTimeout', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       start = noflo.internalSocket.createSocket();
@@ -32,25 +43,24 @@ describe('RunTimeout component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     return c.outPorts.out.attach(out);
   });
   afterEach(() => c.outPorts.out.detach(out));
 
   return describe('receiving a time and a bang', () =>
-    it('should send a bang out after the timeout', function(done) {
+    it('should send a bang out after the timeout', (done) => {
       let started = null;
-      out.on('data', function(data) {
-        const received = new Date;
+      out.on('data', (data) => {
+        const received = new Date();
         chai.expect(received - started).to.be.at.least(500);
         return done();
       });
 
       time.send(500);
-      started = new Date;
+      started = new Date();
       start.send(null);
       return start.disconnect();
-    })
-  );
+    }));
 });

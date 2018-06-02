@@ -1,3 +1,11 @@
+/* eslint-disable
+    consistent-return,
+    func-names,
+    import/no-unresolved,
+    no-multi-str,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -6,29 +14,29 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
-  c.description = `This component calls a given callback function for each \
+exports.getComponent = function () {
+  const c = new noflo.Component();
+  c.description = 'This component calls a given callback function for each \
 IP it receives.  The Callback component is typically used to connect \
-NoFlo with external Node.js code.`;
+NoFlo with external Node.js code.';
   c.icon = 'sign-out';
 
   c.inPorts.add('in', {
     description: 'Object passed as argument of the callback',
-    datatype: 'all'
-  }
-  );
+    datatype: 'all',
+  });
   c.inPorts.add('callback', {
     description: 'Callback to invoke',
     datatype: 'function',
     control: true,
-    required: true
-  }
+    required: true,
+  });
+  c.outPorts.add(
+    'error',
+    { datatype: 'object' },
   );
-  c.outPorts.add('error',
-    {datatype: 'object'});
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.hasData('callback', 'in')) { return; }
     const [callback, data] = Array.from(input.getData('callback', 'in'));
     if (typeof callback !== 'function') {

@@ -1,9 +1,19 @@
+/* eslint-disable
+    func-names,
+    global-require,
+    import/no-unresolved,
+    no-undef,
+    one-var,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let baseDir, chai;
+let baseDir,
+  chai;
 const noflo = require('noflo');
 
 if (!noflo.isBrowser()) {
@@ -14,13 +24,13 @@ if (!noflo.isBrowser()) {
   baseDir = 'noflo-core';
 }
 
-describe('Drop component', function() {
+describe('Drop component', () => {
   let c = null;
   let ins = null;
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/Drop', function(err, instance) {
+    return loader.load('core/Drop', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       ins = noflo.internalSocket.createSocket();
@@ -30,16 +40,17 @@ describe('Drop component', function() {
   });
 
   return describe('when receiving a packet', () =>
-    it('should drop it', function(done) {
+    it('should drop it', (done) => {
       const ip = new noflo.IP('data', 'Foo');
-      setTimeout(function() {
-        chai.expect(Object.keys(ip)).to.eql([]);
-        return done();
-      }
-      , 200);
+      setTimeout(
+        () => {
+          chai.expect(Object.keys(ip)).to.eql([]);
+          return done();
+        }
+        , 200,
+      );
       ins.connect();
       ins.send(ip);
       return ins.disconnect();
-    })
-  );
+    }));
 });

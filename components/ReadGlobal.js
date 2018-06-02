@@ -1,3 +1,12 @@
+/* eslint-disable
+    consistent-return,
+    func-names,
+    import/no-unresolved,
+    no-undef,
+    no-useless-escape,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -5,26 +14,32 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Returns the value of a global variable.';
   c.icon = 'usd';
 
   // inPorts
-  c.inPorts.add('name',
-    {description: 'The name of the global variable.'});
+  c.inPorts.add(
+    'name',
+    { description: 'The name of the global variable.' },
+  );
 
   // outPorts
-  c.outPorts.add('value',
-    {description: 'The value of the variable.'});
+  c.outPorts.add(
+    'value',
+    { description: 'The value of the variable.' },
+  );
 
-  c.outPorts.add('error',
-    {description: 'Any errors that occured reading the variables value.'});
+  c.outPorts.add(
+    'error',
+    { description: 'Any errors that occured reading the variables value.' },
+  );
 
   c.forwardBrackets =
-    {name: ['value', 'error']};
+    { name: ['value', 'error'] };
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.hasData('name')) { return; }
     const data = input.getData('name');
 
@@ -35,7 +50,6 @@ exports.getComponent = function() {
       output.sendDone(err);
       return;
     }
-    return output.sendDone({
-      value});
+    return output.sendDone({ value });
   });
 };

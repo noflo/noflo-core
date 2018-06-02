@@ -1,3 +1,14 @@
+/* eslint-disable
+    consistent-return,
+    func-names,
+    guard-for-in,
+    import/no-unresolved,
+    no-param-reassign,
+    no-restricted-syntax,
+    no-unused-vars,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
@@ -5,8 +16,8 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Send a packet after the given time in ms';
   c.icon = 'clock-o';
 
@@ -16,48 +27,49 @@ exports.getComponent = function() {
     datatype: 'number',
     description: 'Time after which a packet will be sent',
     required: true,
-    control: true
-  }
-  );
+    control: true,
+  });
   c.inPorts.add('start', {
     datatype: 'bang',
-    description: 'Start the timeout before sending a packet'
-  }
+    description: 'Start the timeout before sending a packet',
+  });
+  c.outPorts.add(
+    'out',
+    { datatype: 'bang' },
   );
-  c.outPorts.add('out',
-    {datatype: 'bang'});
 
   c.forwardBrackets =
-    {start: ['out']};
+    { start: ['out'] };
 
-  c.stopTimer = function(scope) {
+  c.stopTimer = function (scope) {
     if (!c.timer[scope]) { return; }
     clearTimeout(c.timer[scope].timeout);
     c.timer[scope].deactivate();
     return delete c.timer[scope];
   };
 
-  c.tearDown = function(callback) {
-    for (let scope in c.timer) {
+  c.tearDown = function (callback) {
+    for (const scope in c.timer) {
       const timer = c.timer[scope];
       c.stopTimer(scope);
     }
     return callback();
   };
 
-  return c.process(function(input, output, context) {
+  return c.process((input, output, context) => {
     if (!input.hasData('time', 'start')) { return; }
     const time = input.getData('time');
     const bang = input.getData('start');
     // Ensure we deactivate previous timeout, if any
     c.stopTimer(input.scope);
     // Set up new timer
-    context.timeout = setTimeout(function() {
-      c.timer = null;
-      return output.sendDone({
-        out: true});
-    }
-    , time);
+    context.timeout = setTimeout(
+      () => {
+        c.timer = null;
+        return output.sendDone({ out: true });
+      }
+      , time,
+    );
     c.timer[input.scope] = context;
   });
 };

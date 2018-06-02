@@ -1,9 +1,22 @@
+/* eslint-disable
+    func-names,
+    global-require,
+    import/no-unresolved,
+    no-return-assign,
+    no-shadow,
+    no-undef,
+    no-unused-expressions,
+    one-var,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let baseDir, chai;
+let baseDir,
+  chai;
 const noflo = require('noflo');
 
 if (!noflo.isBrowser()) {
@@ -14,7 +27,7 @@ if (!noflo.isBrowser()) {
   baseDir = 'noflo-core';
 }
 
-describe('MakeFunction component', function() {
+describe('MakeFunction component', () => {
   let c = null;
   let ins = null;
   let func = null;
@@ -22,10 +35,10 @@ describe('MakeFunction component', function() {
   let outfunc = null;
   let err = null;
 
-  before(function(done) {
+  before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    return loader.load('core/MakeFunction', function(err, instance) {
+    return loader.load('core/MakeFunction', (err, instance) => {
       if (err) { return done(err); }
       c = instance;
       func = noflo.internalSocket.createSocket();
@@ -33,7 +46,7 @@ describe('MakeFunction component', function() {
       return done();
     });
   });
-  beforeEach(function() {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     outfunc = noflo.internalSocket.createSocket();
     err = noflo.internalSocket.createSocket();
@@ -41,27 +54,27 @@ describe('MakeFunction component', function() {
     c.outPorts.function.attach(outfunc);
     return c.outPorts.error.attach(err);
   });
-  afterEach(function() {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     c.outPorts.function.detach(outfunc);
     return c.outPorts.error.detach(err);
   });
 
-  describe('when instantiated', function() {
-    it('should have input ports', function() {
+  describe('when instantiated', () => {
+    it('should have input ports', () => {
       chai.expect(c.inPorts.in).to.be.an('object');
       return chai.expect(c.inPorts.function).to.be.an('object');
     });
 
-    return it('should have output ports', function() {
+    return it('should have output ports', () => {
       chai.expect(c.outPorts.out).to.be.an('object');
       return chai.expect(c.outPorts.error).to.be.an('object');
     });
   });
 
-  describe('with only function', function() {
-    it('wrong function', function(done) {
-      err.on('data', function(data) {
+  describe('with only function', () => {
+    it('wrong function', (done) => {
+      err.on('data', (data) => {
         chai.expect(data).to.be.ok;
         return done();
       });
@@ -69,9 +82,9 @@ describe('MakeFunction component', function() {
       return func.send('Foo bar');
     });
 
-    return it('output function', function(done) {
-      outfunc.on('data', function(data) {
-        chai.expect(typeof data).to.equal("function");
+    return it('output function', (done) => {
+      outfunc.on('data', (data) => {
+        chai.expect(typeof data).to.equal('function');
         chai.expect(data(2)).to.equal(4);
         return done();
       });
@@ -80,17 +93,17 @@ describe('MakeFunction component', function() {
     });
   });
 
-  return describe('with function and input data', function() {
-    before(function() {
+  return describe('with function and input data', () => {
+    before(() => {
       ins = noflo.internalSocket.createSocket();
       return c.inPorts.in.attach(ins);
     });
-    after(function() {
+    after(() => {
       c.inPorts.in.detach(ins);
       return ins = null;
     });
-    it('square function', function(done) {
-      out.on('data', function(data) {
+    it('square function', (done) => {
+      out.on('data', (data) => {
         chai.expect(data).to.equal(81);
         return done();
       });
@@ -100,25 +113,25 @@ describe('MakeFunction component', function() {
       return ins.disconnect();
     });
 
-    it('concat function', function(done) {
+    it('concat function', (done) => {
       func.send('return x+x;');
-      out.on('data', function(data) {
-        chai.expect(data).to.equal("99");
+      out.on('data', (data) => {
+        chai.expect(data).to.equal('99');
         return done();
       });
       err.on('data', data => done(data));
-      ins.send("9");
+      ins.send('9');
       return ins.disconnect();
     });
 
-    return it('pass function', function(done) {
-      func.send( x => x+"!");
-      out.on('data', function(data) {
-        chai.expect(data).to.equal("hello function!");
+    return it('pass function', (done) => {
+      func.send(x => `${x}!`);
+      out.on('data', (data) => {
+        chai.expect(data).to.equal('hello function!');
         return done();
       });
       err.on('data', data => done(data));
-      ins.send("hello function");
+      ins.send('hello function');
       return ins.disconnect();
     });
   });

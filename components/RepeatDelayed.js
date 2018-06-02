@@ -1,3 +1,13 @@
+/* eslint-disable
+    consistent-return,
+    func-names,
+    import/no-unresolved,
+    no-restricted-syntax,
+    no-var,
+    vars-on-top,
+*/
+// TODO: This file was created by bulk-decaffeinate.
+// Fix any style issues and re-enable lint.
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -6,8 +16,8 @@
  */
 const noflo = require('noflo');
 
-exports.getComponent = function() {
-  const c = new noflo.Component;
+exports.getComponent = function () {
+  const c = new noflo.Component();
   c.description = 'Forward packet after a set delay';
   c.icon = 'clock-o';
 
@@ -15,27 +25,27 @@ exports.getComponent = function() {
 
   c.inPorts.add('in', {
     datatype: 'all',
-    description: 'Packet to be forwarded with a delay'
-  }
-  );
+    description: 'Packet to be forwarded with a delay',
+  });
   c.inPorts.add('delay', {
     datatype: 'number',
     description: 'How much to delay',
     default: 500,
-    control: true
-  }
+    control: true,
+  });
+
+  c.outPorts.add(
+    'out',
+    { datatype: 'all' },
   );
 
-  c.outPorts.add('out',
-    {datatype: 'all'});
-
-  c.tearDown = function(callback) {
-    for (let timer of Array.from(c.timers)) { clearTimeout(timer); }
+  c.tearDown = function (callback) {
+    for (const timer of Array.from(c.timers)) { clearTimeout(timer); }
     c.timers = [];
     return callback();
   };
 
-  return c.process(function(input, output) {
+  return c.process((input, output) => {
     if (!input.hasData('in')) { return; }
     if (input.attached('delay').length && !input.hasData('delay')) { return; }
 
@@ -45,12 +55,13 @@ exports.getComponent = function() {
     }
     const payload = input.get('in');
 
-    var timer = setTimeout(function() {
-      c.timers.splice(c.timers.indexOf(timer), 1);
-      return output.sendDone({
-        out: payload});
-    }
-    , delay);
+    var timer = setTimeout(
+      () => {
+        c.timers.splice(c.timers.indexOf(timer), 1);
+        return output.sendDone({ out: payload });
+      }
+      , delay,
+    );
     return c.timers.push(timer);
   });
 };
