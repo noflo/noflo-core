@@ -7,19 +7,14 @@ module.exports = function () {
     // Browser build of NoFlo
     noflo_browser: {
       build: {
+        options: {
+          exposed_modules: {
+            noflo: 'noflo',
+            'noflo-runtime-postmessage': 'noflo-runtime-postmessage',
+          },
+        },
         files: {
           'browser/noflo-core.js': ['package.json'],
-        },
-      },
-    },
-    // Generate runner.html
-    noflo_browser_mocha: {
-      all: {
-        options: {
-          scripts: ['../browser/<%=pkg.name%>.js'],
-        },
-        files: {
-          'spec/runner.html': ['spec/*.js', '!spec/fbpspec.js'],
         },
       },
     },
