@@ -4,13 +4,13 @@ node_js:
 before_script:
 - npm install -g grunt-cli
 after_success:
-- ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
+- "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
 sudo: false
 deploy:
   provider: npm
   email: henri.bergius@iki.fi
   api_key:
-    secure: eG97gIFWp2liX9L3t2xlobY/Hi7VefIMQ1+IMTvDhg+m0+KROShB8Z5U5IqOBg/v2xZ1wPJCRBpvuk41SihCfpaZi4vZu9Ov6i1QSoNVWU3HQvZWRcTUo0j1bgTi9IgkILFsbi7eDfQVHMO+dXwCpRb+AbPWOPhtM5PGIifvUIo=
+    secure: LqMlSIRmjYFyp0FwxqWGPl32MuL69cCqQXzxTe/Vi0bk8pzDrgwwgFrFy0cqoxZ3t851BkHnd9u+CvPT8yYDQc7xjw6R5abz6VfUozSkyJ3riChfoSpWgsG2WT0jxyV9z02bfJlYZCNQoJ+mIy/I1dW3okQmwGSmQ/b1z9crkMw=
   on:
     tags: true
     repo: noflo/noflo-core

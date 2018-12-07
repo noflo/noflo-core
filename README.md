@@ -4,5 +4,5 @@ Essential components for NoFlo
 
 ## Changes
 
-* 0.6.0 (git master)
+* 0.6.0 (December 7th 2018)
   - Ported the library from CoffeeScript to ES6
