@@ -12,3 +12,4 @@ flowhub.json
 /coverage/
 /.cache/
 /browser/
+/dist/

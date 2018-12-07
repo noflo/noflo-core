@@ -1,6 +1,8 @@
 language: node_js
 node_js:
 - lts/*
+before_script:
+- npm run build
 after_success:
 - "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
 sudo: false
@@ -12,3 +14,5 @@ deploy:
   on:
     tags: true
     repo: noflo/noflo-core
+addons:
+  chrome: stable
