@@ -39,9 +39,7 @@
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-mocha": "^5.2.0",
     "fbp-spec": "^0.6.0",
-    "grunt": "^1.0.1",
-    "grunt-mocha-test": "^0.13.2",
-    "grunt-noflo-browser": "^1.5.0",
+    "mocha": "^5.2.0",
     "noflo-nodejs": "^0.10.1",
     "nyc": "^12.0.1"
   },
@@ -50,7 +48,7 @@
   ],
   "scripts": {
     "pretest": "eslint *.js components/*.js spec/*.js",
-    "test": "nyc grunt test"
+    "test": "nyc mocha spec/*.js --exit"
   },
   "nyc": {
     "include": [
