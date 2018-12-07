@@ -1,4 +1,3 @@
-/* global describe it before after beforeEach afterEach */
 const noflo = require('noflo');
 const path = require('path');
 const chai = require('chai');
@@ -51,7 +50,7 @@ describe('Kick component', () => {
     it('should have an output port', () => chai.expect(c.outPorts.out).to.be.an('object'));
   });
 
-  describe('without full stream', () =>
+  describe('without full stream', () => {
     it('should not send anything', (done) => {
       let sent = false;
       out.on('data', () => {
@@ -70,7 +69,8 @@ describe('Kick component', () => {
           c.start(done);
         });
       }, 5);
-    }));
+    });
+  });
 
   describe('without specified data', () => {
     it('it should send a NULL', (done) => {

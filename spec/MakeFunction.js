@@ -1,4 +1,3 @@
-/* global describe it before after beforeEach afterEach */
 const noflo = require('noflo');
 const path = require('path');
 const chai = require('chai');

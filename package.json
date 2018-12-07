@@ -34,9 +34,10 @@
   "devDependencies": {
     "chai": "^4.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-mocha": "^5.2.0",
     "fbp-spec": "^0.6.0",
     "grunt": "^1.0.1",
     "grunt-mocha-test": "^0.13.2",
@@ -48,7 +49,7 @@
     "noflo"
   ],
   "scripts": {
-    "pretest": "eslint *.js **/*.js",
+    "pretest": "eslint *.js components/*.js spec/*.js",
     "test": "nyc grunt test"
   },
   "nyc": {
