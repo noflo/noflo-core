@@ -1,4 +1,3 @@
-/* global describe it beforeEach */
 const noflo = require('noflo');
 const path = require('path');
 const chai = require('chai');
@@ -42,13 +41,14 @@ describe('Split component', () => {
     });
   });
 
-  describe('when sending no packet, only groups', () =>
+  describe('when sending no packet, only groups', () => {
     it('should forward no packet', function (done) {
       this.timeout(500);
       setTimeout(done, 100);
       ins.beginGroup('foo');
       ins.endGroup();
-    }));
+    });
+  });
 
   describe('when sending only one packet', () => {
     it('should forward the packet', (done) => {

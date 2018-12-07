@@ -1,4 +1,3 @@
-/* global describe it before beforeEach afterEach */
 const noflo = require('noflo');
 const path = require('path');
 const chai = require('chai');
@@ -38,7 +37,7 @@ describe('DisconnectAfterPacket component', () => {
     out = null;
   });
 
-  describe('when receiving two packets', () =>
+  describe('when receiving two packets', () => {
     it('should send a disconnect', (done) => {
       const expected = [
         'DATA 1',
@@ -60,7 +59,8 @@ describe('DisconnectAfterPacket component', () => {
       ins.send(1);
       ins.send(2);
       ins.disconnect();
-    }));
+    });
+  });
 
   describe('when receiving complex substream of packets', () => {
     it('should send a disconnect for each', (done) => {

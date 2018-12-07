@@ -1,4 +1,3 @@
-/* global describe it before beforeEach afterEach */
 const noflo = require('noflo');
 const path = require('path');
 const chai = require('chai');
@@ -38,7 +37,7 @@ describe('Copy component', () => {
     out = null;
   });
 
-  describe('when receiving an object', () =>
+  describe('when receiving an object', () => {
     it('should send a copy of the object', (done) => {
       const original = {
         hello: 'world',
@@ -53,5 +52,6 @@ describe('Copy component', () => {
 
       ins.send(original);
       ins.disconnect();
-    }));
+    });
+  });
 });

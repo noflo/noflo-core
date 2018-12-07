@@ -1,4 +1,3 @@
-/* global describe it beforeEach window */
 const noflo = require('noflo');
 const path = require('path');
 const chai = require('chai');

@@ -1,4 +1,3 @@
-/* global describe it before */
 const noflo = require('noflo');
 const path = require('path');
 const chai = require('chai');
@@ -36,8 +35,8 @@ describe('Drop component', () => {
         () => {
           chai.expect(Object.keys(ip)).to.eql([]);
           return done();
-        }
-        , 200,
+        },
+        200,
       );
       ins.connect();
       ins.send(ip);
