@@ -50,7 +50,7 @@
     "noflo-nodejs": "^0.10.1",
     "noflo-runtime-headless": "^0.1.0",
     "noflo-runtime-postmessage": "^0.10.1",
-    "noflo-webpack-config": "^1.0.0",
+    "noflo-webpack-config": "^1.1.0",
     "nyc": "^12.0.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
