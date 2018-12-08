@@ -1,16 +1,9 @@
 const noflo = require('noflo');
-const path = require('path');
 const chai = require('chai');
 
-let baseDir;
+const baseDir = process.cwd();
 
-if (!noflo.isBrowser()) {
-  baseDir = path.resolve(__dirname, '../');
-} else {
-  baseDir = 'noflo-core';
-}
-
-describe('Merge component', () => {
+describe('Output component', () => {
   let c = null;
   let ins1 = null;
   let ins2 = null;
@@ -18,7 +11,7 @@ describe('Merge component', () => {
   before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    loader.load('core/Merge', (err, instance) => {
+    loader.load('core/Output', (err, instance) => {
       if (err) {
         done(err);
         return;

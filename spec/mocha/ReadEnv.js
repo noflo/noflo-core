@@ -1,14 +1,7 @@
 const noflo = require('noflo');
-const path = require('path');
 const chai = require('chai');
 
-let baseDir;
-
-if (!noflo.isBrowser()) {
-  baseDir = path.resolve(__dirname, '../');
-} else {
-  baseDir = 'noflo-core';
-}
+const baseDir = process.cwd();
 
 describe('ReadEnv component', () => {
   let c = null;
