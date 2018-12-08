@@ -1,8 +1,3 @@
-const noflo = require('noflo');
-const chai = require('chai');
-
-const baseDir = process.cwd();
-
 describe('RunTimeout component', () => {
   let c = null;
   let start = null;

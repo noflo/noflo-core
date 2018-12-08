@@ -1,8 +1,3 @@
-const noflo = require('noflo');
-const chai = require('chai');
-
-const baseDir = process.cwd();
-
 describe('ReadEnv component', () => {
   let c = null;
   let key = null;
@@ -11,10 +6,6 @@ describe('ReadEnv component', () => {
 
   before(function (done) {
     this.timeout(4000);
-    if (noflo.isBrowser()) {
-      this.skip();
-      return;
-    }
     const loader = new noflo.ComponentLoader(baseDir);
     loader.load('core/ReadEnv', (e, instance) => {
       if (e) {
@@ -39,7 +30,7 @@ describe('ReadEnv component', () => {
   });
 
   describe('when instantiated', () => {
-    before(() => {
+    before(function () {
       if (noflo.isBrowser()) {
         this.skip();
       }
@@ -55,7 +46,7 @@ describe('ReadEnv component', () => {
   });
 
   describe('reading a nonexistent env var', () => {
-    before(() => {
+    before(function () {
       if (noflo.isBrowser()) {
         this.skip();
       }
@@ -71,7 +62,7 @@ describe('ReadEnv component', () => {
   });
 
   describe('reading a existing env var', () => {
-    before(() => {
+    before(function () {
       if (noflo.isBrowser()) {
         this.skip();
         return;
