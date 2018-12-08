@@ -1,17 +1,3 @@
-const noflo = require('noflo');
-const path = require('path');
-const chai = require('chai');
-
-let baseDir;
-
-if (!noflo.isBrowser()) {
-  baseDir = path.resolve(__dirname, '../');
-} else {
-  baseDir = 'noflo-core';
-}
-
-const { expect } = chai;
-
 describe('ReadGlobal', () => {
   let c = null;
 
@@ -30,17 +16,17 @@ describe('ReadGlobal', () => {
 
   describe('inPorts', () => {
     it('should contain "name"', () => {
-      expect(c.inPorts.name).to.be.an('object');
+      chai.expect(c.inPorts.name).to.be.an('object');
     });
   });
 
   describe('outPorts', () => {
     it('should contain "value"', () => {
-      expect(c.outPorts.value).to.be.an('object');
+      chai.expect(c.outPorts.value).to.be.an('object');
     });
 
     it('should contain "error"', () => {
-      expect(c.outPorts.error).to.be.an('object');
+      chai.expect(c.outPorts.error).to.be.an('object');
     });
   });
 
@@ -67,7 +53,7 @@ describe('ReadGlobal', () => {
 
       it('should read a variable from the global object', (done) => {
         valueOut.on('data', (data) => {
-          expect(data).to.equal(true);
+          chai.expect(data).to.equal(true);
           done();
         });
 
@@ -78,7 +64,7 @@ describe('ReadGlobal', () => {
       describe('and a group', () => {
         it('should forward the group', (done) => {
           valueOut.on('begingroup', (group) => {
-            expect(group).to.equal('group-1');
+            chai.expect(group).to.equal('group-1');
             done();
           });
 
@@ -109,7 +95,7 @@ describe('ReadGlobal', () => {
 
         it('should send the error', (done) => {
           errorOut.on('data', (err) => {
-            expect(err).to.be.an('error');
+            chai.expect(err).to.be.an('error');
             done();
           });
 

@@ -36,21 +36,36 @@
     "coveralls": "^3.0.0",
     "eslint": "^5.0.1",
     "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-chai": "0.0.1",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-mocha": "^5.2.0",
     "fbp-spec": "^0.6.0",
-    "grunt": "^1.0.1",
-    "grunt-mocha-test": "^0.13.2",
-    "grunt-noflo-browser": "^1.5.0",
+    "karma": "^3.1.3",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "mocha": "^5.2.0",
+    "noflo-component-loader": "^0.3.2",
     "noflo-nodejs": "^0.10.1",
-    "nyc": "^12.0.1"
+    "noflo-runtime-headless": "^0.1.0",
+    "noflo-runtime-postmessage": "^0.10.1",
+    "noflo-webpack-config": "^1.1.0",
+    "nyc": "^12.0.1",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
   },
   "keywords": [
     "noflo"
   ],
   "scripts": {
-    "pretest": "eslint *.js components/*.js spec/*.js",
-    "test": "nyc grunt test"
+    "build": "webpack --config node_modules/noflo-webpack-config/webpack.config.js",
+    "pretest": "eslint *.js components/*.js spec/mocha/*.js",
+    "test:mocha:node": "nyc mocha --exit --require node_modules/noflo-webpack-config/inject.js spec/mocha/*.js",
+    "test:mocha:browser": "karma start node_modules/noflo-webpack-config/karma.config.js",
+    "test:fbp-spec:node": "fbp-spec --secret test --address ws://localhost:3333 --command 'noflo-nodejs --port 3333 --secret test' spec/*.yaml",
+    "test:fbp-spec:browser": "fbp-spec --address ws://localhost:3569 --command \"noflo-runtime-headless -f dist/test.js\" spec/*.yaml",
+    "test": "npm run test:mocha:node && npm run test:fbp-spec:node && npm run test:mocha:browser && npm run test:fbp-spec:browser"
   },
   "nyc": {
     "include": [

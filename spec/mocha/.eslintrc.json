@@ -1,6 +1,7 @@
 {
   "extends": "airbnb-base",
   "plugins": [
+    "chai",
     "mocha"
   ],
   "env": {
@@ -11,6 +12,9 @@
     "func-names": 0
   },
   "globals": {
+    "baseDir": false,
+    "chai": false,
+    "noflo": false,
     "window": false
   }
 }

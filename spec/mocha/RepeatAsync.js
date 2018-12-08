@@ -1,16 +1,4 @@
-const noflo = require('noflo');
-const path = require('path');
-const chai = require('chai');
-
-let baseDir;
-
-if (!noflo.isBrowser()) {
-  baseDir = path.resolve(__dirname, '../');
-} else {
-  baseDir = 'noflo-core';
-}
-
-describe('Output component', () => {
+describe('RepeatAsync component', () => {
   let c = null;
   let ins1 = null;
   let ins2 = null;
@@ -18,7 +6,7 @@ describe('Output component', () => {
   before(function (done) {
     this.timeout(4000);
     const loader = new noflo.ComponentLoader(baseDir);
-    loader.load('core/Output', (err, instance) => {
+    loader.load('core/RepeatAsync', (err, instance) => {
       if (err) {
         done(err);
         return;
@@ -42,6 +30,7 @@ describe('Output component', () => {
 
   describe('when receiving packets from multiple inputs', () => {
     it('should send them as a single stream', (done) => {
+      let wasasync = false;
       const expected = [
         'CONN',
         '< a',
@@ -63,6 +52,7 @@ describe('Output component', () => {
         received.push('DISC');
         if (received.length !== expected.length) { return; }
         chai.expect(received).to.eql(expected);
+        chai.expect(wasasync).to.equal(true);
         done();
       });
 
@@ -75,6 +65,7 @@ describe('Output component', () => {
       ins2.send(2);
       ins2.endGroup();
       ins2.disconnect();
+      wasasync = true;
     });
   });
 });

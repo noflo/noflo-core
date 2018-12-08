@@ -1,14 +1,3 @@
-const noflo = require('noflo');
-const path = require('path');
-const chai = require('chai');
-
-let baseDir;
-if (!noflo.isBrowser()) {
-  baseDir = path.resolve(__dirname, '../');
-} else {
-  baseDir = 'noflo-core';
-}
-
 describe('Callback component', () => {
   let c = null;
   let ins = null;
