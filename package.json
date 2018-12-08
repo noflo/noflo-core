@@ -54,10 +54,11 @@
   ],
   "scripts": {
     "build": "webpack --config node_modules/noflo-webpack-config/webpack.config.js",
-    "pretest": "eslint *.js components/*.js spec/*.js",
-    "test:node": "nyc mocha spec/*.js --exit",
-    "test:browser": "fbp-spec --address ws://localhost:3569 --command \"noflo-runtime-headless -f dist/test.js\" spec/*.yaml",
-    "test": "npm run test:node && npm run test:browser"
+    "pretest": "eslint *.js components/*.js spec/mocha/*.js",
+    "test:mocha:node": "nyc mocha spec/mocha/*.js --exit",
+    "test:fbp-spec:node": "fbp-spec --secret test --address ws://localhost:3333 --command 'noflo-nodejs --port 3333 --secret test' spec/*.yaml",
+    "test:fbp-spec:browser": "fbp-spec --address ws://localhost:3569 --command \"noflo-runtime-headless -f dist/test.js\" spec/*.yaml",
+    "test": "npm run test:mocha:node && npm run test:fbp-spec:node && npm run test:fbp-spec:browser"
   },
   "nyc": {
     "include": [
