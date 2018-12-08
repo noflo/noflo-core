@@ -61,7 +61,7 @@
   "scripts": {
     "build": "webpack --config node_modules/noflo-webpack-config/webpack.config.js",
     "pretest": "eslint *.js components/*.js spec/mocha/*.js",
-    "test:mocha:node": "nyc mocha --exit --require spec/inject.js spec/mocha/*.js",
+    "test:mocha:node": "nyc mocha --exit --require node_modules/noflo-webpack-config/inject.js spec/mocha/*.js",
     "test:mocha:browser": "karma start node_modules/noflo-webpack-config/karma.config.js",
     "test:fbp-spec:node": "fbp-spec --secret test --address ws://localhost:3333 --command 'noflo-nodejs --port 3333 --secret test' spec/*.yaml",
     "test:fbp-spec:browser": "fbp-spec --address ws://localhost:3569 --command \"noflo-runtime-headless -f dist/test.js\" spec/*.yaml",
