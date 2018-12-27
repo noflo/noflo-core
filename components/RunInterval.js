@@ -65,6 +65,7 @@ exports.getComponent = () => {
       if (stop.type !== 'data') { return; }
       // Deactivate interval in this scope
       cleanUp(stop.scope);
+      output.done();
     }
   });
 };
