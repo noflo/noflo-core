@@ -49,7 +49,7 @@ describe('Split component', () => {
     });
     it('should forward groups', (done) => {
       const groups = [];
-      out.on('begingroup', group => groups.push(group));
+      out.on('begingroup', (group) => groups.push(group));
       out.on('endgroup', () => groups.pop());
       out.on('data', (data) => {
         chai.expect(data).to.equal('foo');
@@ -85,7 +85,7 @@ describe('Split component', () => {
       const ids = ['foo', 'bar', 'baz'];
       let packets = [];
       const groups = [];
-      out.on('begingroup', group => groups.push(group));
+      out.on('begingroup', (group) => groups.push(group));
       out.on('endgroup', () => groups.pop());
       out.on('data', (data) => {
         packets.push({
@@ -95,10 +95,10 @@ describe('Split component', () => {
         if (packets.length > 2) {
           chai.expect(packets.length).to.deep.equal(3);
           ids.forEach((id) => {
-            const allData = packets.map(p => p.data);
+            const allData = packets.map((p) => p.data);
             const idGroups = packets
-              .filter(p => p.data === id)
-              .map(p => p.groups);
+              .filter((p) => p.data === id)
+              .map((p) => p.groups);
             chai.expect(allData).to.include(id);
             chai.expect(idGroups[0]).to.deep.equal([`group-of-${id}`]);
           });

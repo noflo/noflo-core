@@ -117,8 +117,8 @@ describe('Kick component', () => {
       ];
       const received = [];
       out.on('connect', () => received.push('CONN'));
-      out.on('begingroup', group => received.push(`< ${group}`));
-      out.on('data', d => received.push(`DATA ${JSON.stringify(d)}`));
+      out.on('begingroup', (group) => received.push(`< ${group}`));
+      out.on('data', (d) => received.push(`DATA ${JSON.stringify(d)}`));
       out.on('endgroup', () => received.push('>'));
       out.on('disconnect', () => {
         received.push('DISC');
@@ -127,7 +127,7 @@ describe('Kick component', () => {
       });
 
       data.send({ foo: 'bar' });
-      ['foo', 'bar'].forEach(grp => ins.beginGroup(grp));
+      ['foo', 'bar'].forEach((grp) => ins.beginGroup(grp));
       ins.send('foo');
       ['foo', 'bar'].forEach(() => ins.endGroup());
       ins.disconnect();

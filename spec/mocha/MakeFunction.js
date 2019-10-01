@@ -62,7 +62,7 @@ describe('MakeFunction component', () => {
         chai.expect(data(2)).to.equal(4);
         done();
       });
-      err.on('data', data => done(data));
+      err.on('data', (data) => done(data));
       func.send('return x*x;');
     });
   });
@@ -81,7 +81,7 @@ describe('MakeFunction component', () => {
         chai.expect(data).to.equal(81);
         done();
       });
-      err.on('data', data => done(data));
+      err.on('data', (data) => done(data));
       func.send('return x*x;');
       ins.send(9);
       ins.disconnect();
@@ -93,18 +93,18 @@ describe('MakeFunction component', () => {
         chai.expect(data).to.equal('99');
         done();
       });
-      err.on('data', data => done(data));
+      err.on('data', (data) => done(data));
       ins.send('9');
       ins.disconnect();
     });
 
     it('pass function', (done) => {
-      func.send(x => `${x}!`);
+      func.send((x) => `${x}!`);
       out.on('data', (data) => {
         chai.expect(data).to.equal('hello function!');
         done();
       });
-      err.on('data', data => done(data));
+      err.on('data', (data) => done(data));
       ins.send('hello function');
       ins.disconnect();
     });
