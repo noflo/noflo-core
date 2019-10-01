@@ -59,8 +59,8 @@ describe('SendNext component', () => {
       ];
 
       out.on('connect', () => received.push('CONN'));
-      out.on('begingroup', group => received.push(`< ${group}`));
-      out.on('data', d => received.push(`DATA ${d}`));
+      out.on('begingroup', (group) => received.push(`< ${group}`));
+      out.on('data', (d) => received.push(`DATA ${d}`));
       out.on('endgroup', () => received.push('>'));
       out.on('disconnect', () => received.push('DISC'));
 

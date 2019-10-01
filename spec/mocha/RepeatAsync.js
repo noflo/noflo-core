@@ -45,8 +45,8 @@ describe('RepeatAsync component', () => {
       ];
       const received = [];
       out.on('connect', () => received.push('CONN'));
-      out.on('begingroup', group => received.push(`< ${group}`));
-      out.on('data', data => received.push(`DATA ${data}`));
+      out.on('begingroup', (group) => received.push(`< ${group}`));
+      out.on('data', (data) => received.push(`DATA ${data}`));
       out.on('endgroup', () => received.push('>'));
       out.on('disconnect', () => {
         received.push('DISC');
