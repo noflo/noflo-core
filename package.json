@@ -51,7 +51,7 @@
     "noflo-runtime-headless": "^0.1.0",
     "noflo-runtime-postmessage": "^0.10.1",
     "noflo-webpack-config": "^1.1.0",
-    "nyc": "^14.0.0",
+    "nyc": "^15.0.0",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
   },
