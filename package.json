@@ -49,7 +49,7 @@
     "noflo-component-loader": "^0.4.0",
     "noflo-nodejs": "^0.13.0",
     "noflo-runtime-headless": "^0.2.0",
-    "noflo-runtime-postmessage": "^0.11.0",
+    "noflo-runtime-postmessage": "^0.12.0",
     "noflo-webpack-config": "^2.0.0",
     "nyc": "^15.0.0",
     "webpack": "^5.0.0",
