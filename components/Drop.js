@@ -1,6 +1,5 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description =
 		"This component drops every packet it receives with no action";
@@ -14,4 +13,4 @@ export const getComponent = () => {
 		data.drop();
 		output.done();
 	});
-};
+}

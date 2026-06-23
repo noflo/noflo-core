@@ -1,20 +1,19 @@
-"use strict";
 import noflo from "noflo";
-import nodeutil from "node:util";
 const log = (options, data) => {
 	if (options != null) {
-		try {
-			const { inspect } = nodeutil;
-			return console.log(
-				inspect(data, options.showHidden, options.depth, options.colors),
-			);
-		} catch (_e) {
-			return console.log(data);
-		}
-	}
-	return console.log(data);
+    return import('node:util')
+      .then(({ inspect }) => {
+        return console.log(
+          inspect(data, options.showHidden, options.depth, options.colors),
+        );
+      })
+      .catch((_e) => {
+        console.log(data);
+      });
+  }
+	console.log(data);
 };
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = "Sends the data items to console.log";
 	c.icon = "bug";
@@ -45,4 +44,4 @@ export const getComponent = () => {
 		log(options, data);
 		output.sendDone({ out: data });
 	});
-};
+}

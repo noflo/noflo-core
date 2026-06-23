@@ -1,6 +1,5 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = "Makes each data packet a stream of its own";
 	c.icon = "pause";
@@ -49,4 +48,4 @@ export const getComponent = () => {
 		});
 		output.done();
 	});
-};
+}

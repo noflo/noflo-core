@@ -1,6 +1,5 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = `This component calls a given callback function for each
 IP it receives.  The Callback component is typically used to connect
@@ -35,4 +34,4 @@ NoFlo with external Node.js code.`;
 		}
 		output.done();
 	});
-};
+}

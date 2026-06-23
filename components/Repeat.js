@@ -1,8 +1,7 @@
-"use strict";
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
-	c.description = `Forwards packets and metadata in the same way 
+	c.description = `Forwards packets and metadata in the same way
 it receives them`;
 	c.icon = "forward";
 	c.inPorts.add("in", {
@@ -16,4 +15,4 @@ it receives them`;
 		const data = input.get("in");
 		output.sendDone({ out: data });
 	});
-};
+}

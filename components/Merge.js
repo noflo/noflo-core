@@ -1,8 +1,7 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
-	c.description = `This component receives data on multiple input ports and 
+	c.description = `This component receives data on multiple input ports and
 sends the same data out to the connected output port`;
 	c.icon = "compress";
 	c.inPorts.add("in", {
@@ -16,4 +15,4 @@ sends the same data out to the connected output port`;
 		const data = input.get("in");
 		return output.sendDone({ out: data });
 	});
-};
+}

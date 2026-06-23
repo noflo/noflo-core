@@ -1,10 +1,9 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
-	c.description = `Evaluates a function each time data hits the "in" port 
-and sends the return value to "out". Within the function "x" will 
-be the variable from the in port. For example, to make a ^2 function 
+	c.description = `Evaluates a function each time data hits the "in" port
+and sends the return value to "out". Within the function "x" will
+be the variable from the in port. For example, to make a ^2 function
 input "return x*x;" to the function port.`;
 	c.icon = "code";
 	c.inPorts.add("in", {
@@ -76,4 +75,4 @@ input "return x*x;" to the function port.`;
 			output.sendDone({ function: func });
 		});
 	});
-};
+}

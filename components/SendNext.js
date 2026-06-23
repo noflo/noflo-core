@@ -1,6 +1,5 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = "Sends next packet in buffer when receiving a bang";
 	c.icon = "forward";
@@ -48,4 +47,4 @@ export const getComponent = () => {
 		// After the loop we can deactivate
 		output.done();
 	});
-};
+}

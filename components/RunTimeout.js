@@ -1,6 +1,5 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = "Send a packet after the given time in ms";
 	c.icon = "clock-o";
@@ -49,4 +48,4 @@ export const getComponent = () => {
 		}, time);
 		c.timer[input.scope] = context;
 	});
-};
+}

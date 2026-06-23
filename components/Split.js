@@ -1,9 +1,8 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.icon = "expand";
-	c.description = `This component receives data on a single input port and 
+	c.description = `This component receives data on a single input port and
 sends the same data out to all connected output ports`;
 	c.inPorts.add("in", {
 		datatype: "all",
@@ -16,4 +15,4 @@ sends the same data out to all connected output ports`;
 		const data = input.get("in");
 		output.sendDone({ out: data });
 	});
-};
+}

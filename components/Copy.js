@@ -1,7 +1,6 @@
-
 import noflo from "noflo";
 import * as owl from "owl-deepcopy";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = "deep (i.e. recursively) copy an object";
 	c.icon = "copy";
@@ -21,4 +20,4 @@ export const getComponent = () => {
 		const copy = owl.deepCopy(data);
 		output.sendDone({ out: copy });
 	});
-};
+}

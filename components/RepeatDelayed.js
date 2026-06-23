@@ -1,6 +1,5 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = "Forward packet after a set delay";
 	c.icon = "clock-o";
@@ -43,4 +42,4 @@ export const getComponent = () => {
 		}, delay);
 		c.timers.push(timer);
 	});
-};
+}

@@ -1,6 +1,5 @@
-
 import noflo from "noflo";
-export const getComponent = () => {
+export default function getComponent() {
 	const c = new noflo.Component();
 	c.description = "Like 'Repeat', except repeat on next tick";
 	c.icon = "step-forward";
@@ -15,4 +14,4 @@ export const getComponent = () => {
 		const data = input.get("in");
 		setTimeout(() => output.sendDone({ out: data }), 0);
 	});
-};
+}
