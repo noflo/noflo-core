@@ -1,4 +1,4 @@
-"use strict";
+
 import noflo from "noflo";
 export const getComponent = () => {
 	const c = new noflo.Component();

@@ -1,4 +1,4 @@
-"use strict";
+
 import noflo from "noflo";
 import * as owl from "owl-deepcopy";
 export const getComponent = () => {
