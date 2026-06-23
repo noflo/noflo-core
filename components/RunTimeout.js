@@ -31,7 +31,9 @@ exports.getComponent = () => {
   };
 
   c.tearDown = (callback) => {
-    Object.keys(c.timer).forEach((scope) => c.stopTimer(scope));
+    Object.keys(c.timer).forEach((scope) => {
+      c.stopTimer(scope);
+    });
     callback();
   };
 

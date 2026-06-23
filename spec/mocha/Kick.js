@@ -127,9 +127,13 @@ describe('Kick component', () => {
       });
 
       data.send({ foo: 'bar' });
-      ['foo', 'bar'].forEach((grp) => ins.beginGroup(grp));
+      ['foo', 'bar'].forEach((grp) => {
+        ins.beginGroup(grp);
+      });
       ins.send('foo');
-      ['foo', 'bar'].forEach(() => ins.endGroup());
+      ['foo', 'bar'].forEach(() => {
+        ins.endGroup();
+      });
       ins.disconnect();
     });
   });

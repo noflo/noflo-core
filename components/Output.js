@@ -1,14 +1,20 @@
 const noflo = require('noflo');
-const { inspect } = require('util');
 
 const log = (options, data) => {
   if (options != null) {
-    return console.log(inspect(
-      data,
-      options.showHidden,
-      options.depth,
-      options.colors,
-    ));
+    try {
+      const { inspect } = require('node:util');
+      return console.log(
+        inspect(
+          data,
+          options.showHidden,
+          options.depth,
+          options.colors,
+        )
+      );
+    } catch (_e) {
+      return console.log(data);
+    }
   }
   return console.log(data);
 };

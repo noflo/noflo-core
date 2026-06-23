@@ -23,7 +23,9 @@ exports.getComponent = () => {
   });
 
   c.tearDown = (callback) => {
-    c.timers.forEach((timer) => clearTimeout(timer));
+    c.timers.forEach((timer) => {
+      clearTimeout(timer)
+    });
     c.timers = [];
     return callback();
   };
