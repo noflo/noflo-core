@@ -4,29 +4,24 @@ describe('Kick component', () => {
   let data = null;
   let out = null;
 
-  before(function (done) {
-    this.timeout(4000);
+  before(() => {
     const loader = new noflo.ComponentLoader(baseDir);
-    loader.load('core/Kick', (err, instance) => {
-      if (err) {
-        done(err);
-        return;
-      }
-      c = instance;
-      ins = noflo.internalSocket.createSocket();
-      c.inPorts.in.attach(ins);
-      done();
-    });
+    return loader.load('core/Kick')
+      .then((instance) => {
+        c = instance;
+        ins = noflo.internalSocket.createSocket();
+        c.inPorts.in.attach(ins);
+      });
   });
-  beforeEach((done) => {
+  beforeEach(() => {
     out = noflo.internalSocket.createSocket();
     c.outPorts.out.attach(out);
-    c.start(done);
+    return c.start();
   });
-  afterEach((done) => {
+  afterEach(() => {
     c.outPorts.out.detach(out);
     out = null;
-    c.shutdown(done);
+    return c.shutdown();
   });
 
   describe('when instantiated', () => {
@@ -39,7 +34,7 @@ describe('Kick component', () => {
   });
 
   describe('without full stream', () => {
-    it('should not send anything', (done) => {
+    it('should not send anything', () => {
       let sent = false;
       out.on('data', () => {
         sent = true;
@@ -47,16 +42,16 @@ describe('Kick component', () => {
 
       ins.beginGroup('bar');
       ins.send('foo');
-      setTimeout(() => {
-        chai.expect(sent, 'Should not have sent data').to.equal(false);
-        c.shutdown((err) => {
-          if (err) {
-            done(err);
-            return;
-          }
-          c.start(done);
-        });
-      }, 5);
+      return Promise.resolve((resolve, reject) => {
+        setTimeout(() => {
+          chai.expect(sent, 'Should not have sent data').to.equal(false);
+          return c.shutdown()
+            .then(() => {
+              return c.start();
+            })
+            .then(resolve, reject);
+        }, 5);
+      });
     });
   });
 
