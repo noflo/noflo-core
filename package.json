@@ -45,7 +45,7 @@
     "lint": "npx @biomejs/biome lint components/ spec/mocha/*.js",
     "pretest": "npm run lint",
     "test:mocha:node": "mocha --exit --require node_modules/noflo-webpack-config/inject.js spec/mocha/*.js",
-    "test:fbp-spec:node": "fbp-spec --secret test --address ws://localhost:3333 --command 'noflo-nodejs --port 3333 --secret test' spec/*.yaml",
+    "test:fbp-spec:node": "fbp-spec --secret test --address ws://localhost:3333 --command 'noflo-nodejs --port 3333 --secret test --open false' spec/*.yaml",
     "test": "npm run test:mocha:node && npm run test:fbp-spec:node"
   }
 }
