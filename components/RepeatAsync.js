@@ -1,17 +1,35 @@
-import noflo from "noflo";
-export default function getComponent() {
-	const c = new noflo.Component();
-	c.description = "Like 'Repeat', except repeat on next tick";
-	c.icon = "step-forward";
-	c.inPorts.add("in", {
-		datatype: "all",
-		description: "Packet to forward",
-	});
-	c.outPorts.add("out", {
-		datatype: "all",
-	});
-	return c.process((input, output) => {
-		const data = input.get("in");
-		setTimeout(() => output.sendDone({ out: data }), 0);
-	});
+import { Component } from "@noflo/noflo";
+
+/**
+ * Like Repeat, except the packet repeats on the next tick.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Like 'Repeat', except repeat on next tick",
+    icon: "step-forward",
+    inPorts: {
+      in: {
+        datatype: "all",
+        description: "Packet to forward",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "all",
+      },
+    },
+  });
+
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
+    }
+    const data = input.getData("in");
+    // The activation stays open until the delayed send completes
+    setTimeout(() => output.sendDone({ out: data }), 0);
+  });
+
+  return c;
 }

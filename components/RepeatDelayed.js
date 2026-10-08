@@ -1,45 +1,63 @@
-import noflo from "noflo";
-export default function getComponent() {
-	const c = new noflo.Component();
-	c.description = "Forward packet after a set delay";
-	c.icon = "clock-o";
-	c.timers = [];
-	c.inPorts.add("in", {
-		datatype: "all",
-		description: "Packet to be forwarded with a delay",
-	});
-	c.inPorts.add("delay", {
-		datatype: "number",
-		description: "How much to delay",
-		default: 500,
-		control: true,
-	});
-	c.outPorts.add("out", {
-		datatype: "all",
-	});
-	c.tearDown = (callback) => {
-		c.timers.forEach((timer) => {
-			clearTimeout(timer);
-		});
-		c.timers = [];
-		return callback();
-	};
-	return c.process((input, output) => {
-		if (!input.hasData("in")) {
-			return;
-		}
-		if (input.attached("delay").length && !input.hasData("delay")) {
-			return;
-		}
-		let delay = 500;
-		if (input.hasData("delay")) {
-			delay = input.getData("delay");
-		}
-		const payload = input.get("in");
-		const timer = setTimeout(() => {
-			c.timers.splice(c.timers.indexOf(timer), 1);
-			return output.sendDone({ out: payload });
-		}, delay);
-		c.timers.push(timer);
-	});
+import { Component } from "@noflo/noflo";
+
+/**
+ * Forwards a packet after a set delay.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Forward packet after a set delay",
+    icon: "clock-o",
+    inPorts: {
+      in: {
+        datatype: "all",
+        description: "Packet to be forwarded with a delay",
+        required: true,
+      },
+      delay: {
+        datatype: "number",
+        description: "How much to delay in milliseconds",
+        default: 500,
+        control: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "all",
+      },
+    },
+  });
+
+  /** @type {NodeJS.Timeout[]} */
+  const timers = [];
+
+  c.tearDown = async () => {
+    for (const timer of timers) {
+      clearTimeout(timer);
+    }
+    timers.length = 0;
+  };
+
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
+    }
+    // Wait for an attached delay connection to deliver before firing
+    if (input.attached("delay").length && !input.hasData("delay")) {
+      return;
+    }
+    const delay = input.hasData("delay") ? input.getData("delay") : 500;
+    const payload = input.getData("in");
+    // The activation stays open until the delayed send completes
+    const timer = setTimeout(() => {
+      const index = timers.indexOf(timer);
+      if (index !== -1) {
+        timers.splice(index, 1);
+      }
+      output.sendDone({ out: payload });
+    }, delay);
+    timers.push(timer);
+  });
+
+  return c;
 }

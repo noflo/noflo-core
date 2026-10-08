@@ -1,51 +1,79 @@
-import noflo from "noflo";
-export default function getComponent() {
-	const c = new noflo.Component();
-	c.description = "Makes each data packet a stream of its own";
-	c.icon = "pause";
-	c.forwardBrackets = {};
-	c.autoOrdering = false;
-	c.inPorts.add("in", {
-		datatype: "all",
-		description: "Packet to be forward with disconnection",
-	});
-	c.outPorts.add("out", {
-		datatype: "all",
-	});
-	let brackets = {};
-	c.tearDown = (callback) => {
-		brackets = {};
-		callback();
-	};
-	return c.process((input, output) => {
-		// Force auto-ordering to be off for this one
-		c.autoOrdering = false;
-		const data = input.get("in");
-		if (!brackets[input.scope]) {
-			brackets[input.scope] = [];
-		}
-		if (data.type === "openBracket") {
-			brackets[input.scope].push(data.data);
-			output.done();
-			return;
-		}
-		if (data.type === "closeBracket") {
-			brackets[input.scope].pop();
-			output.done();
-			return;
-		}
-		if (data.type !== "data") {
-			return;
-		}
-		brackets[input.scope].forEach((bracket) => {
-			output.sendIP("out", new noflo.IP("openBracket", bracket));
-		});
-		output.sendIP("out", data);
-		const closes = brackets[input.scope].slice(0);
-		closes.reverse();
-		brackets[input.scope].forEach((bracket) => {
-			output.sendIP("out", new noflo.IP("closeBracket", bracket));
-		});
-		output.done();
-	});
+import { Component, IP } from "@noflo/noflo";
+
+/**
+ * Makes each data packet a stream of its own, wrapping it in the
+ * brackets currently open on the input.
+ *
+ * 2.x conversion note: brackets do not fire the process function, so the
+ * 1.x per-IP activation pattern is replaced by consuming the buffered
+ * stream with `getStream` and walking it. Bracket state is keyed by
+ * scope and stored in the component closure.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Makes each data packet a stream of its own",
+    icon: "pause",
+    inPorts: {
+      in: {
+        datatype: "all",
+        description: "Packet to be forwarded with its own stream grouping",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "all",
+      },
+    },
+  });
+
+  c.forwardBrackets = {};
+  c.autoOrdering = false;
+
+  /** @type {Map<string | typeof undefined, string[]>} */
+  const bracketStacks = new Map();
+
+  c.tearDown = async () => {
+    bracketStacks.clear();
+  };
+
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
+    }
+    const stream = /** @type {import("@noflo/noflo").IP[]} */ (
+      input.getStream("in")
+    );
+    let stack = bracketStacks.get(input.scope);
+    if (!stack) {
+      stack = [];
+      bracketStacks.set(input.scope, stack);
+    }
+    for (const packet of stream) {
+      if (packet.type === "openBracket") {
+        stack.push(packet.data);
+        continue;
+      }
+      if (packet.type === "closeBracket") {
+        stack.pop();
+        continue;
+      }
+      if (packet.type !== "data") {
+        continue;
+      }
+      for (const bracket of stack) {
+        output.sendIP("out", new IP("openBracket", bracket));
+      }
+      output.sendIP("out", packet);
+      const closes = stack.slice(0);
+      closes.reverse();
+      for (const bracket of closes) {
+        output.sendIP("out", new IP("closeBracket", bracket));
+      }
+    }
+    output.done();
+  });
+
+  return c;
 }

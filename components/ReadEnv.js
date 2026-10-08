@@ -1,31 +1,46 @@
-import noflo from "noflo";
-export default function getComponent() {
-	const c = new noflo.Component();
-	c.description = "Reads an environment variable";
-	c.icon = "usd";
-	c.inPorts.add("key", {
-		datatype: "string",
-		required: true,
-		description: "Environment variable to read",
-	});
-	c.outPorts.add("out", {
-		datatype: "string",
-	});
-	c.outPorts.add("error", {
-		datatype: "object",
-		required: false,
-	});
-	c.forwardBrackets = { key: ["out", "error"] };
-	return c.process((input, output) => {
-		if (!input.hasData("key")) {
-			return;
-		}
-		const data = input.getData("key");
-		const value = process.env[data];
-		if (value === undefined) {
-			output.sendDone(new Error(`No environment variable ${data} set`));
-			return;
-		}
-		output.sendDone({ out: value });
-	});
+import { Component } from "@noflo/noflo";
+
+/**
+ * Reads an environment variable.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Reads an environment variable",
+    icon: "usd",
+    inPorts: {
+      key: {
+        datatype: "string",
+        description: "Environment variable to read",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+        description: "Value of the environment variable",
+      },
+      error: {
+        datatype: "object",
+        description: "The variable is not set",
+      },
+    },
+  });
+
+  c.forwardBrackets = { key: ["out", "error"] };
+
+  c.process((input, output) => {
+    if (!input.hasData("key")) {
+      return;
+    }
+    const key = input.getData("key");
+    const value = process.env[key];
+    if (value === undefined) {
+      output.sendDone(new Error(`No environment variable ${key} set`));
+      return;
+    }
+    output.sendDone({ out: value });
+  });
+
+  return c;
 }

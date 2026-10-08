@@ -1,27 +1,29 @@
-topic: "core/RepeatDelayed"
+topic: core/RepeatAsync
 cases:
--
-  name: 'sending a boolean'
-  assertion: 'should repeat the same'
-  inputs:
-    in: true
-  expect:
-    out:
-     equals: true
--
-  name: 'sending a number'
-  assertion: 'should repeat the same'
-  inputs:
-    in: 1000
-  expect:
-    out:
-      equals: 1000
--
-  name: 'sending a string'
-  assertion: 'should repeat the same'
-  inputs:
-    in: "my string"
-  expect:
-    out:
-      equals: "my string"
-
+  - name: sending a string
+    assertion: should repeat it on the next tick
+    inputs:
+      in: hello
+    expect:
+      out:
+        equals: hello
+topic: core/RepeatDelayed
+cases:
+  - name: sending a boolean
+    assertion: should repeat the same
+    timeout: 3000
+    inputs:
+      delay: 100
+      in: true
+    expect:
+      out:
+        equals: true
+  - name: sending a string
+    assertion: should repeat the same
+    timeout: 3000
+    inputs:
+      delay: 100
+      in: my string
+    expect:
+      out:
+        equals: my string

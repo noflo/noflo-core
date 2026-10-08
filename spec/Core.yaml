@@ -1,0 +1,66 @@
+topic: core/Split
+cases:
+  - name: sending a string
+    assertion: should forward the packet
+    inputs:
+      in: foo
+    expect:
+      out:
+        equals: foo
+  - name: sending an object
+    assertion: should forward the packet
+    inputs:
+      in:
+        key: value
+    expect:
+      out:
+        equals:
+          key: value
+topic: core/Merge
+cases:
+  - name: sending a string
+    assertion: should forward the packet
+    inputs:
+      in: foo
+    expect:
+      out:
+        equals: foo
+topic: core/Copy
+cases:
+  - name: copying an object
+    assertion: should send a deep copy
+    inputs:
+      in:
+        hello: world
+        list: [1, 2, 3]
+    expect:
+      out:
+        equals:
+          hello: world
+          list: [1, 2, 3]
+topic: core/Kick
+cases:
+  - name: kicking with configured data
+    assertion: should send the configured data packet
+    inputs:
+      data: hello world
+      in: true
+    expect:
+      out:
+        equals: hello world
+  - name: kicking without data
+    assertion: should send the default null
+    inputs:
+      in: true
+    expect:
+      out:
+        equals: null
+topic: core/Output
+cases:
+  - name: forwarding a string
+    assertion: should forward the packet after logging it
+    inputs:
+      in: hello
+    expect:
+      out:
+        equals: hello
