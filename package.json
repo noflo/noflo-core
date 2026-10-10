@@ -28,12 +28,12 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@noflo/noflo": "^2.0.0-alpha.2"
+    "@noflo/noflo": "^2.0.0-alpha.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
-    "@noflo/fbp-spec-runner": "^2.0.0-alpha.2",
-    "@noflo/loader-node": "^2.0.0-alpha.2",
+    "@noflo/fbp-spec-runner": "^2.0.0-alpha.3",
+    "@noflo/loader-node": "^2.0.0-alpha.3",
     "@types/node": "^24.0.0",
     "typescript": "^5.0.0"
   },
