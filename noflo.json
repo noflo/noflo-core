@@ -1,0 +1,747 @@
+{
+  "format": "noflo-manifest",
+  "version": 1,
+  "id": "core",
+  "description": "NoFlo Essentials",
+  "icon": null,
+  "npm": "@noflo/core",
+  "jsr": null,
+  "source": "https://github.com/noflo/noflo-core",
+  "revision": "eea0faeb95e02bdbfc0800e2fc61d41e25431a6d",
+  "loader": false,
+  "namespaces": {},
+  "components": [
+    {
+      "name": "core/Callback",
+      "path": "components/Callback.js",
+      "type": "elementary",
+      "description": "This component calls a given callback function for each IP it receives. The Callback component is typically used to connect NoFlo with external Node.js code",
+      "icon": "sign-out",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Object passed as argument of the callback",
+            "required": true,
+            "control": false
+          },
+          {
+            "name": "callback",
+            "datatype": "function",
+            "addressable": false,
+            "description": "Callback to invoke",
+            "required": true,
+            "control": true
+          }
+        ],
+        "outports": [
+          {
+            "name": "error",
+            "datatype": "object",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/Copy",
+      "path": "components/Copy.js",
+      "type": "elementary",
+      "description": "Deep (i.e. recursively) copy an object",
+      "icon": "copy",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be copied",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Copy of the original packet",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/DisconnectAfterPacket",
+      "path": "components/DisconnectAfterPacket.js",
+      "type": "elementary",
+      "description": "Makes each data packet a stream of its own",
+      "icon": "pause",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be forwarded with its own stream grouping",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/Drop",
+      "path": "components/Drop.js",
+      "type": "elementary",
+      "description": "This component drops every packet it receives with no action",
+      "icon": "trash-o",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be dropped",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": []
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/Kick",
+      "path": "components/Kick.js",
+      "type": "elementary",
+      "description": "This component generates a single packet and sends it to the output port. Mostly usable for debugging, but can also be useful for starting up networks",
+      "icon": "share",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "Signal to send the data packet",
+            "required": true,
+            "control": false
+          },
+          {
+            "name": "data",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be sent",
+            "required": false,
+            "control": true
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/MakeFunction",
+      "path": "components/MakeFunction.js",
+      "type": "elementary",
+      "description": "Evaluates a function each time data hits the \"in\" port and sends the return value to \"out\". Within the function \"x\" will be the variable from the in port. For example, to make a ^2 function input \"return x*x;\" to the function port",
+      "icon": "code",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be processed",
+            "required": true,
+            "control": false
+          },
+          {
+            "name": "function",
+            "datatype": "string",
+            "addressable": false,
+            "description": "Function to evaluate",
+            "required": true,
+            "control": true
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          },
+          {
+            "name": "function",
+            "datatype": "function",
+            "addressable": false,
+            "description": "The prepared function",
+            "required": false,
+            "control": false
+          },
+          {
+            "name": "error",
+            "datatype": "object",
+            "addressable": false,
+            "description": "Invalid function source or evaluation errors",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/Merge",
+      "path": "components/Merge.js",
+      "type": "elementary",
+      "description": "This component receives data on multiple input ports and sends the same data out to the connected output port",
+      "icon": "compress",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be forwarded",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/Output",
+      "path": "components/Output.js",
+      "type": "elementary",
+      "description": "Sends the data items to console.log",
+      "icon": "bug",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be printed through console.log",
+            "required": true,
+            "control": false
+          },
+          {
+            "name": "options",
+            "datatype": "object",
+            "addressable": false,
+            "description": "Options to be passed to console.log inspection",
+            "required": false,
+            "control": true
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/ReadEnv",
+      "path": "components/ReadEnv.js",
+      "type": "elementary",
+      "description": "Reads an environment variable",
+      "icon": "usd",
+      "signature": {
+        "inports": [
+          {
+            "name": "key",
+            "datatype": "string",
+            "addressable": false,
+            "description": "Environment variable to read",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "string",
+            "addressable": false,
+            "description": "Value of the environment variable",
+            "required": false,
+            "control": false
+          },
+          {
+            "name": "error",
+            "datatype": "object",
+            "addressable": false,
+            "description": "The variable is not set",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/ReadGlobal",
+      "path": "components/ReadGlobal.js",
+      "type": "elementary",
+      "description": "Returns the value of a global variable",
+      "icon": "usd",
+      "signature": {
+        "inports": [
+          {
+            "name": "name",
+            "datatype": "string",
+            "addressable": false,
+            "description": "The name of the global variable",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "value",
+            "datatype": "all",
+            "addressable": false,
+            "description": "The value of the variable",
+            "required": false,
+            "control": false
+          },
+          {
+            "name": "error",
+            "datatype": "object",
+            "addressable": false,
+            "description": "Any errors that occurred reading the variable's value",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/Repeat",
+      "path": "components/Repeat.js",
+      "type": "elementary",
+      "description": "Forwards packets and metadata in the same way it receives them",
+      "icon": "forward",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to forward",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": "spec/Repeat.yaml",
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/RepeatAsync",
+      "path": "components/RepeatAsync.js",
+      "type": "elementary",
+      "description": "Like 'Repeat', except repeat on next tick",
+      "icon": "step-forward",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to forward",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/RepeatDelayed",
+      "path": "components/RepeatDelayed.js",
+      "type": "elementary",
+      "description": "Forward packet after a set delay",
+      "icon": "clock-o",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be forwarded with a delay",
+            "required": true,
+            "control": false
+          },
+          {
+            "name": "delay",
+            "datatype": "number",
+            "addressable": false,
+            "description": "How much to delay in milliseconds",
+            "required": false,
+            "control": true
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": "spec/RepeatDelayed.yaml",
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/RunInterval",
+      "path": "components/RunInterval.js",
+      "type": "elementary",
+      "description": "Send a packet at the given interval",
+      "icon": "clock-o",
+      "signature": {
+        "inports": [
+          {
+            "name": "interval",
+            "datatype": "number",
+            "addressable": false,
+            "description": "Interval at which output packets are emitted in milliseconds",
+            "required": true,
+            "control": true
+          },
+          {
+            "name": "start",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "Start the emission",
+            "required": true,
+            "control": false
+          },
+          {
+            "name": "stop",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "Stop the emission",
+            "required": false,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/RunTimeout",
+      "path": "components/RunTimeout.js",
+      "type": "elementary",
+      "description": "Send a packet after the given time in ms",
+      "icon": "clock-o",
+      "signature": {
+        "inports": [
+          {
+            "name": "time",
+            "datatype": "number",
+            "addressable": false,
+            "description": "Time after which a packet will be sent",
+            "required": true,
+            "control": true
+          },
+          {
+            "name": "start",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "Start the timeout before sending a packet",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/SendNext",
+      "path": "components/SendNext.js",
+      "type": "elementary",
+      "description": "Sends next packet in buffer when receiving a bang",
+      "icon": "forward",
+      "signature": {
+        "inports": [
+          {
+            "name": "data",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Buffered packets to release one at a time",
+            "required": true,
+            "control": false
+          },
+          {
+            "name": "in",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "Bang releasing the next buffered packet",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          },
+          {
+            "name": "empty",
+            "datatype": "bang",
+            "addressable": false,
+            "description": "Sent when the buffer holds no data packet",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    },
+    {
+      "name": "core/Split",
+      "path": "components/Split.js",
+      "type": "elementary",
+      "description": "This component receives data on a single input port and sends the same data out to all connected output ports",
+      "icon": "expand",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "all",
+            "addressable": false,
+            "description": "Packet to be forwarded",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "all",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": null,
+      "assembly": false,
+      "platforms": [
+        "browser",
+        "node",
+        "deno",
+        "bun"
+      ]
+    }
+  ]
+}
