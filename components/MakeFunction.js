@@ -1,4 +1,4 @@
-import { Component } from "@noflo/noflo";
+import { Component, IP } from "@noflo/noflo";
 
 /**
  * Evaluates a function each time data hits the "in" port and sends the
@@ -65,7 +65,7 @@ export function getComponent() {
       output.done(err instanceof Error ? err : new Error(String(err)));
       return;
     }
-    output.sendDone({ out: result, function: fn });
+    output.sendDone({ out: result, function: new IP("data", fn, { clonable: false }) });
   });
 
   return c;
